@@ -4,5 +4,5 @@ const socket = io();
 </script>
 
 <template>
-  <RouterView />
+  <RouterView :socket="socket"/>
 </template>

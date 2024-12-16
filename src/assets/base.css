@@ -19,6 +19,11 @@
   --vt-c-text-light-2: rgba(60, 60, 60, 0.66);
   --vt-c-text-dark-1: var(--vt-c-white);
   --vt-c-text-dark-2: rgba(235, 235, 235, 0.64);
+
+  --vt-c-link-dark: #0664b1;
+  --vt-c-link-light: #061ea7;
+  --vt-c-link-dark-hover: #0b528b;
+  --vt-c-link-light-hover: #3652f3;
 }
 
 /* semantic color variables for this project */
@@ -32,6 +37,9 @@
 
   --color-heading: var(--vt-c-text-light-1);
   --color-text: var(--vt-c-text-light-1);
+
+  --color-link: var(--vt-c-link-light);
+  --color-link-hover: var(--vt-c-link-light-hover);
 
   --section-gap: 10rem;
 }
@@ -47,6 +55,9 @@
 
     --color-heading: var(--vt-c-text-dark-1);
     --color-text: var(--vt-c-text-dark-2);
+
+    --color-link: var(--vt-c-link-dark);
+    --color-link-hover: var(--vt-c-link-dark-hover);
   }
 }
 
@@ -59,7 +70,6 @@
 }
 
 body {
-  min-height: 100vh;
   color: var(--color-text);
   background: var(--color-background);
   transition:
@@ -84,3 +94,22 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+main {
+  min-height: 80vh;
+}
+
+a {
+  text-decoration: none;
+  color: var(--color-link);
+  font-weight: 600;
+  transition: 0.2s;
+}
+
+@media (hover: hover) {
+  a:hover {
+    color: var(--color-link-hover);
+    text-decoration: underline;
+  }
+}
+
