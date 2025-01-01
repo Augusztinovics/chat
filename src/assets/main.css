@@ -1,16 +1,65 @@
 @import './base.css';
 
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  font-weight: normal;
+.welcome-wrapper .welcome-register {
+  padding: 0 2rem 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  border-bottom: 2px solid var(--color-border);
+  box-shadow: var(--shadow);
 }
 
-@media (min-width: 1024px) {
-  main {
+.welcome-wrapper .welcome-register .menu-box .menu--item {
+  display: block;
+  margin-top: 1rem;
+}
+
+@media(min-width: 550px) {
+  .welcome-wrapper .welcome-register {
+    padding: 1rem 3rem;
+  }
+
+  .welcome-wrapper .welcome-register .menu-box .menu--item {
+    display: inline-block;
+    margin-top: 0;
+  }
+}
+
+.welcome-wrapper .welcome-register a .icon svg {
+  fill: var(--color-link);
+}
+
+.welcome-wrapper .welcome-register a:hover .icon svg {
+  fill: var(--color-link-hover);
+}
+
+.welcome-wrapper main .card {
+  padding: 2rem;
+  border: 2px solid var(--color-border);
+  box-shadow: var(--shadow);
+  background-color: var(--color-background-soft);
+  min-width: 100%;
+}
+
+.welcome-wrapper main .card input {
+  margin-bottom: 2rem;
+}
+
+@media (min-width: 768px) {
+  .welcome-wrapper main {
     display: flex;
     align-items: center;
     justify-content: center;
   }
+
+  .welcome-wrapper main .card {
+    min-width: 600px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .welcome-wrapper .welcome-register {
+    padding: 1rem 8rem;
+  }
+
 }
