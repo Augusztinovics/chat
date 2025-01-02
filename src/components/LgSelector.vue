@@ -51,10 +51,13 @@
     import IconArrowUp from '@/components/icons/IconArrowUp.vue';
     import IconArrowDown from '@/components/icons/IconArrowDown.vue';
     import IconCheck from './icons/IconCheck.vue';
+    import { mapActions } from 'pinia';
+    import { useLgStore } from '@/stores/active__lg';
 
     const HU = 'HU';
     const SR = 'SR';
     const EN = 'EN';
+    const STORAGE_KEY = 'y_chat_selected_lg';
 
     export default {
         components: {
@@ -90,6 +93,8 @@
         },
 
         methods: {
+            ...mapActions(useLgStore, ['setActiveLg']),
+
             toogleLgSelect() {
                 this.lgSelectOpen = !this.lgSelectOpen;
             },
@@ -98,8 +103,49 @@
                 if (lg === HU || lg === SR || lg === EN) {
                     this.selectedLg = lg;
                     this.lgSelectOpen = false;
+                    try {
+                        localStorage.setItem(STORAGE_KEY, lg);
+                    } catch (error) {
+                        console.log(error);
+                    }
+                    this.setActiveLg(lg);
+                    this.setDocumentLgAttribute();
                 }
             },
-        }
+
+            setDocumentLgAttribute() {
+                let docLg = 'hu';
+                switch (this.selectedLg) {
+                    case SR:
+                        docLg = 'sr';
+                        break;
+                    case EN:
+                        docLg = 'en';
+                        break;
+                
+                    default:
+                        break;
+                }
+                document.documentElement.setAttribute('lang', docLg);
+            },
+        },
+
+        mounted() {
+            let lg;
+            try {
+                lg = localStorage.getItem(STORAGE_KEY);
+            } catch (error) {
+                console.log(error);
+                lg = HU;
+            }
+
+            if (!lg) {
+                lg = HU;
+            }
+            this.selectedLg = lg;
+            this.lgSelectOpen = false;
+            this.setActiveLg(lg);
+            this.setDocumentLgAttribute();
+        },
     }
 </script>

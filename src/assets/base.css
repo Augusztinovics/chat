@@ -37,6 +37,7 @@
 
   --color-heading: var(--vt-c-text-light-1);
   --color-text: var(--vt-c-text-light-1);
+  --color-text-muted: var(--vt-c-text-light-2);
 
   --color-link: var(--vt-c-link-light);
   --color-link-hover: var(--vt-c-link-light-hover);
@@ -59,6 +60,7 @@
 
     --color-heading: var(--vt-c-text-dark-1);
     --color-text: var(--vt-c-text-dark-2);
+    --color-text-muted: var(--vt-c-text-dark-2);
 
     --color-link: var(--vt-c-link-dark);
     --color-link-hover: var(--vt-c-link-dark-hover);
@@ -292,6 +294,10 @@ label span {
   font-weight: 600;
 }
 
+.text-danger {
+  color: var(--color-danger);
+}
+
 .lg-select-box {
   position: relative;
 }
@@ -340,4 +346,26 @@ label span {
   display: inline-block;
   padding-left: 8px;
   padding-right: 8px;
+}
+
+.simple-checkbox label {
+  display: inline-block;
+  font-weight: 400;
+  font-style: normal;
+  cursor: pointer;
+}
+
+.simple-checkbox label input {
+  cursor: pointer;
+}
+
+.invalid-input {
+  border-color: var(--color-danger);
+  outline-color: var(--color-danger);
+  margin-bottom: 0 !important;
+}
+
+.invalid-text {
+  color: var(--color-danger);
+  margin-bottom: 1rem;
 }
