@@ -58,6 +58,36 @@ export const useLgStore = defineStore('active_lg', {
               HU: 'Kérem adja meg a jelszavát',
               SR: 'Unesite lozinku',
               EN: 'Please enter the password',
+            },
+            username_exists: {
+              HU: 'Felhasználó név már foglalt',
+              SR: 'Korisničko ime već postoji',
+              EN: 'Username already exist',
+            },
+            accept_terms: {
+              HU: 'Olvastam és elfogadom a feltételeket!',
+              SR: 'Pročitao sam i prihvatam uslove i odredbe!',
+              EN: 'I have read and accept the terms and conditions!',
+            },
+            password_repeate: {
+              HU: 'Jelszó mégegyszer',
+              SR: 'Ponovo lozinka',
+              EN: 'Password again',
+            },
+            missing_password_repeate: {
+              HU: 'Kérem ismételje meg jelszavát',
+              SR: 'Ponovite lozinku',
+              EN: 'Please repeat your password',
+            },
+            password_repeate_not_match: {
+              HU: 'A két megadott jelszó nem egyezik',
+              SR: 'Dve unete lozinke se ne poklapaju',
+              EN: 'The two passwords entered do not match',
+            },
+            terms_not_accepted: {
+              HU: 'A feltételeket el kell fogadnia! A feltételek:',
+              SR: 'Morate prihvatiti uslove! Uslovi su:',
+              EN: 'You must accept the terms! The conditions are:',
             }
         },
     }),
@@ -65,7 +95,8 @@ export const useLgStore = defineStore('active_lg', {
         lg: (state) => {
             return (word) => {
               try {
-                return state.words[word][state.activeLg];
+                let result = state.words[word][state.activeLg];
+                return result ?? word;
               } catch (error) {
                 console.log(error);
                 return word;

@@ -2,8 +2,8 @@
   <div class="welcome-wrapper">
     <header class="welcome-register">
       <div class="menu-box">
-        <RouterLink to="/register" class="mr-2 menu--item"><span class="icon"><IconTerms /></span> {{ lg('terms') }}</RouterLink>
-        <RouterLink to="/register" class="menu--item"><span class="icon"><IconShield /></span> {{ lg('privacy') }}</RouterLink>
+        <RouterLink to="/terms" class="mr-2 menu--item"><span class="icon"><IconTerms /></span> {{ lg('terms') }}</RouterLink>
+        <RouterLink to="/privacy" class="menu--item"><span class="icon"><IconShield /></span> {{ lg('privacy') }}</RouterLink>
       </div>
       <div class="menu-box">
         <RouterLink to="/register" class="menu--item mr-2"><span class="icon"><IconIdCard /></span> {{ lg('register') }}</RouterLink>
@@ -20,7 +20,7 @@
           <p v-if="missingUsername" class="invalid-text">{{ lg('missing_username') }}</p>
           <p v-if="invalidUser" class="invalid-text">{{ lg('invalid_user') }}</p>
           <div>
-            <label for="password_input">{{ lg('password') }}<span>*</span></label>
+            <label for="password_input">{{ lg('password') }} <span>*</span></label>
             <div class="password-container">
               <input id="password_input" :type="passwordInputType" :class="{'invalid-input': missingPassword}" v-model="password" @input="clearErrors">
               <button type="button" @click="toogleShowPassword">
