@@ -47,105 +47,105 @@
 </template>
 
 <script>
-    import IconEarth from '@/components/icons/IconEarth.vue';
-    import IconArrowUp from '@/components/icons/IconArrowUp.vue';
-    import IconArrowDown from '@/components/icons/IconArrowDown.vue';
-    import IconCheck from './icons/IconCheck.vue';
-    import { mapActions } from 'pinia';
-    import { useLgStore } from '@/stores/active__lg';
+import IconEarth from '@/components/icons/IconEarth.vue';
+import IconArrowUp from '@/components/icons/IconArrowUp.vue';
+import IconArrowDown from '@/components/icons/IconArrowDown.vue';
+import IconCheck from './icons/IconCheck.vue';
+import { mapActions } from 'pinia';
+import { useLgStore } from '@/stores/active__lg';
 
-    const HU = 'HU';
-    const SR = 'SR';
-    const EN = 'EN';
-    const STORAGE_KEY = 'y_chat_selected_lg';
+const HU = 'HU';
+const SR = 'SR';
+const EN = 'EN';
+const STORAGE_KEY = 'y_chat_selected_lg';
 
-    export default {
-        components: {
-            IconEarth,
-            IconArrowUp,
-            IconArrowDown,
-            IconCheck,
-        },
+export default {
+    components: {
+        IconEarth,
+        IconArrowUp,
+        IconArrowDown,
+        IconCheck,
+    },
 
-        data() {
-            return {
-                lgSelectOpen: false,
-                selectedLg: HU,
-            };
-        },
+    data() {
+        return {
+            lgSelectOpen: false,
+            selectedLg: HU,
+        };
+    },
 
-        computed: {
-            isSelected() {
-                return (lg) => {
-                    return lg === this.selectedLg;
-                }
-            },
-
-            selectText() {
-                if (this.selectedLg === HU) {
-                    return 'Nyelv';
-                }
-                if (this.selectedLg === SR) {
-                    return 'Jezik';
-                }
-                return 'Language';
+    computed: {
+        isSelected() {
+            return (lg) => {
+                return lg === this.selectedLg;
             }
         },
 
-        methods: {
-            ...mapActions(useLgStore, ['setActiveLg']),
+        selectText() {
+            if (this.selectedLg === HU) {
+                return 'Nyelv';
+            }
+            if (this.selectedLg === SR) {
+                return 'Jezik';
+            }
+            return 'Language';
+        }
+    },
 
-            toogleLgSelect() {
-                this.lgSelectOpen = !this.lgSelectOpen;
-            },
+    methods: {
+        ...mapActions(useLgStore, ['setActiveLg']),
 
-            selectLg(lg) {
-                if (lg === HU || lg === SR || lg === EN) {
-                    this.selectedLg = lg;
-                    this.lgSelectOpen = false;
-                    try {
-                        localStorage.setItem(STORAGE_KEY, lg);
-                    } catch (error) {
-                        console.log(error);
-                    }
-                    this.setActiveLg(lg);
-                    this.setDocumentLgAttribute();
-                }
-            },
-
-            setDocumentLgAttribute() {
-                let docLg = 'hu';
-                switch (this.selectedLg) {
-                    case SR:
-                        docLg = 'sr';
-                        break;
-                    case EN:
-                        docLg = 'en';
-                        break;
-                
-                    default:
-                        break;
-                }
-                document.documentElement.setAttribute('lang', docLg);
-            },
+        toogleLgSelect() {
+            this.lgSelectOpen = !this.lgSelectOpen;
         },
 
-        mounted() {
-            let lg;
-            try {
-                lg = localStorage.getItem(STORAGE_KEY);
-            } catch (error) {
-                console.log(error);
-                lg = HU;
+        selectLg(lg) {
+            if (lg === HU || lg === SR || lg === EN) {
+                this.selectedLg = lg;
+                this.lgSelectOpen = false;
+                try {
+                    localStorage.setItem(STORAGE_KEY, lg);
+                } catch (error) {
+                    console.log(error);
+                }
+                this.setActiveLg(lg);
+                this.setDocumentLgAttribute();
             }
-
-            if (!lg) {
-                lg = HU;
-            }
-            this.selectedLg = lg;
-            this.lgSelectOpen = false;
-            this.setActiveLg(lg);
-            this.setDocumentLgAttribute();
         },
-    }
+
+        setDocumentLgAttribute() {
+            let docLg = 'hu';
+            switch (this.selectedLg) {
+                case SR:
+                    docLg = 'sr';
+                    break;
+                case EN:
+                    docLg = 'en';
+                    break;
+            
+                default:
+                    break;
+            }
+            document.documentElement.setAttribute('lang', docLg);
+        },
+    },
+
+    mounted() {
+        let lg;
+        try {
+            lg = localStorage.getItem(STORAGE_KEY);
+        } catch (error) {
+            console.log(error);
+            lg = HU;
+        }
+
+        if (!lg) {
+            lg = HU;
+        }
+        this.selectedLg = lg;
+        this.lgSelectOpen = false;
+        this.setActiveLg(lg);
+        this.setDocumentLgAttribute();
+    },
+}
 </script>

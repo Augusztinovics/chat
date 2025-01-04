@@ -1,9 +1,11 @@
-<script setup>
-
-</script>
-
 <template>
-  <div>
-
-  </div>
+    <div>
+        You are home!!!!!!!
+    </div>
 </template>
+
+<script>
+export default {
+
+}
+</script>

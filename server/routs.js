@@ -1,10 +1,14 @@
 const testController = require('./controllers/testController.js');
 const path = require('path');
 const usernameCheckController = require('./controllers/usernameCheckController.js');
+const registerController = require('./controllers/registerController.js');
+const loginController = require('./controllers/loginController.js');
 
 function apiRouts(app) {
     app.get('/test', (req, res) => testController(req, res));
-    app.post('/username-check', (req, res) => usernameCheckController(req, res));
+    app.post('/api/username-check', (req, res) => usernameCheckController(req, res));
+    app.post('/api/register', (req, res) => registerController(req, res));
+    app.post('/api/login', (req, res) => loginController(req, res));
 
 
     //Serve the app in all not definiated routs, NEED TO BE LAST

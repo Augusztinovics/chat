@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia'
+import { defineStore } from 'pinia';
 
 export const useLgStore = defineStore('active_lg', {
     state: () => ({
@@ -88,7 +88,12 @@ export const useLgStore = defineStore('active_lg', {
               HU: 'A feltételeket el kell fogadnia! A feltételek:',
               SR: 'Morate prihvatiti uslove! Uslovi su:',
               EN: 'You must accept the terms! The conditions are:',
-            }
+            },
+            general_error: {
+              HU: 'Valami nem sikerült, próbáld újra, frissítsd az oldalt, majd próbáld újra, vagy add fel!',
+              SR: 'Nešto nije pošlo naopako, pokušajte ponovo, osvežite stranicu pa pokušajte ponovo ili jednostavno odustanite!',
+              EN: 'Something wen\'t wrong, please try again, refresh the page then try again or just give up!',
+            },
         },
     }),
     getters: {
@@ -102,6 +107,9 @@ export const useLgStore = defineStore('active_lg', {
                 return word;
               }
             }
+        },
+        lgCode: (state) => {
+          return state.activeLg;
         },
     },
     actions: {
