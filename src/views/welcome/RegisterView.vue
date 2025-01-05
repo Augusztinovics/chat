@@ -52,6 +52,9 @@
                         </label>
                     </div>
                     <p v-if="termsNotAccepted" class="invalid-text pb-1">{{ lg('terms_not_accepted') }}<RouterLink to="/terms" class="ml-1">{{ lg('terms') }}</RouterLink></p>
+
+                    <input type="text" class="hidden-input" v-model="hpot">
+
                     <div class="text-center mb-2">
                         <button type="submit" class="btn-primary" :disabled="submitting">{{ lg('register') }}</button>
                         <p v-if="generalError" class="invalid-text">{{ lg('general_error') }}</p>
@@ -100,6 +103,7 @@ export default {
             passwordRepeateNotMatch: false,
             termsNotAccepted: false,
             generalError: false,
+            hpot: '',
         };
     },
 
@@ -134,6 +138,7 @@ export default {
                 username: this.registerStore.username.trim(),
                 password: this.registerStore.password.trim(),
                 acceptTerms: this.registerStore.acceptTerms,
+                hpot: this.hpot,
             })
             .then((res) => {
                 this.submitting = false;
@@ -168,6 +173,18 @@ export default {
                 if (msg === 'invalid_username') {
                     this.invalidUser = true;
                     document.getElementById('username_input').focus();
+                    return;
+                }
+
+                if (msg === 'pot') {
+                    //it's a robot, let block it for a 5sec
+                    this.generalError = true;
+                    this.submitting = true;
+                    this.hpot = '';
+                    setTimeout(() => {
+                        this.generalError = false;
+                        this.submitting = false;
+                    }, 5000);
                     return;
                 }
 

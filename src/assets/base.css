@@ -369,3 +369,11 @@ label span {
   color: var(--color-danger);
   margin-bottom: 1rem;
 }
+
+.hidden-input {
+    visibility: hidden;
+    height: 1px;
+    padding: 0 !important;
+    margin-bottom: 0 !important;
+    border: 0 !important;
+}

@@ -1,4 +1,9 @@
 function loginController(req, res) {
+    let hpot = req?.body?.hpot;
+    if (hpot) {
+        res.status(400).json({message:'pot'});
+        return;
+    }
     if (!req.body.username) {
         res.status(400).json({message:'username'});
         return;
