@@ -21,7 +21,9 @@ if (roll) {
     console.log('Rolling back...');
     console.log('');
 
-    //Do the rollback somehow...
+    const migrate = require('./database/migrate');
+
+    migrate(true);
 
 }
 
@@ -32,7 +34,6 @@ if (migrations && !roll) {
     console.log('Checking for available migrations...');
     console.log('');
 
-    //Check for not runned migration files, and run it or tell nothing to run
     const migrate = require('./database/migrate');
 
     migrate();
