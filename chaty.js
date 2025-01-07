@@ -14,29 +14,57 @@ if (help) {
     process.exit(1);
 }
 
-const roll = (process.argv.indexOf('-r') > -1 || process.argv.indexOf('--rollback') > -1) ? true : false;
+let rIndex = process.argv.indexOf('-r');
+let rollIndex = process.argv.indexOf('--rollback');
+const roll = (rIndex > -1 ||rollIndex > -1) ? true : false;
 
 if (roll) {
+    let fileIndex = (rIndex > -1) ? (rIndex + 1) : (rollIndex + 1);
+    let file = null;
+    if (process.argv.length >= fileIndex +1 ) {
+        file = process.argv[fileIndex];
+    }
     console.log('');
-    console.log('Rolling back...');
+    if (file) {
+        console.log('Rolling back ' + file + '...');
+    } else {
+        console.log('Rolling back...');
+    }
+
     console.log('');
 
     const migrate = require('./database/migrate');
 
-    migrate(true);
+    if (file) {
+        migrate(true, file);
+    } else {
+        migrate(true);
+    }
 
 }
 
-const migrations = (process.argv.indexOf('-m') > -1 || process.argv.indexOf('--migrate') > -1) ? true : false;
+let mIndex = process.argv.indexOf('-m');
+let migrateIndex = process.argv.indexOf('--migrate');
+const migrations = (mIndex > -1 || migrateIndex > -1) ? true : false;
 
 if (migrations && !roll) {
+    let fileIndex = (mIndex > -1) ? (mIndex + 1) : (migrateIndex + 1);
+    let file = null;
     console.log('');
-    console.log('Checking for available migrations...');
+    if (file) {
+        console.log('Migrating:  ' + file + '...');
+    } else {
+        console.log('Checking for available migrations...');
+    }
     console.log('');
 
     const migrate = require('./database/migrate');
 
-    migrate();
+    if (file) {
+        migrate(false, file);
+    } else {
+        migrate();
+    }
 }
 
 const seed = (process.argv.indexOf('-s') > -1 || process.argv.indexOf('--seed') > -1) ? true : false;
@@ -47,4 +75,20 @@ if (seed && !roll && !migrations) {
     console.log('');
 
     //Check for seeders, run if available, tell if done, or tell nothing to seed
+}
+
+const logs = (process.argv.indexOf('-l') > -1 || process.argv.indexOf('--logs') > -1) ? true : false;
+
+if (logs && !roll && !migrations) {
+    const Log = require('./models/Log.js');
+    let result = Log.getAllLogs();
+    console.log('Logs:');
+
+    result.then((res) => {
+        res.forEach(element => {
+            console.log(element.created_at + ' - ' + element.level + ' - ' + element.log);
+        });
+    }).catch((e) => {
+        console.log(e);
+    })
 }
