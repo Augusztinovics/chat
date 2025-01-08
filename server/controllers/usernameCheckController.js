@@ -8,13 +8,17 @@ async function usernameCheckController(req, res) {
     let username = req.body.username;
     username = username.trim();
 
-    // let result = await User.test();
+    try {
+        let result = await User.where(['username', username], 'first');
+        if (result) {
+            res.status(417).json({message:'bad'});
+        } else {
+            res.json({message:'ok'});
+        }
+    } catch (error) {
+        res.status(500).json({message:'Server Error'});
+    }
 
-    // console.log(result);
-    setTimeout(() => {
-        //Check in database if the username is allready in use (right now just simulating)
-        res.json({message:'ok'});
-    }, 300);
 }
 
 module.exports = usernameCheckController;
