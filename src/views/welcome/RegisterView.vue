@@ -134,20 +134,26 @@ export default {
             this.generalError = false;
             this.submitting = true;
 
+            let lg = 'HU';
+            try {
+                lg = localStorage.getItem('y_chat_selected_lg');
+            } catch (error) {
+                console.log(error);
+            }
+
             axios.post('/api/register', {
                 username: this.registerStore.username.trim(),
                 password: this.registerStore.password.trim(),
                 acceptTerms: this.registerStore.acceptTerms,
+                lg: lg,
                 hpot: this.hpot,
             })
-            .then((res) => {
+            .then(() => {
                 this.submitting = false;
-
-                //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                //Redirect to chat app(maybe preload the users data into store from res before?)
-                //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-
+                this.registerStore.username = '';
+                this.registerStore.password = '';
+                this.registerStore.acceptTerms = false;
+                this.$router.push('/home');
             })
             .catch((e) => {
                 this.submitting = false;

@@ -181,6 +181,72 @@ class Model {
         });
     }
 
+    static create(data) {
+        let culomns = [];
+        let placeholder = [];
+        let values = [];
+        if (typeof data === 'object') {
+            Object.entries(this.columns).forEach(([key, value]) => {
+                if (key !== this.primaryKey && key !== 'created_at') {
+                    culomns.push(key);
+                    placeholder.push('?');
+                    if (Object.hasOwn(data, key)) {
+                        values.push(data[key]);
+                    } else {
+                        values.push(value);
+                    }
+                }
+            });
+        } else {
+            Object.entries(this.columns).forEach(([key, value]) => {
+                if (key !== this.primaryKey && key !== 'created_at') {
+                    culomns.push(key);
+                    values.push(value);
+                    placeholder.push('?');
+                }
+            });
+        }
+
+        return new Promise((resolve, reject) => {
+            let query = `INSERT INTO ${this.table} (${culomns.join(', ')}) VALUES (${placeholder.join(', ')})`;
+            new Promise((resolve,reject) => {
+                try {
+                    db.run(query, values, function (err) {
+                        if (err) {
+                            reject(false);
+                        } else {
+                            resolve(this.lastID);
+                        }
+                    });
+                } catch (error) {
+                    reject(false);
+                }
+                
+            }).then((id) => {
+                console.log('BEFORE SELECT QUERY:');
+                console.log(id);
+                let query = `SELECT * FROM ${this.table} WHERE ${this.primaryKey} = ?`
+                try {
+                    db.get(query, [id], (err, row) => {
+                        if (err) {
+                            reject(false);
+                        } else {
+                            if (row && Object.keys(row).length) {
+                                resolve(new this(row));
+                            } else {
+                                resolve(null);
+                            }
+                        }
+                    });
+                } catch (error) {
+                    reject(false);
+                }
+            }).catch((er) => {
+                reject(er);
+            })
+        });
+    }
+
 }
 
 module.exports = Model;

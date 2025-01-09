@@ -10,6 +10,7 @@ async function usernameCheckController(req, res) {
 
     try {
         let result = await User.where(['username', username], 'first');
+        console.log(result);
         if (result) {
             res.status(417).json({message:'bad'});
         } else {

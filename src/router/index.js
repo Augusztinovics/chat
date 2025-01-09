@@ -24,6 +24,11 @@ const router = createRouter({
       name: 'privacy',
       component: () => import('../views/welcome/PrivacyView.vue'),
     },
+    {
+        path: '/home',
+        name: 'home',
+        component: () => import('../views/home/HomeView.vue'),
+    },
   ],
 })
 
