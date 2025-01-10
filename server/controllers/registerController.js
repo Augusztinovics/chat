@@ -1,4 +1,6 @@
 const User = require('../../models/User.js');
+const bcrypt = require('bcrypt');
+const generateToken = require('../middlewares/generateToken.js');
 
 async function registerController(req, res) {
     let hpot = req?.body?.hpot;
@@ -42,29 +44,37 @@ async function registerController(req, res) {
     let ip = req.ip || req.socket.remoteAddress;
     let deviceData = JSON.stringify(req.headers);
 
-    //btoa() string to base64
-    //atob() base64 to string
-
     let newUser = null;
     try {
+        let hashedPassword = await bcrypt.hash(password, 10);
         newUser = await User.create({
             username: username,
-            password: btoa(password),
+            password: hashedPassword,
             lg: lg,
             ip: ip,
             device_data: deviceData,
         });
-
-        console.log(newUser);
 
         if (!newUser) {
             throw new Error("New user not exist");
         }
 
         //Login the new user, then:
+        let token = generateToken(newUser);
+        if (!token) {
+            throw new Error("Failed to generate token");
+        }
+
+        let options = {
+            maxAge: 8 * 60 * 60 * 1000,
+            httpOnly: true,
+            secure: true,
+            sameSite: "Strict",
+        };
+        res.cookie('SessionId', token, options);
         res.json({message:'ok'});
     } catch (error) {
-        console.log('CATCH ERROR');
+        console.log('REGISTER CATCH ERROR');
         console.log(error);
         res.status(500).json({message: 'Server Error'});
     }

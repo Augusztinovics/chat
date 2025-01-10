@@ -223,8 +223,6 @@ class Model {
                 }
                 
             }).then((id) => {
-                console.log('BEFORE SELECT QUERY:');
-                console.log(id);
                 let query = `SELECT * FROM ${this.table} WHERE ${this.primaryKey} = ?`
                 try {
                     db.get(query, [id], (err, row) => {

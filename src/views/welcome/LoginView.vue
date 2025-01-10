@@ -64,6 +64,7 @@ import IconEyeOpen from '@/components/icons/IconEyeOpen.vue';
 import LgSelector from '@/components/LgSelector.vue';
 import { mapState } from 'pinia';
 import { useLgStore } from '@/stores/active__lg';
+import axios from 'axios';
 
 export default {
     components: {
@@ -114,14 +115,9 @@ export default {
                 rememberMe: this.rememberMe,
                 hpot: this.hpot,
             })
-            .then((res) => {
+            .then(() => {
                 this.submitting = false;
-
-                //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                //Redirect to chat app(maybe preload the users data into store from res before?)
-                //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-
+                this.$router.push('/home');
             })
             .catch((e) => {
                 let msg = e?.response?.data?.message;

@@ -8,9 +8,11 @@ const server = http.createServer(app);
 const io = socketio(server);
 const onConnection = require("./server/socket_events.js");
 const apiRouts = require("./server/routs.js");
+const cookieParser = require('cookie-parser');
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
+app.use(cookieParser());
 
 apiRouts(app);
 

@@ -5,7 +5,7 @@ const registerController = require('./controllers/registerController.js');
 const loginController = require('./controllers/loginController.js');
 
 function apiRouts(app) {
-    app.get('/test', (req, res) => testController(req, res));
+    app.get('/login', async (req, res) => testController(req, res));
     app.post('/api/username-check', async (req, res) => usernameCheckController(req, res));
     app.post('/api/register', async (req, res) => registerController(req, res));
     app.post('/api/login', async (req, res) => loginController(req, res));
