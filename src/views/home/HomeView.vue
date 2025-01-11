@@ -1,11 +1,13 @@
 <template>
-    <div>
-        You are home!!!!!!!
-    </div>
+    <BaseLayout>You Are Home</BaseLayout>
 </template>
 
 <script>
+import BaseLayout from '@/components/welcome/BaseLayout.vue';
 export default {
-
+    components: {
+        BaseLayout
+    },
+    props: ['socket'],
 }
 </script>
