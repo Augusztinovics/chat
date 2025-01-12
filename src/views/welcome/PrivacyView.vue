@@ -3,12 +3,12 @@
 
         <header class="welcome-register">
             <div class="menu-box">
-                <RouterLink to="/terms" class="mr-2 menu--item"><span class="icon"><IconTerms /></span> {{ lg('terms') }}</RouterLink>
-                <RouterLink to="/" class="menu--item"><span class="icon"><IconUser /></span> {{ lg('login') }}</RouterLink>
+                <RouterLink to="/terms" class="mr-2 menu-item"><span class="icon"><IconTerms /></span> {{ lg('terms') }}</RouterLink>
+                <RouterLink to="/" class="menu-item"><span class="icon"><IconUser /></span> {{ lg('login') }}</RouterLink>
             </div>
             <div class="menu-box">
-                <RouterLink to="/register" class="menu--item mr-2"><span class="icon"><IconIdCard /></span> {{ lg('register') }}</RouterLink>
-                <LgSelector class="menu--item" />    
+                <RouterLink to="/register" class="menu-item mr-2"><span class="icon"><IconIdCard /></span> {{ lg('register') }}</RouterLink>
+                <LgSelector class="menu-item" />
             </div>
         </header>
 

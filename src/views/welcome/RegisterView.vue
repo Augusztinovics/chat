@@ -2,12 +2,12 @@
     <div class="welcome-wrapper">
         <header class="welcome-register">
             <div class="menu-box">
-                <RouterLink to="/terms" class="mr-2 menu--item"><span class="icon"><IconTerms /></span> {{ lg('terms') }}</RouterLink>
-                <RouterLink to="/privacy" class="menu--item"><span class="icon"><IconShield /></span> {{ lg('privacy') }}</RouterLink>
+                <RouterLink to="/terms" class="mr-2 menu-item"><span class="icon"><IconTerms /></span> {{ lg('terms') }}</RouterLink>
+                <RouterLink to="/privacy" class="menu-item"><span class="icon"><IconShield /></span> {{ lg('privacy') }}</RouterLink>
             </div>
             <div class="menu-box">
-                <RouterLink to="/" class="menu--item mr-2"><span class="icon"><IconUser /></span> {{ lg('login') }}</RouterLink>
-                <LgSelector class="menu--item" />
+                <RouterLink to="/" class="menu-item mr-2"><span class="icon"><IconUser /></span> {{ lg('login') }}</RouterLink>
+                <LgSelector class="menu-item" />
                 
             </div>
         </header>
@@ -153,7 +153,7 @@ export default {
                 this.registerStore.username = '';
                 this.registerStore.password = '';
                 this.registerStore.acceptTerms = false;
-                this.$router.push('/home');
+                this.$router.push('/home/profile');
             })
             .catch((e) => {
                 this.submitting = false;

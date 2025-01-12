@@ -3,11 +3,13 @@ const path = require('path');
 const usernameCheckController = require('./controllers/usernameCheckController.js');
 const registerController = require('./controllers/registerController.js');
 const loginController = require('./controllers/loginController.js');
+const logoutController = require('./controllers/logoutController.js');
 const auth = require('./middlewares/auth.js');
 const userDataController = require('./controllers/resources/userDataController.js');
 
 function apiRouts(app) {
     app.get('/login', async (req, res) => testController(req, res));
+    app.get('/logout', async (req, res) => logoutController(req, res));
     app.post('/api/username-check', async (req, res) => usernameCheckController(req, res));
     app.post('/api/register', async (req, res) => registerController(req, res));
     app.post('/api/login', async (req, res) => loginController(req, res));

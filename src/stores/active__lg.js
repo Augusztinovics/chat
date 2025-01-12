@@ -94,6 +94,21 @@ export const useLgStore = defineStore('active_lg', {
               SR: 'Nešto nije pošlo naopako, pokušajte ponovo, osvežite stranicu pa pokušajte ponovo ili jednostavno odustanite!',
               EN: 'Something wen\'t wrong, please try again, refresh the page then try again or just give up!',
             },
+            home: {
+                HU: 'Kezdőlap',
+                SR: 'Početna',
+                EN: 'Home',
+            },
+            profile: {
+                HU: 'Adatlap',
+                SR: 'Profil',
+                EN: 'Profile',
+            },
+            logout: {
+                HU: 'Kijelentkezés',
+                SR: 'Odjava',
+                EN: 'Logout',
+            },
         },
     }),
     getters: {

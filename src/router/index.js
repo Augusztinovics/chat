@@ -4,6 +4,7 @@ import Welcome from '../views/welcome/Welcome.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
+  linkActiveClass: 'active-link',
   routes: [
     {
       path: '/',
@@ -34,6 +35,21 @@ const router = createRouter({
         path: '/home',
         name: 'home',
         component: () => import('../views/home/HomeView.vue'),
+    },
+    {
+        path: '/home/privacy',
+        name: 'home privacy',
+        component: () => import('../views/home/PrivacyView.vue'),
+    },
+    {
+        path: '/home/terms',
+        name: 'home terms',
+        component: () => import('../views/home/TermsView.vue'),
+    },
+    {
+        path: '/home/profile',
+        name: 'home profile',
+        component: () => import('../views/home/ProfileView.vue'),
     },
   ],
 })
