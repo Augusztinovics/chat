@@ -19,6 +19,7 @@
 .base-layout-body .top-nav {
     grid-area: top;
     background-image: linear-gradient(var(--color-background-mute), var(--color-background));
+    
 }
 
 .base-layout-body .side-nav {
@@ -26,16 +27,25 @@
     background-image: linear-gradient(to bottom, var(--color-background-mute), var(--color-background));
 }
 
+.base-layout-body .side-nav .side-nav-box {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 10px;
+    padding: 2rem;
+    box-shadow: var(--shadow);
+}
+
 .base-layout-body .content {
     grid-area: content;
     background-color: var(--color-background);
-    /* border: 1px solid var(--color-border); */
 }
 
 .base-layout-body .top-nav nav {
     display: flex;
-    margin: 1rem 1rem 0 1rem;
+    padding: 1rem 2rem;
     justify-content: space-between;
+    box-shadow: var(--shadow);
 }
 
 .base-layout-body .top-nav nav .nav-box .menu-item {
@@ -73,6 +83,12 @@
 
     .base-layout-body .side-nav {
         background-image: linear-gradient(to right, var(--color-background-mute), var(--color-background));
+    }
+    .base-layout-body .side-nav .side-nav-box {
+        flex-direction: column;
+        justify-content: start;
+        height: 100%;
+        width: 80%;
     }
 }
 

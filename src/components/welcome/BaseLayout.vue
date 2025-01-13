@@ -16,7 +16,18 @@
                 </div>
             </nav>
         </div>
-        <div class="side-nav"><p>Side</p><p>Side</p><p>Side</p><p>Side</p><p>Side</p><p>Side</p><p>Side</p><p>Side</p></div>
+        <div class="side-nav">
+            <div class="side-nav-box">
+                <p>Side</p>
+                <p>Side</p>
+                <p>Side</p>
+                <p>Side</p>
+                <p>Side</p>
+                <p>Side</p>
+                <p>Side</p>
+                <p>Side</p>
+            </div>
+        </div>
         <div class="content"><slot></slot></div>
     </div>
 </template>

@@ -1,1 +1,0 @@
-import{B as t}from"./BaseLayout-Bbrkt0nn.js";import{_ as s,q as a,w as r,s as n,x as p,k as c}from"./index-CCkHcHBl.js";const f={components:{BaseLayout:t},props:["socket"]};function u(_,o,i,l,m,d){const e=n("BaseLayout");return p(),a(e,null,{default:r(()=>o[0]||(o[0]=[c("Your Profile")])),_:1})}const k=s(f,[["render",u]]);export{k as default};
