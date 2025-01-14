@@ -56,7 +56,7 @@
                     <input type="text" class="hidden-input" v-model="hpot">
 
                     <div class="text-center mb-2">
-                        <button type="submit" class="btn-primary" :disabled="submitting">{{ lg('register') }}</button>
+                        <button type="submit" class="btn btn-block btn-primary" :disabled="submitting">{{ lg('register') }}</button>
                         <p v-if="generalError" class="invalid-text">{{ lg('general_error') }}</p>
                     </div>
                 </form>

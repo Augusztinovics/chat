@@ -18,12 +18,15 @@
 
 .base-layout-body .top-nav {
     grid-area: top;
+    height: 10vh;
     background-image: linear-gradient(var(--color-background-mute), var(--color-background));
-    
 }
 
 .base-layout-body .side-nav {
     grid-area: side;
+    align-content: end;
+    height: 10vh;
+    width: 100vw;
     background-image: linear-gradient(to bottom, var(--color-background-mute), var(--color-background));
 }
 
@@ -38,7 +41,14 @@
 
 .base-layout-body .content {
     grid-area: content;
+    justify-content:center;
+    height: 80vh;
     background-color: var(--color-background);
+}
+
+.base-layout-body .content .content-body {
+    max-height: 80vh;
+    overflow-y: auto;
 }
 
 .base-layout-body .top-nav nav {
@@ -82,6 +92,8 @@
     }
 
     .base-layout-body .side-nav {
+        height: 90vh;
+        width: 25vw;
         background-image: linear-gradient(to right, var(--color-background-mute), var(--color-background));
     }
     .base-layout-body .side-nav .side-nav-box {
@@ -89,6 +101,12 @@
         justify-content: start;
         height: 100%;
         width: 80%;
+    }
+    .base-layout-body .content {
+        height: 90vh;
+    }
+    .base-layout-body .content .content-body {
+        max-height: 90vh;
     }
 }
 

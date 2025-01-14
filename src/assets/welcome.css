@@ -93,9 +93,7 @@
     fill: var(--color-text-muted);
 }
 
-.btn-primary {
-    background-color: var(--color-link);
-    color: var(--vt-c-white);
+.btn {
     font-size: 1.2rem;
     font-weight: 700;
     letter-spacing: 1px;
@@ -103,7 +101,16 @@
     border: none;
     border-radius: 0.25rem;
     cursor: pointer;
+    box-shadow: var(--shadow);
+}
+
+.btn-block {
     width: 100%;
+}
+
+.btn-primary {
+    background-color: var(--color-link);
+    color: var(--vt-c-white);
 }
 
 .btn-primary:hover {
@@ -111,6 +118,21 @@
 }
 
 .btn-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.btn-danger {
+    background-color: var(--color-danger);
+    color: var(--vt-c-white);
+    opacity: 1;
+}
+
+.btn-danger:hover {
+    opacity: 0.8;
+}
+
+.btn-danger:disabled {
     opacity: 0.5;
     cursor: not-allowed;
 }

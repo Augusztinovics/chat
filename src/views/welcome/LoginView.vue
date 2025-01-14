@@ -43,7 +43,7 @@
                     <input type="text" class="hidden-input" v-model="hpot">
 
                     <div class="text-center mb-2">
-                        <button type="submit" class="btn-primary" :disabled="submitting">{{ lg('login') }}</button>
+                        <button type="submit" class="btn btn-block btn-primary" :disabled="submitting">{{ lg('login') }}</button>
                     </div>
                 </form>
 

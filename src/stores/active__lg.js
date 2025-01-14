@@ -109,6 +109,66 @@ export const useLgStore = defineStore('active_lg', {
                 SR: 'Odjava',
                 EN: 'Logout',
             },
+            from_self: {
+                HU: 'Magamról',
+                SR: 'O sebi',
+                EN: 'About myself',
+            },
+            lg_of_interest: {
+                HU: 'Társalgási nyelv',
+                SR: 'Konverzacijski jezik',
+                EN: 'Conversational language',
+            },
+            country: {
+                HU: 'Országa',
+                SR: 'Država Prebivališta',
+                EN: 'Country of Residence',
+            },
+            city: {
+                HU: 'Város',
+                SR: 'Grad',
+                EN: 'City',
+            },
+            email: {
+                HU: 'Email',
+                SR: 'Email',
+                EN: 'E-mail',
+            },
+            change_password: {
+                HU: 'Jelszó Megváltoztatása',
+                SR: 'Promeni Lozinku',
+                EN: 'Change Password',
+            },
+            current_password: {
+                HU: 'Jelenlegi Jelszó',
+                SR: 'Trenutna Lozinka',
+                EN: 'Current Password',
+            },
+            new_password: {
+                HU: 'Új Jelszó',
+                SR: 'Nova Lozinka',
+                EN: 'New Password',
+            },
+            new_password_again: {
+                HU: 'Új Jelszó Ismét',
+                SR: 'Ponovo Nova Lozinka',
+                EN: 'New Password Again',
+            },
+            save: {
+                HU: 'Mentés',
+                SR: 'Sačuvaj',
+                EN: 'Save',
+            },
+            cancel: {
+                HU: 'Mégse',
+                SR: 'Otkaži',
+                EN: 'Cancel',
+            },
+            delete_profile: {
+                HU: 'Fiók Törlése',
+                SR: 'Izbriši Nalog',
+                EN: 'Delete Account',
+            },
         },
     }),
     getters: {
