@@ -68,6 +68,24 @@
                 <button type="button" class="btn btn-danger">{{ lg('delete_profile') }}</button>
             </div>
         </div>
+        <Modal 
+            :show="showModal"
+            :size="'md'"
+            :showCancel="true"
+            :okBtnText="lg('save')"
+            :cancelBtnText="lg('cancel')"
+            :title="'Heloo Modal!'"
+            :showClose="true"
+            :showFooter="true"
+            :showHeader="true"
+            :footerClass="'test-class'"
+            :headerClass="['valami-class', 'other-class']"
+            @close="modalClose"
+            @cancel="modalCancel"
+            @ok="modalOk"
+        >
+            <p>inside modal</p>
+        </Modal>
     </div>
 </template>
 
@@ -77,14 +95,33 @@
     import { useLgStore } from '@/stores/active__lg';
     import IconUser from '@/components/icons/IconUser.vue';
     import IconEdit from '@/components/icons/IconEdit.vue';
+    import Modal from '@/components/Modal.vue';
+
     export default {
         components: {
             IconUser,
             IconEdit,
+            Modal,
+        },
+        data() {
+            return {
+                showModal: true,
+            }
         },
         computed: {
             ...mapStores(userStore),
             ...mapState(useLgStore, ['lg']),
+        },
+        methods: {
+            modalOk() {
+                console.log('MODAL OK CLICK');
+            },
+            modalCancel() {
+                console.log('MODAL CANCEL CLICK');
+            },
+            modalClose() {
+                console.log('MODAL CLOSE CLICK');
+            }
         },
     }
 </script>
