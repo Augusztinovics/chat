@@ -136,3 +136,17 @@
     opacity: 0.5;
     cursor: not-allowed;
 }
+
+.btn-secondary {
+    border: 2px solid var(--color-text);
+    color: var(--color-text);
+}
+
+.btn-secondary:hover {
+    opacity: 0.8;
+}
+
+.btn-secondary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}

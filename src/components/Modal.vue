@@ -9,8 +9,8 @@
                 <slot></slot>
             </div>
             <div v-if="showFooter" class="modal-footer" :class="footerClass">
-                <button v-if="showCancel" type="button" class="btn" id="modal_cancel" @click.stop="cancel">{{ cancelBtnText }}</button>
-                <button type="button" class="btn" id="modal_ok" @click.stop="ok">{{ okBtnText }}</button>
+                <button v-if="showCancel" type="button" class="btn btn-secondary" @click.stop="cancel">{{ cancelBtnText }}</button>
+                <button type="button" class="btn btn-primary" @click.stop="ok">{{ okBtnText }}</button>
             </div>
         </div>
     </div>

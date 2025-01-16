@@ -1,0 +1,138 @@
+#modal.modal-backdrop {
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+}
+
+#modal.modal-backdrop .modal {
+    background-color: var(--color-background-soft);
+    border: 1px solid var(--color-border-hover);
+    box-shadow: var(--shadow);
+    padding: 1rem;
+}
+
+#modal.modal-backdrop .modal.sm {
+    border-radius: 0.25rem;
+    margin: 10% auto;
+    width: 90%;
+}
+
+#modal.modal-backdrop .modal.md {
+    border-radius: 0.25rem;
+    margin: 5% auto;
+    width: 95%;
+}
+
+#modal.modal-backdrop .modal.lg {
+    border-radius: 0.25rem;
+    margin: 5% auto;
+    width: 95%;
+}
+
+#modal.modal-backdrop .modal.full {
+    margin: 0 auto;
+    width: 100%;
+}
+
+@media (min-width: 500px) {
+    #modal.modal-backdrop .modal.sm {
+        margin: 35% auto;
+        width: 320px;
+    }
+    
+    #modal.modal-backdrop .modal.md {
+        margin: 35% auto;
+        width: 450px;
+    }
+    
+    #modal.modal-backdrop .modal.lg {
+        margin: 5% auto;
+        width: 95%;;
+    }
+    
+    #modal.modal-backdrop .modal.full {
+        margin: 0 auto;
+        width: 100%;
+    }
+}
+
+@media (min-width: 750px) {
+    #modal.modal-backdrop .modal.sm {
+        margin: 15% auto;
+        width: 450px;
+    }
+    
+    #modal.modal-backdrop .modal.md {
+        margin: 15% auto;
+        width: 600px;
+    }
+    
+    #modal.modal-backdrop .modal.lg {
+        margin: 15% auto;
+        width: 720px;
+    }
+    
+    #modal.modal-backdrop .modal.full {
+        margin: 0 auto;
+        width: 100%;
+    }
+}
+
+@media (min-width: 1024px) {
+    #modal.modal-backdrop .modal.sm {
+        width: 550px;
+    }
+
+    #modal.modal-backdrop .modal.md {
+        width: 750px;
+    }
+
+    #modal.modal-backdrop .modal.lg {
+        width: 950px;
+    }
+}
+
+#modal.modal-backdrop .modal .modal-header {
+    padding: 1rem 0 1rem 1rem;
+    border-bottom: 2px solid var(--color-border);
+    display: flex;
+    justify-content: space-between;
+}
+
+#modal.modal-backdrop .modal .modal-header h4 {
+    width: 80%;
+}
+
+#modal.modal-backdrop .modal .modal-header .modal-x {
+    color: var(--color-text-muted);
+    font-size: 28px;
+    font-weight: bold;
+    line-height: 10px;
+}
+
+#modal.modal-backdrop .modal .modal-header .modal-x:hover,
+#modal.modal-backdrop .modal .modal-header .modal-x:focus {
+    color: var(--color-text);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#modal.modal-backdrop .modal .modal-body {
+    padding: 1rem;
+    min-height: 100px;
+    max-height: 600px;
+    overflow: auto;
+}
+
+#modal.modal-backdrop .modal .modal-footer {
+    padding-top: 1rem;
+    border-top: 2px solid var(--color-border);
+    display: flex;
+    justify-content: end;
+    gap: 20px;
+}

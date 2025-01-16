@@ -71,21 +71,13 @@
         <Modal 
             :show="showModal"
             :size="'md'"
-            :showCancel="true"
-            :okBtnText="lg('save')"
-            :cancelBtnText="lg('cancel')"
             :title="'Heloo Modal!'"
-            :showClose="true"
-            :showFooter="true"
-            :showHeader="true"
-            :footerClass="'test-class'"
-            :headerClass="['valami-class', 'other-class']"
+            :showFooter="false"
             @close="modalClose"
-            @cancel="modalCancel"
-            @ok="modalOk"
         >
             <p>inside modal</p>
         </Modal>
+        <LoadingOverlay v-if="loading" />
     </div>
 </template>
 
@@ -96,16 +88,19 @@
     import IconUser from '@/components/icons/IconUser.vue';
     import IconEdit from '@/components/icons/IconEdit.vue';
     import Modal from '@/components/Modal.vue';
+    import LoadingOverlay from '@/components/LoadingOverlay.vue';
 
     export default {
         components: {
             IconUser,
             IconEdit,
             Modal,
+            LoadingOverlay,
         },
         data() {
             return {
-                showModal: true,
+                showModal: false,
+                loading: false,
             }
         },
         computed: {
@@ -113,14 +108,8 @@
             ...mapState(useLgStore, ['lg']),
         },
         methods: {
-            modalOk() {
-                console.log('MODAL OK CLICK');
-            },
-            modalCancel() {
-                console.log('MODAL CANCEL CLICK');
-            },
             modalClose() {
-                console.log('MODAL CLOSE CLICK');
+                this.showModal = false;
             }
         },
     }
