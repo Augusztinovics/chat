@@ -10,7 +10,7 @@
                 <h4>{{ userStore.username }}</h4>
             </div>
             <div class="mt-2">
-                <p>{{ lg('from_self') }} <span role="button" class="icon-edit-btn ml-1"><IconEdit /></span></p>
+                <p>{{ lg('from_self') }} <span role="button" class="icon-edit-btn ml-1" @click="showUpdateModal('DES')"><IconEdit /></span></p>
                 <div class="self-preview">
                     <p>{{ userStore.description }}</p>
                 </div>
@@ -71,13 +71,21 @@
         <Modal 
             :show="showModal"
             :size="'md'"
-            :title="'Heloo Modal!'"
+            :title="modalTitle"
             :showFooter="false"
             @close="modalClose"
         >
-            <p>inside modal</p>
+            <DescriptionUpdate v-if="selectedUpdate == 'DES'"
+                @startLoading="startLoad"
+                @finishLoading="finishLoad"
+                @success="successUpdate"
+                @fail="failUpdate"
+                @cancel="modalClose"
+            />
         </Modal>
         <LoadingOverlay v-if="loading" />
+        <SuccessToast v-if="saveSuccess"/>
+        <FailToast v-if="saveError"/>
     </div>
 </template>
 
@@ -89,6 +97,9 @@
     import IconEdit from '@/components/icons/IconEdit.vue';
     import Modal from '@/components/Modal.vue';
     import LoadingOverlay from '@/components/LoadingOverlay.vue';
+    import DescriptionUpdate from './ProfileUpdates/DescriptionUpdate.vue';
+    import SuccessToast from '@/components/SuccessToast.vue';
+    import FailToast from '@/components/FailToast.vue';
 
     export default {
         components: {
@@ -96,20 +107,62 @@
             IconEdit,
             Modal,
             LoadingOverlay,
+            DescriptionUpdate,
+            SuccessToast,
+            FailToast,
         },
         data() {
             return {
                 showModal: false,
                 loading: false,
+                selectedUpdate: '',
+                saveError: false,
+                saveSuccess: false,
             }
         },
         computed: {
             ...mapStores(userStore),
             ...mapState(useLgStore, ['lg']),
+
+            modalTitle() {
+                switch (this.selectedUpdate) {
+                    case 'DES':
+                        return this.lg('from_self')
+                    default:
+                        return '';
+                }
+            },
         },
         methods: {
             modalClose() {
                 this.showModal = false;
+                this.selectedUpdate = '';
+            },
+            showUpdateModal(type) {
+                this.selectedUpdate = type;
+                this.showModal = true;
+            },
+            startLoad() {
+                this.loading = true;
+            },
+            finishLoad() {
+                this.loading = false;
+            },
+            successUpdate() {
+                //Show some save success toaster
+                this.modalClose();
+                this.saveSuccess = true;
+                setTimeout(() => {
+                    this.saveSuccess = false;
+                }, 3000);
+            },
+            failUpdate() {
+                //Show some error toaster, or handle by modal type
+                this.modalClose();
+                this.saveError = true;
+                setTimeout(() => {
+                    this.saveError = false;
+                }, 3000);
             }
         },
     }

@@ -1,6 +1,6 @@
 .overlay {
     position: fixed;
-    z-index: 1;
+    z-index: 10;
     left: 0;
     top: 0;
     width: 100%;
@@ -48,4 +48,54 @@
     { height: 48px}
     11% , 21% ,41% , 61% , 71% , 91% , 99%
     { height: 18px}
+}
+
+.toaster {
+    width: 250px;
+    margin-left: -125px;
+    text-align: center;
+    border-radius: 0.25rem;
+    padding: 1rem;
+    position: fixed;
+    z-index: 10;
+    left: 50%;
+    bottom: 50px;
+    background-color: var(--color-background-mute);
+    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+.toaster.success {
+    border: 3px solid var(--color-success);
+    color: var(--color-success);
+}
+
+.toaster.danger {
+    border: 3px solid var(--color-danger);
+    color: var(--color-danger);
+}
+
+.toaster h5 span {
+    display: inline-block;
+    margin-right: 6px;
+}
+
+@-webkit-keyframes fadein {
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 50px; opacity: 1;}
+}
+
+@keyframes fadein {
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 50px; opacity: 1;}
+}
+
+@-webkit-keyframes fadeout {
+    from {bottom: 50px; opacity: 1;}
+    to {bottom: 0; opacity: 0;}
+}
+
+@keyframes fadeout {
+    from {bottom: 50px; opacity: 1;}
+    to {bottom: 0; opacity: 0;}
 }

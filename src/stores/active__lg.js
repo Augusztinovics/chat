@@ -169,6 +169,11 @@ export const useLgStore = defineStore('active_lg', {
                 SR: 'Izbriši Nalog',
                 EN: 'Delete Account',
             },
+            saved: {
+                HU: 'Elmentve',
+                SR: 'Sačuvana',
+                EN: 'Saved',
+            },
         },
     }),
     getters: {

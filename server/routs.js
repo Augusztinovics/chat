@@ -6,6 +6,7 @@ const loginController = require('./controllers/loginController.js');
 const logoutController = require('./controllers/logoutController.js');
 const auth = require('./middlewares/auth.js');
 const userDataController = require('./controllers/resources/userDataController.js');
+const userUpdateController = require('./controllers/resources/userUpdateController.js');
 
 function apiRouts(app) {
     app.get('/login', async (req, res) => testController(req, res));
@@ -16,6 +17,7 @@ function apiRouts(app) {
 
     //Auth api routs
     app.get('/api/resources/user-data', auth, (req, res) => userDataController(req, res));
+    app.post('/api/resources/user-update', auth, async (req, res) => userUpdateController(req, res));
 
 
     app.get('/home', auth,  (req, res) => {

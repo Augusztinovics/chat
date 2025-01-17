@@ -29,6 +29,7 @@
             </div>
         </div>
         <div class="content"><slot></slot></div>
+        <LoadingOverlay v-if="loading" />
     </div>
 </template>
 
@@ -44,6 +45,7 @@ import IconEyeOpen from '@/components/icons/IconEyeOpen.vue';
 import LgSelector from '@/components/LgSelector.vue';
 import IconHome from '@/components/icons/IconHome.vue';
 import ExitIcon from '@/components/icons/ExitIcon.vue';
+import LoadingOverlay from '@/components/LoadingOverlay.vue';
 
 export default {
     components: {
@@ -55,6 +57,7 @@ export default {
         LgSelector,
         IconHome,
         ExitIcon,
+        LoadingOverlay,
     },
 
     data() {

@@ -1,0 +1,20 @@
+.profile-updates .profile-updates-btns {
+    padding-top: 1rem;
+    border-top: 2px solid var(--color-border);
+    display: flex;
+    justify-content: end;
+    gap: 20px;
+}
+
+.profile-updates .profile-updates-body {
+    padding-bottom: 1rem;
+}
+
+.profile-updates .profile-updates-body textarea {
+    min-height: 150px;
+    width: 100%;
+    padding: 0.75rem;
+    border-radius: 0.25rem;
+    box-shadow: var(--shadow);
+    font-size: 1rem;
+}

@@ -28,11 +28,44 @@ class Model {
     }
 
     save() {
-        if (Object.hasOwn(this, this.constructor.primaryKey) && this[this.constructor.primaryKey]) {
-            console.log('We have id, so update!');
-        } else {
-            console.log('No id, create new');
-        }
+        return new Promise((resolve) => {
+            let updateMod = false;
+            if (Object.hasOwn(this, this.constructor.primaryKey) && this[this.constructor.primaryKey]) {
+                updateMod = true;
+            }
+
+            let insertKeys = [];
+            let insertValues = [];
+            let placeholders = [];
+
+            Object.entries(this.constructor.columns).forEach(([key, value]) => {
+                if (key !== this.constructor.primaryKey && key !== 'created_at') {
+                    if (updateMod) {
+                        insertKeys.push(`${key}=?`);
+                        insertValues.push(this[key]);
+                    } else {
+                        insertKeys.push(key);
+                        insertValues.push(this[key]);
+                        placeholders.push('?');
+                    }
+                }
+            });
+            let query;
+            if (updateMod) {
+                query = `UPDATE ${this.constructor.table} SET ${insertKeys.join(', ')} WHERE ${this.constructor.primaryKey}=${this[this.constructor.primaryKey]}`;
+            } else {
+                query = `INSERT INTO ${this.constructor.table} (${insertKeys.join(', ')}) VALUES (${placeholders.join(', ')})`;
+            }
+
+            db.run(query, insertValues, (err) => {
+                if (err) {
+                    resolve(false);
+                } else {
+                    //TODO If it was create need id to put on model!!!
+                    resolve(true);
+                }
+            });
+        })
     }
 
     /**
