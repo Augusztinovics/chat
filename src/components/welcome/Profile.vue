@@ -16,7 +16,7 @@
                 </div>
             </div>
             <div class="mt-2">
-                <p>{{ lg('lg_of_interest') }} <span class="icon-edit-btn ml-1"><IconEdit /></span></p>
+                <p>{{ lg('lg_of_interest') }} <span class="icon-edit-btn ml-1" @click="showUpdateModal('LG')"><IconEdit /></span></p>
                 <div v-if="userStore.lg == 'HU'" class="preview">
                     <h4>
                         <span class="icon">
@@ -43,19 +43,19 @@
                 </div>
             </div>
             <div class="mt-2">
-                <p>{{ lg('country') }} <span class="icon-edit-btn ml-1"><IconEdit /></span></p>
+                <p>{{ lg('country') }} <span class="icon-edit-btn ml-1" @click="showUpdateModal('CO')"><IconEdit /></span></p>
                 <div class="preview">
                     <h4>{{ userStore.country ? userStore.country : '-' }}</h4>
                 </div>
             </div>
             <div class="mt-2">
-                <p>{{ lg('city') }} <span class="icon-edit-btn ml-1"><IconEdit /></span></p>
+                <p>{{ lg('city') }} <span class="icon-edit-btn ml-1" @click="showUpdateModal('CI')"><IconEdit /></span></p>
                 <div class="preview">
                     <h4>{{ userStore.city ? userStore.city : '-' }}</h4>
                 </div>
             </div>
             <div class="mt-2">
-                <p>{{ lg('email') }} <span class="icon-edit-btn ml-1"><IconEdit /></span></p>
+                <p>{{ lg('email') }} <span class="icon-edit-btn ml-1" @click="showUpdateModal('EM')"><IconEdit /></span></p>
                 <div class="preview">
                     <h4>{{ userStore.email ? userStore.email : '-' }}</h4>
                 </div>
@@ -70,12 +70,40 @@
         </div>
         <Modal 
             :show="showModal"
-            :size="'md'"
+            :size="modalSize"
             :title="modalTitle"
             :showFooter="false"
             @close="modalClose"
         >
             <DescriptionUpdate v-if="selectedUpdate == 'DES'"
+                @startLoading="startLoad"
+                @finishLoading="finishLoad"
+                @success="successUpdate"
+                @fail="failUpdate"
+                @cancel="modalClose"
+            />
+            <UserLgUpdate v-if="selectedUpdate == 'LG'"
+                @startLoading="startLoad"
+                @finishLoading="finishLoad"
+                @success="successUpdate"
+                @fail="failUpdate"
+                @cancel="modalClose"
+            />
+            <CountryUpdate v-if="selectedUpdate == 'CO'"
+                @startLoading="startLoad"
+                @finishLoading="finishLoad"
+                @success="successUpdate"
+                @fail="failUpdate"
+                @cancel="modalClose"
+            />
+            <CityUpdate v-if="selectedUpdate == 'CI'"
+                @startLoading="startLoad"
+                @finishLoading="finishLoad"
+                @success="successUpdate"
+                @fail="failUpdate"
+                @cancel="modalClose"
+            />
+            <EmailUpdate v-if="selectedUpdate == 'EM'"
                 @startLoading="startLoad"
                 @finishLoading="finishLoad"
                 @success="successUpdate"
@@ -100,6 +128,10 @@
     import DescriptionUpdate from './ProfileUpdates/DescriptionUpdate.vue';
     import SuccessToast from '@/components/SuccessToast.vue';
     import FailToast from '@/components/FailToast.vue';
+    import UserLgUpdate from './ProfileUpdates/UserLgUpdate.vue';
+    import CountryUpdate from './ProfileUpdates/CountryUpdate.vue';
+    import CityUpdate from './ProfileUpdates/CityUpdate.vue';
+    import EmailUpdate from './ProfileUpdates/EmailUpdate.vue';
 
     export default {
         components: {
@@ -110,6 +142,10 @@
             DescriptionUpdate,
             SuccessToast,
             FailToast,
+            UserLgUpdate,
+            CountryUpdate,
+            CityUpdate,
+            EmailUpdate,
         },
         data() {
             return {
@@ -127,9 +163,28 @@
             modalTitle() {
                 switch (this.selectedUpdate) {
                     case 'DES':
-                        return this.lg('from_self')
+                        return this.lg('from_self');
+                    case 'LG':
+                        return this.lg('lg_of_interest');
+                    case 'CO':
+                        return this.lg('country');
+                    case 'CI':
+                        return this.lg('city');
+                    case 'EM':
+                        return this.lg('email');
                     default:
                         return '';
+                }
+            },
+
+            modalSize() {
+                switch (this.selectedUpdate) {
+                    case 'DES':
+                        return 'md';
+                    case 'LG':
+                        return 'sm';
+                    default:
+                        return 'sm';
                 }
             },
         },

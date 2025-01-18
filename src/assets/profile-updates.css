@@ -18,3 +18,16 @@
     box-shadow: var(--shadow);
     font-size: 1rem;
 }
+
+.profile-updates .profile-updates-body .preview h4 {
+    width: 100%;
+}
+
+.profile-updates .profile-updates-body .preview:hover {
+    background-color: var(--color-border);
+    cursor: pointer;
+}
+
+.profile-updates .profile-updates-body .preview.selected h4 {
+    border: 1px solid var(--color-success);
+}

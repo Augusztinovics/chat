@@ -1,8 +1,8 @@
 <template>
     <div class="profile-updates">
         <div class="profile-updates-body">
-            <label for="description_input_field">{{ lg('from_self') }}</label>
-            <textarea name="description" id="description_input_field" v-model="newDescription"></textarea>
+            <label for="country_input_field">{{ lg('country') }}</label>
+            <input type="text" id="country_input_field" class="mb-2" v-model="newCountry">
         </div>
         <div class="profile-updates-btns">
             <button type="button" class="btn btn-secondary" @click="cancel">{{ lg('cancel') }}</button>
@@ -19,7 +19,7 @@
     export default {
         data() {
             return {
-                newDescription: '',
+                newCountry: '',
             }
         },
 
@@ -31,7 +31,7 @@
         methods: {
             save() {
                 let payload = {
-                    description: this.newDescription
+                    country: this.newCountry
                 }
                 this.$emit('startLoading');
                 this.userStore.updateUser(payload)
@@ -49,14 +49,14 @@
                     });
             },
             cancel() {
-                this.newDescription = '';
+                this.newCountry = '';
                 this.$emit('cancel');
             },
         },
 
         mounted() {
-            this.newDescription = this.userStore.description;
-            document.getElementById("description_input_field").focus();
+            this.newCountry = this.userStore.country;
+            document.getElementById("country_input_field").focus();
         }
     }
 </script>

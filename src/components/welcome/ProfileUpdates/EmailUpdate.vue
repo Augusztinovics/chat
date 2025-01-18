@@ -1,8 +1,10 @@
 <template>
     <div class="profile-updates">
         <div class="profile-updates-body">
-            <label for="description_input_field">{{ lg('from_self') }}</label>
-            <textarea name="description" id="description_input_field" v-model="newDescription"></textarea>
+            <label for="email_input_field">{{ lg('email') }}</label>
+            <input type="text" id="email_input_field" class="mb-2":class="{'invalid-input mb-0': (invalidEmail || emailInUse)}" v-model="newEmail" @input="inputChange">
+            <p v-if="invalidEmail" class="invalid-text">{{ lg('enter_valid_email') }}</p>
+            <p v-if="emailInUse" class="invalid-text">{{ lg('enter_different_email') }}</p>
         </div>
         <div class="profile-updates-btns">
             <button type="button" class="btn btn-secondary" @click="cancel">{{ lg('cancel') }}</button>
@@ -19,7 +21,9 @@
     export default {
         data() {
             return {
-                newDescription: '',
+                newEmail: '',
+                invalidEmail: false,
+                emailInUse: false,
             }
         },
 
@@ -30,8 +34,14 @@
 
         methods: {
             save() {
+                if (!this.isValidEmail()) {
+                    this.invalidEmail = true;
+                    document.getElementById("email_input_field").focus();
+                    return;
+                }
+                this.emailInUse = false;
                 let payload = {
-                    description: this.newDescription
+                    email: this.newEmail
                 }
                 this.$emit('startLoading');
                 this.userStore.updateUser(payload)
@@ -44,19 +54,30 @@
                         if (e == 401) {
                             this.$router.push('/login');
                         } else {
-                            this.$emit('fail');
+                            this.emailInUse = true;
+                            document.getElementById("email_input_field").focus().select();
                         }
                     });
             },
             cancel() {
-                this.newDescription = '';
+                this.invalidEmail = false;
+                this.newEmail = '';
                 this.$emit('cancel');
             },
+            isValidEmail() {
+                if (this.newEmail == '') return true;
+                const validRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return this.newEmail.match(validRegex);
+            },
+            inputChange() {
+                this.invalidEmail = false;
+            }
         },
 
         mounted() {
-            this.newDescription = this.userStore.description;
-            document.getElementById("description_input_field").focus();
+            this.invalidEmail = false;
+            this.newEmail = this.userStore.email;
+            document.getElementById("email_input_field").focus();
         }
     }
 </script>

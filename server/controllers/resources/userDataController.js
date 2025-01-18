@@ -6,7 +6,7 @@ function userData(req, res) {
     res.json({
         userId: req.user.id,
         username: req.user.username,
-        userEmail: req.user.emal ?? '',
+        userEmail: req.user.email ?? '',
         userLg: req.user.lg ?? 'HU',
         userCountry: req.user.country ?? '',
         userCity: req.user.city ?? '',

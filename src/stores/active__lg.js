@@ -120,7 +120,7 @@ export const useLgStore = defineStore('active_lg', {
                 EN: 'Conversational language',
             },
             country: {
-                HU: 'Országa',
+                HU: 'Országod',
                 SR: 'Država Prebivališta',
                 EN: 'Country of Residence',
             },
@@ -173,6 +173,16 @@ export const useLgStore = defineStore('active_lg', {
                 HU: 'Elmentve',
                 SR: 'Sačuvana',
                 EN: 'Saved',
+            },
+            enter_valid_email: {
+                HU: 'Kérem valós emailt adjon meg',
+                SR: 'Unesite važeći e-mail',
+                EN: 'Please enter a valid e-mail',
+            },
+            enter_different_email: {
+                HU: 'Az email már foglalt, kérlek adj meg másikat',
+                SR: 'Ovaj e-mail se već koristi, unesite drugi',
+                EN: 'This e-mail already in use, please enter different one',
             },
         },
     }),

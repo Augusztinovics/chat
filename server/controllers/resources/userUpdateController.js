@@ -6,24 +6,40 @@ async function updateUser(req, res) {
         return;
     }
 
-    if (req.body.description) {
-        req.user.description = req.body.description.trim();
+    if (req.body.description || req.body.description == '') {
+        if (req.body.description == '') {
+            req.user.description = null;
+        } else {
+            req.user.description = req.body.description.trim();
+        }
     }
 
     if (req.body.lg) {
         req.user.lg = req.body.lg;
     }
 
-    if (req.body.country) {
-        req.user.country = req.body.country.trim();
+    if (req.body.country || req.body.country == '') {
+        if (req.body.country == '') {
+            req.user.country = null;
+        } else {
+            req.user.country = req.body.country.trim();
+        }
     }
 
-    if (req.body.city) {
-        req.user.city = req.body.city.trim();
+    if (req.body.city || req.body.city == '') {
+        if (req.body.city == '') {
+            req.user.city = null;
+        } else {
+            req.user.city = req.body.city.trim();
+        }
     }
 
-    if (req.body.email) {
-        req.user.email = req.body.email.trim();
+    if (req.body.email || req.body.email == '') {
+        if (req.body.email == '') {
+            req.user.email = null;
+        } else {
+            req.user.email = req.body.email.trim();
+        }
     }
 
     if (req.body.newPassword) {
@@ -61,7 +77,7 @@ async function updateUser(req, res) {
             res.json({
                 userId: req.user.id,
                 username: req.user.username,
-                userEmail: req.user.emal ?? '',
+                userEmail: req.user.email ?? '',
                 userLg: req.user.lg ?? 'HU',
                 userCountry: req.user.country ?? '',
                 userCity: req.user.city ?? '',

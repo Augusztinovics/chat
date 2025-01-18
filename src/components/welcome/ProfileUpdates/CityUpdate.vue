@@ -1,8 +1,8 @@
 <template>
     <div class="profile-updates">
         <div class="profile-updates-body">
-            <label for="description_input_field">{{ lg('from_self') }}</label>
-            <textarea name="description" id="description_input_field" v-model="newDescription"></textarea>
+            <label for="city_input_field">{{ lg('city') }}</label>
+            <input type="text" id="city_input_field" class="mb-2" v-model="newCity">
         </div>
         <div class="profile-updates-btns">
             <button type="button" class="btn btn-secondary" @click="cancel">{{ lg('cancel') }}</button>
@@ -19,7 +19,7 @@
     export default {
         data() {
             return {
-                newDescription: '',
+                newCity: '',
             }
         },
 
@@ -31,7 +31,7 @@
         methods: {
             save() {
                 let payload = {
-                    description: this.newDescription
+                    city: this.newCity
                 }
                 this.$emit('startLoading');
                 this.userStore.updateUser(payload)
@@ -49,14 +49,14 @@
                     });
             },
             cancel() {
-                this.newDescription = '';
+                this.newCity = '';
                 this.$emit('cancel');
             },
         },
 
         mounted() {
-            this.newDescription = this.userStore.description;
-            document.getElementById("description_input_field").focus();
+            this.newCity = this.userStore.city;
+            document.getElementById("city_input_field").focus();
         }
     }
 </script>

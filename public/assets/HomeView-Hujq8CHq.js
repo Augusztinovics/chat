@@ -1,0 +1,1 @@
+import{B as t}from"./BaseLayout-lCGjkCCr.js";import{_ as s,q as a,w as n,s as r,x as p,k as c}from"./index-GfgY5hNd.js";const m={components:{BaseLayout:t},props:["socket"]};function u(_,o,f,i,l,d){const e=r("BaseLayout");return p(),a(e,null,{default:n(()=>o[0]||(o[0]=[c("You Are Home")])),_:1})}const k=s(m,[["render",u]]);export{k as default};
