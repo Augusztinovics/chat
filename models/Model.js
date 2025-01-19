@@ -278,6 +278,31 @@ class Model {
         });
     }
 
+    /**
+     * Delete the user by id
+     *
+     * @param {bigint} userId
+     * @returns Boolean
+     */
+    static delete(userId) {
+        return new Promise((resolve) => {
+            let query = `DELETE FROM ${this.table} WHERE ${this.primaryKey} = ?`;
+            try {
+                db.run(query, [userId], (err) => {
+                    if (err) {
+                        console.log(err);
+                        resolve(false);
+                    } else {
+                        resolve(true);
+                    }
+                })
+            } catch (error) {
+                console.log(error);
+                resolve(false);
+            }
+        });
+    }
+
 }
 
 module.exports = Model;

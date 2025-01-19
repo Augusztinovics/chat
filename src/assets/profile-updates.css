@@ -31,3 +31,39 @@
 .profile-updates .profile-updates-body .preview.selected h4 {
     border: 1px solid var(--color-success);
 }
+
+#modal.modal-backdrop.delete-account-backdrop {
+    background-color: rgb(255, 0, 0);
+    background-color: rgba(255,0,0,0.3);
+}
+
+#modal.modal-backdrop.delete-account-backdrop .modal {
+    background-color: var(--color-danger);
+}
+
+#modal.modal-backdrop.delete-account-backdrop .modal .modal-body p {
+    color: var(--vt-c-white);
+    font-weight: 700;
+    letter-spacing: 1px;
+    font-size: 1.2rem;
+}
+
+#modal.modal-backdrop.delete-account-backdrop .modal .modal-body label {
+    color: var(--vt-c-white);
+}
+
+#modal.modal-backdrop .modal .modal-header.delete-account-header {
+    background-color: var(--color-background-soft);
+    border-radius: 0.25rem;
+}
+
+#modal.modal-backdrop .modal .modal-header.delete-account-header .modal-x {
+    margin-right: 0.5rem;
+}
+
+#modal.modal-backdrop .modal .modal-footer.delete-account-footer {
+    background-color: var(--color-background-soft);
+    border-radius: 0.25rem;
+    padding: 1rem;
+    justify-content: center;
+}

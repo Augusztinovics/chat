@@ -65,7 +65,28 @@ export const userStore = defineStore('user', {
                     } else {
                         reject(e);
                     }
+                });
+            });
+        },
+
+        deleteUser(payload) {
+            return new Promise((resolve, reject) => {
+                axios.post('/api/resources/user-delete', payload)
+                .then(() => {
+                    this.id = null;
+                    this.username = '';
+                    this.email = '';
+                    this.lg = 'HU';
+                    this.country = '';
+                    this.city = '';
+                    this.description = '';
+                    this.profileImg = null;
+                    this.loaded = false;
+                    resolve(true);
                 })
+                .catch((e) => {
+                    reject(e);
+                });
             });
         },
     },

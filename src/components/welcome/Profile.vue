@@ -62,10 +62,10 @@
             </div>
             <hr class="mt-2">
             <div class="mt-2">
-                <button type="button" class="btn btn-primary">{{ lg('change_password') }}</button>
+                <button type="button" class="btn btn-primary" @click="showUpdateModal('PS')">{{ lg('change_password') }}</button>
             </div>
             <div class="mt-2">
-                <button type="button" class="btn btn-danger">{{ lg('delete_profile') }}</button>
+                <button type="button" class="btn btn-danger" @click="showDeleteConfirmModal">{{ lg('delete_profile') }}</button>
             </div>
         </div>
         <Modal 
@@ -110,6 +110,41 @@
                 @fail="failUpdate"
                 @cancel="modalClose"
             />
+            <PasswordUpdate v-if="selectedUpdate == 'PS'"
+                @startLoading="startLoad"
+                @finishLoading="finishLoad"
+                @success="successUpdate"
+                @fail="failUpdate"
+                @cancel="modalClose"
+            />
+        </Modal>
+        <Modal
+            :show="showDeleteConfirm"
+            :showCancel="true"
+            :cancelBtnText="lg('cancel')"
+            :okBtnText="lg('delete_profile')"
+            :title="lg('delete_profile')"
+            :size="'sm'"
+            :backdropClass="'delete-account-backdrop'"
+            :headerClass="'delete-account-header'"
+            :footerClass="'delete-account-footer'"
+            @close="deleteCancel"
+            @cancel="deleteCancel"
+            @ok="deleteConfirm"
+        >
+            <div>
+                <p>{{ lg('delete_notice') }}</p>
+                <div class="mt-1 mb-1">
+                    <label for="confirm_password_input">{{ lg('password') }} <span>*</span></label>
+                    <div class="password-container">
+                        <input id="confirm_password_input" :type="passwordInputType" :class="{'invalid-input': missingPassword}" v-model="password" @input="clearErrors">
+                        <button type="button" @click="toogleShowPassword">
+                            <span class="icon"><IconEyeClose v-if="showPassword" /><IconEyeOpen v-else /></span>
+                        </button>
+                    </div>
+                    <p v-if="missingPassword" class="invalid-text">{{ lg('missing_password') }}</p>
+                </div>
+            </div>
         </Modal>
         <LoadingOverlay v-if="loading" />
         <SuccessToast v-if="saveSuccess"/>
@@ -132,6 +167,9 @@
     import CountryUpdate from './ProfileUpdates/CountryUpdate.vue';
     import CityUpdate from './ProfileUpdates/CityUpdate.vue';
     import EmailUpdate from './ProfileUpdates/EmailUpdate.vue';
+    import PasswordUpdate from './ProfileUpdates/PasswordUpdate.vue';
+    import IconEyeClose from '@/components/icons/IconEyeClose.vue';
+    import IconEyeOpen from '@/components/icons/IconEyeOpen.vue';
 
     export default {
         components: {
@@ -146,7 +184,11 @@
             CountryUpdate,
             CityUpdate,
             EmailUpdate,
+            PasswordUpdate,
+            IconEyeClose,
+            IconEyeOpen,
         },
+
         data() {
             return {
                 showModal: false,
@@ -154,6 +196,10 @@
                 selectedUpdate: '',
                 saveError: false,
                 saveSuccess: false,
+                showDeleteConfirm: false,
+                password: '',
+                showPassword: false,
+                missingPassword: false,
             }
         },
         computed: {
@@ -172,6 +218,8 @@
                         return this.lg('city');
                     case 'EM':
                         return this.lg('email');
+                    case 'PS':
+                        return this.lg('change_password');
                     default:
                         return '';
                 }
@@ -181,11 +229,15 @@
                 switch (this.selectedUpdate) {
                     case 'DES':
                         return 'md';
-                    case 'LG':
+                    case 'PS':
                         return 'sm';
                     default:
                         return 'sm';
                 }
+            },
+
+            passwordInputType() {
+                return this.showPassword ? 'text' : 'password';
             },
         },
         methods: {
@@ -193,32 +245,88 @@
                 this.showModal = false;
                 this.selectedUpdate = '';
             },
+
             showUpdateModal(type) {
                 this.selectedUpdate = type;
                 this.showModal = true;
             },
+
             startLoad() {
                 this.loading = true;
             },
+
             finishLoad() {
                 this.loading = false;
             },
+
             successUpdate() {
-                //Show some save success toaster
                 this.modalClose();
                 this.saveSuccess = true;
                 setTimeout(() => {
                     this.saveSuccess = false;
                 }, 3000);
             },
+
             failUpdate() {
-                //Show some error toaster, or handle by modal type
                 this.modalClose();
                 this.saveError = true;
                 setTimeout(() => {
                     this.saveError = false;
                 }, 3000);
-            }
+            },
+
+            showDeleteConfirmModal() {
+                this.missingPassword = false;
+                this.password = '';
+                this.showPassword = false;
+                this.showDeleteConfirm = true;
+                setTimeout(() => {
+                    document.getElementById("confirm_password_input").focus();
+                }, 300);
+            },
+
+            deleteCancel() {
+                this.missingPassword = false;
+                this.password = '';
+                this.showPassword = false;
+                this.showDeleteConfirm = false;
+            },
+
+            deleteConfirm() {
+                if (this.password.trim().length < 6) {
+                    this.password = '';
+                    this.missingPassword = true;
+                    document.getElementById("confirm_password_input").focus();
+                    return;
+                }
+
+                this.loading = true;
+                let payload = {
+                    password: this.password
+                }
+
+                this.userStore.deleteUser(payload)
+                    .then(() => {
+                        this.$router.push('/register');
+                    })
+                    .catch((e) => {
+                        console.log(e);
+                        this.loading = false;
+                        this.deleteCancel();
+                        this.saveError = true;
+                        setTimeout(() => {
+                            this.saveError = false;
+                        }, 3000);
+                    });
+            },
+
+            clearErrors() {
+                this.missingPassword = false;
+            },
+
+            toogleShowPassword() {
+                this.showPassword = !this.showPassword;
+            },
         },
     }
 </script>

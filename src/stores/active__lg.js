@@ -184,6 +184,11 @@ export const useLgStore = defineStore('active_lg', {
                 SR: 'Ovaj e-mail se već koristi, unesite drugi',
                 EN: 'This e-mail already in use, please enter different one',
             },
+            delete_notice: {
+                HU: 'Figyelem! Bisztosan törölni szeretné fiókját és minden fiókjával kapcsolatos eseményt? Ez a művelet nem fisszaforditható!',
+                SR: 'Pažnja! Da li ste sigurni da želite da izbrišete svoj nalog i sve događaje u vezi sa vašim nalogom? Ova operacija nije reverzibilna!',
+                EN: 'Attention! Are you sure you want to delete your account and all events related to your account? This operation is not reversible!',
+            },
         },
     }),
     getters: {
