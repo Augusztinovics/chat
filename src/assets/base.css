@@ -414,3 +414,21 @@ label span {
 .active-link .icon svg {
     fill: var(--color-link-hover) !important;
 }
+
+.profile-img {
+    display: inline-block;
+    border: 2px solid var(--color-border);
+    box-shadow: var(--shadow);
+    padding: 2px;
+    border-radius: 1rem;
+}
+
+.profile-img.md {
+    width: 128px;
+    height: auto;
+}
+
+.profile-img.sm {
+    width: 3rem;
+    height: auto;
+}

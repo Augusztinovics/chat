@@ -3,8 +3,9 @@
         <h1 class="m-2">{{ lg('profile') }}</h1>
         <div class="p-2">
             <div class="">
-                <img v-if="userStore.profileImg" src="" alt="">
+                <img v-if="userStore.profileImg" :src="userStore.profileImg" alt="Profile Image" class="profile-img md">
                 <span v-else class="icon-lg"><IconUser /></span>
+                <span class="icon-edit-btn ml-1" @click="showUpdateModal('IMG')"><IconEdit /></span>
             </div>
             <div class="mt-2">
                 <h4>{{ userStore.username }}</h4>
@@ -117,6 +118,13 @@
                 @fail="failUpdate"
                 @cancel="modalClose"
             />
+            <ImgUpdate v-if="selectedUpdate == 'IMG'"
+                @startLoading="startLoad"
+                @finishLoading="finishLoad"
+                @success="successUpdate"
+                @fail="failUpdate"
+                @cancel="modalClose"
+            />
         </Modal>
         <Modal
             :show="showDeleteConfirm"
@@ -170,6 +178,7 @@
     import PasswordUpdate from './ProfileUpdates/PasswordUpdate.vue';
     import IconEyeClose from '@/components/icons/IconEyeClose.vue';
     import IconEyeOpen from '@/components/icons/IconEyeOpen.vue';
+    import ImgUpdate from './ProfileUpdates/ImgUpdate.vue';
 
     export default {
         components: {
@@ -187,6 +196,7 @@
             PasswordUpdate,
             IconEyeClose,
             IconEyeOpen,
+            ImgUpdate,
         },
 
         data() {
@@ -220,6 +230,8 @@
                         return this.lg('email');
                     case 'PS':
                         return this.lg('change_password');
+                    case 'IMG':
+                        return this.lg('profile_img');
                     default:
                         return '';
                 }
@@ -229,8 +241,8 @@
                 switch (this.selectedUpdate) {
                     case 'DES':
                         return 'md';
-                    case 'PS':
-                        return 'sm';
+                    case 'IMG':
+                        return 'md';
                     default:
                         return 'sm';
                 }

@@ -68,7 +68,9 @@ async function updateUser(req, res) {
         req.user.password = hashedPassword;
     }
 
-    //TODO profile image
+    if (req.body.profileImg || req.body.profileImg == null) {
+        req.user.profile_img = req.body.profileImg;
+    }
 
     try {
         let result = await req.user.save();

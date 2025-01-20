@@ -189,6 +189,21 @@ export const useLgStore = defineStore('active_lg', {
                 SR: 'Pažnja! Da li ste sigurni da želite da izbrišete svoj nalog i sve događaje u vezi sa vašim nalogom? Ova operacija nije reverzibilna!',
                 EN: 'Attention! Are you sure you want to delete your account and all events related to your account? This operation is not reversible!',
             },
+            profile_img: {
+                HU: 'Profil Kép',
+                SR: 'Slika Profila',
+                EN: 'Profile Image',
+            },
+            select_profile_img: {
+                HU: 'Választjon egy profil képet',
+                SR: 'Izaberite sliku profila',
+                EN: 'Select a profile image',
+            },
+            img_upload_error: {
+                HU: 'Hiba történt a kiválasztott kép olvasásánál, kérem választjon másik képet',
+                SR: 'Došlo je do greške pri čitanju izabrane slike, izaberite drugu sliku',
+                EN: 'An error occurred while reading the selected image, please choose another image',
+            },
         },
     }),
     getters: {
