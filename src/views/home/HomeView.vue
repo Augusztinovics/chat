@@ -1,12 +1,15 @@
 <template>
-    <BaseLayout>You Are Home</BaseLayout>
+    <BaseLayout><Home /></BaseLayout>
 </template>
 
 <script>
 import BaseLayout from '@/components/welcome/BaseLayout.vue';
+import Home from '@/components/welcome/Home.vue';
+
 export default {
     components: {
-        BaseLayout
+        BaseLayout,
+        Home,
     },
     props: ['socket'],
 }

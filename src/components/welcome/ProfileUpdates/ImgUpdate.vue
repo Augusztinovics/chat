@@ -8,7 +8,7 @@
                 </span>
                 <span v-else class="icon-lg"><IconUser /></span>
             </div>
-            <div class="mb-2">
+            <div class="mb-2 image-upload">
                 <label for="profile_input_field">{{ lg('select_profile_img') }}</label>
                 <input type="file" id="profile_input_field" accept="image/*" @change="fileChange">
                 <p v-if="imgError" class="invalid-text">{{ lg('img_upload_error') }}</p>

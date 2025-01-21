@@ -204,6 +204,26 @@ export const useLgStore = defineStore('active_lg', {
                 SR: 'Došlo je do greške pri čitanju izabrane slike, izaberite drugu sliku',
                 EN: 'An error occurred while reading the selected image, please choose another image',
             },
+            who_can_know: {
+                HU: 'Kit ismerhetek',
+                SR: 'Ko mogu da znam',
+                EN: 'Who can I know',
+            },
+            contact_search: {
+                HU: 'Ismerős keresése',
+                SR: 'Nađi prijatelja',
+                EN: 'Find a friend',
+            },
+            friend_requests: {
+                HU: 'Barát kérelmek',
+                SR: 'Zahtevi za prijatelje',
+                EN: 'Friend requests',
+            },
+            send_requests: {
+                HU: 'Elküldött kérelmek',
+                SR: 'Zahtevi su poslati',
+                EN: 'Requests sent',
+            },
         },
     }),
     getters: {
