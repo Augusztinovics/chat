@@ -3,7 +3,7 @@
         <div>
             <ContactTabs />
         </div>
-        <div>
+        <div class="mt-2">
             <Contacts />
         </div>
     </div>
