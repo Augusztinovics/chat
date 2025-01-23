@@ -279,16 +279,16 @@ class Model {
     }
 
     /**
-     * Delete the user by id
+     * Delete the model by id
      *
-     * @param {bigint} userId
+     * @param {bigint} id
      * @returns Boolean
      */
-    static delete(userId) {
+    static delete(id) {
         return new Promise((resolve) => {
             let query = `DELETE FROM ${this.table} WHERE ${this.primaryKey} = ?`;
             try {
-                db.run(query, [userId], (err) => {
+                db.run(query, [id], (err) => {
                     if (err) {
                         console.log(err);
                         resolve(false);
@@ -299,6 +299,29 @@ class Model {
             } catch (error) {
                 console.log(error);
                 resolve(false);
+            }
+        });
+    }
+
+    /**
+     * The query start with SELECT 
+     *
+     * @param {string} query
+     * @returns array
+     */
+    static returnMany(query) {
+        return new Promise((resolve) => {
+            try {
+                db.all('SELECT ' + query, (err, rows) => {
+                    if (err) {
+                        resolve([]);
+                    } else {
+                        resolve(rows)
+                    }
+                });
+            } catch (error) {
+                console.log(error);
+                resolve([]);
             }
         });
     }
