@@ -24,7 +24,7 @@
         </div>
         <div v-if="selectedTab != 'NONE'" class="tab-content">
             <div v-if="selectedTab == 'SOME'">Ajanlas</div>
-            <div v-if="selectedTab == 'SEARCH'">Keresgeles</div>
+            <div v-if="selectedTab == 'SEARCH'"><SearchContactTab /></div>
             <div v-if="selectedTab == 'GET'">Kapottak</div>
             <div v-if="selectedTab == 'SEND'">Elkuldtem, de hun a valasz</div>
         </div>
@@ -39,6 +39,7 @@
     import IconRight from '@/components/icons/IconRight.vue';
     import { mapState } from 'pinia';
     import { useLgStore } from '@/stores/active__lg';
+    import SearchContactTab from './SearchContactTab.vue';
 
     export default {
         components: {
@@ -47,6 +48,7 @@
             IconSearch,
             IconLeft,
             IconRight,
+            SearchContactTab,
         },
 
         data() {

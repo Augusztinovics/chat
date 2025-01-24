@@ -33,9 +33,9 @@ class User extends Model
                         u.profile_img AS friendImg
                         FROM friends f
                         LEFT JOIN users u ON f.to_user=u.id
-                        WHERE from_user=${this.id}
-                        AND accepted_at IS NULL
-                        AND denided_at IS NULL`;
+                        WHERE f.from_user=${this.id}
+                        AND f.accepted_at IS NULL
+                        AND f.denided_at IS NULL`;
             Model.returnMany(query)
                 .then((result) => {
                     resolve(result);
@@ -55,14 +55,34 @@ class User extends Model
                         u.profile_img AS friendImg
                         FROM friends f
                         LEFT JOIN users u ON f.from_user=u.id
-                        WHERE to_user=${this.id}
-                        AND accepted_at IS NULL
-                        AND denided_at IS NULL`;
+                        WHERE f.to_user=${this.id}
+                        AND f.accepted_at IS NULL
+                        AND f.denided_at IS NULL`;
             Model.returnMany(query)
                 .then((result) => {
                     resolve(result);
                 });
         });
+    }
+
+    friends() {
+        return new Promise((resolve) => {
+            let query = `u.id AS friendId,
+                        u.username AS friendName,
+                        u.description AS friendDescription,
+                        u.country AS friendCountry,
+                        u.city AS friendCity,
+                        u.profile_img AS friendImg
+                        FROM friends f
+                        LEFT JOIN users u ON IF(f.from_user==${this.id}, f.to_user=u.id, f.from_user=u.id)
+                        WHERE IF(f.from_user==${this.id}, f.from_user=${this.id}, f.to_user=${this.id})
+                        AND f.accepted_at IS NOT NULL
+                        AND f.denided_at IS NULL`;
+            Model.returnMany(query)
+            .then((result) => {
+                resolve(result);
+            });
+        })
     }
 
 }
