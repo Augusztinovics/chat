@@ -12,7 +12,8 @@
             </div>
         </div>
         <div>
-
+            <p v-if="firstSearch">Eloszor</p>
+            <div v-else>Has allready</div>
         </div>
     </div>
 </template>
@@ -31,6 +32,7 @@
             return {
                 submitting: false,
                 searchText: '',
+                firstSearch: true,
             }
         },
 
@@ -39,12 +41,15 @@
         },
 
         methods: {
-            searchUsers() {},
+            searchUsers() {
+                this.firstSearch = false;
+            },
         },
 
         mounted() {
             this.submitting = false;
             this.searchText = '';
+            this.firstSearch = true;
             document.getElementById('search_input').focus();
         },
     }
