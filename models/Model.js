@@ -307,12 +307,13 @@ class Model {
      * The query start with SELECT 
      *
      * @param {string} query
+     * @param {array} values
      * @returns array
      */
-    static returnMany(query) {
+    static returnMany(query, values=[]) {
         return new Promise((resolve) => {
             try {
-                db.all('SELECT ' + query, (err, rows) => {
+                db.all('SELECT ' + query, values,  (err, rows) => {
                     if (err) {
                         resolve([]);
                     } else {

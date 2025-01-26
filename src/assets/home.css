@@ -43,3 +43,69 @@
     border-bottom: 2px solid var(--color-border-hover);
     margin:0 1rem;
 }
+
+.search-menu {
+    padding-bottom: 2rem;
+    border-bottom: 2px solid var(--color-border-hover);
+}
+
+.search-menu .user-search-input {
+    width: 100%;
+}
+
+@media (min-width: 1024px) {
+    .search-menu .user-search-input {
+        width: 50%;
+    }
+}
+
+.search-result-no-result-holder {
+    margin-top: 2rem;
+    padding: 0 1rem;
+}
+
+.search-result-no-result-holder p {
+    text-align: center;
+    color: var(--color-text-muted);
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.search-result-holder {
+    padding-top: 1rem;
+}
+
+.search-result-holder p {
+    color: var(--color-text-muted);
+    font-size: 1rem;
+    font-weight: 600;
+    font-style: italic;
+    padding-bottom: 1rem;
+}
+
+.friend-card {
+    padding: 1rem 0;
+    width: 160px;
+    border: 1px solid var(--color-border-hover);
+    border-radius: 0.25rem;
+    box-shadow: var(--shadow);
+    text-align: center;
+}
+
+.friend-card .friend-card-img {
+    padding: 0 1rem 0 1rem;
+}
+
+.friend-card .friend-card-name {
+    padding: 0.5rem 1rem;
+    border-bottom: 1px solid var(--color-border-hover);
+}
+
+.friend-card .friend-card-name:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.friend-card .friend-card-action {
+    padding: 1rem 1rem 0 1rem;
+}

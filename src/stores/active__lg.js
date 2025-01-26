@@ -224,6 +224,26 @@ export const useLgStore = defineStore('active_lg', {
                 SR: 'Zahtevi su poslati',
                 EN: 'Requests sent',
             },
+            user_search: {
+                HU: 'Ismerős keresése felhasználó név alapján',
+                SR: 'Potražite prijatelja po korisničkom imenu',
+                EN: 'Search for a friend by username',
+            },
+            user_search_before: {
+                HU: 'Keressél valakit...',
+                SR: 'Nađi nekoga...',
+                EN: 'Find someone...',
+            },
+            user_search_not_find: {
+                HU: 'Sajnos nem találtunk senkit, próbálj másik nevet.',
+                SR: 'Žao nam je, nismo mogli nikoga da pronađemo, pokušajte sa drugim imenom.',
+                EN: 'Sorry, we couldn\'t find anyone, try another name.',
+            },
+            results: {
+                HU: 'találat',
+                SR: 'pogodak',
+                EN: 'user(s) found',
+            },
         },
     }),
     getters: {

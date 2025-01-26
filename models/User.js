@@ -1,3 +1,4 @@
+const { resolveComponent } = require('vue');
 const Model = require('./Model.js');
 
 class User extends Model
@@ -82,7 +83,34 @@ class User extends Model
             .then((result) => {
                 resolve(result);
             });
-        })
+        });
+    }
+
+    searchFriend(nameText) {
+        return new Promise((resolve) => {
+            let searchText = nameText.trim() + '%';
+            let query = `u.id AS friendId,
+                        u.username AS friendName,
+                        u.description AS friendDescription,
+                        u.country AS friendCountry,
+                        u.city AS friendCity,
+                        u.profile_img AS friendImg,
+                        r.id AS reqId,
+                        r.accepted_at AS reqAcceptedDate,
+                        s.id AS sendId,
+                        s.accepted_at AS sendAcceptedDate
+                        FROM users u
+                        LEFT JOIN friends r ON r.to_user=${this.id}
+                        LEFT JOIN friends s ON s.from_user=${this.id}
+                        WHERE u.id <> ${this.id}
+                        AND u.username LIKE ?
+                        AND r.denided_at IS NULL
+                        AND s.denided_at IS NULL`;
+            Model.returnMany(query, [searchText])
+            .then((result) => {
+                resolve(result);
+            });
+        });
     }
 
 }
