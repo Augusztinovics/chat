@@ -1,1 +1,0 @@
-import{e as a,_ as r,u as o,x as n,g as c,h as s,k as l,t as p}from"./index-BvWlccgc.js";const g={props:["msg"],computed:{...a(o,["lg"]),message(){return this.msg??this.lg("general_error")}}},i={class:"toaster danger"};function m(_,e,d,u,f,t){return n(),c("div",i,[s("h5",null,[e[0]||(e[0]=s("span",null,"✕",-1)),l(p(t.message),1)])])}const h=r(g,[["render",m]]);export{h as F};

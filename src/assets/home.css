@@ -83,6 +83,18 @@
     padding-bottom: 1rem;
 }
 
+.search-result-holder .results {
+    display: flex;
+    justify-content: center;
+}
+
+.search-result-holder .results .result-cards {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
 .friend-card {
     padding: 1rem 0;
     width: 160px;
@@ -109,3 +121,4 @@
 .friend-card .friend-card-action {
     padding: 1rem 1rem 0 1rem;
 }
+
