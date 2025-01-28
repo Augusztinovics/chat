@@ -16,13 +16,13 @@
                 <p><span>{{ searchResult.length }}</span> <span>{{ lg('results') }}</span></p>
                 <div class="results">
                     <div v-if="hasPagination">
-                        <button type="button" :disabled="paginationIndex == 0" class="pag-btn"><</button>
+                        <button type="button" :disabled="paginationIndex == 0" class="pag-btn" @click="paginateLeft"><</button>
                     </div>
                     <div class="result-cards">
                         <FriendCard v-for="friend in cardsToShow" :key="'friend_' + friend.friendId"  :friend="friend"/>
                     </div>
                     <div v-if="hasPagination">
-                        <button type="button" :disabled="rightPaginationDisabled"class="pag-btn">></button>
+                        <button type="button" :disabled="rightPaginationDisabled"class="pag-btn" @click="paginateRight">></button>
                     </div>
                 </div>
             </div>
@@ -37,8 +37,9 @@
 </template>
 
 <script>
-    import { mapState } from 'pinia';
+    import { mapStores, mapState } from 'pinia';
     import { useLgStore } from '@/stores/active__lg';
+    import { paginationSizesStore } from '@/stores/pagination_sizes';
     import IconSearch from '@/components/icons/IconSearch.vue';
     import LoadingOverlay from '@/components/LoadingOverlay.vue';
     import axios from 'axios';
@@ -61,43 +62,37 @@
                 searchResult: [],
                 searchError: false,
                 paginationIndex: 0,
-                paginationStep: 5,
             }
         },
 
         computed: {
             ...mapState(useLgStore, ['lg']),
 
+            ...mapStores(paginationSizesStore),
+
             hasSearchResult() {
                 return this.searchResult.length > 0;
             },
 
             hasPagination() {
-                return this.searchResult.length > this.paginationStep;
+                return this.searchResult.length > this.paginationSizesStore.topSize;
             },
 
             rightPaginationDisabled() {
-                return this.paginationIndex * this.paginationStep >= this.searchResult.length;
+                return (this.paginationIndex * this.paginationSizesStore.topSize) + this.paginationSizesStore.topSize >= this.searchResult.length;
             },
-
-            // paginationStep() {
-            //     if (window.innerWidth > 1600) return 5;
-            //     if (window.innerWidth > 1160) return 4;
-            //     if (window.innerWidth > 900) return 3;
-            //     if (window.innerWidth > 749) return 2;
-            //     if (window.innerWidth > 665) return 3;
-            //     if (window.innerWidth > 500) return 2;
-            //     return 1;
-            // },
 
             cardsToShow() {
                 let cards = [];
                 if (!this.hasSearchResult) return cards;
-                let startIndex = this.paginationIndex * this.paginationStep;
+                let startIndex = this.paginationIndex * this.paginationSizesStore.topSize;
                 if (startIndex > this.searchResult.length - 1) {
                     startIndex = this.searchResult.length - 1;
                 }
-                let endIndex = startIndex + this.paginationStep;
+                if (this.paginationSizesStore.topSize >= this.searchResult.length) {
+                    startIndex = 0;
+                }
+                let endIndex = startIndex + this.paginationSizesStore.topSize;
                 if (endIndex > this.searchResult.length) {
                     endIndex = this.searchResult.length;
                 }
@@ -111,33 +106,6 @@
         },
 
         methods: {
-            calculatePaginationStep() {
-                if (window.innerWidth > 1600) {
-                    this.paginationStep = 5;
-                    return;
-                }
-                if (window.innerWidth > 1160) {
-                    this.paginationStep = 4;
-                    return;
-                }
-                if (window.innerWidth > 900) {
-                    this.paginationStep = 3;
-                    return;
-                }
-                if (window.innerWidth > 749) {
-                    this.paginationStep = 2;
-                    return;
-                }
-                if (window.innerWidth > 665) {
-                    this.paginationStep = 3;
-                    return;
-                }
-                if (window.innerWidth > 500) {
-                    this.paginationStep = 2;
-                    return;
-                }
-                this.paginationStep = 1;
-            },
             searchUsers() {
                 if (this.searchText.trim() == '') return;
                 this.firstSearch = false;
@@ -172,12 +140,7 @@
             this.searchText = '';
             this.firstSearch = true;
             document.getElementById('search_input').focus();
-            window.addEventListener('resize', this.calculatePaginationStep);
-            this.calculatePaginationStep();
         },
 
-        beforeUnmount() {
-            window.removeEventListener('resize', this.calculatePaginationStep);
-        },
     }
 </script>

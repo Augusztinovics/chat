@@ -37,6 +37,7 @@
 import { mapStores, mapState } from 'pinia';
 import { userStore } from '@/stores/user';
 import { useLgStore } from '@/stores/active__lg';
+import { paginationSizesStore } from '@/stores/pagination_sizes';
 import { RouterLink } from 'vue-router';
 import IconIdCard from '@/components/icons/IconIdCard.vue';
 import IconTerms from '@/components/icons/IconTerms.vue';
@@ -68,7 +69,7 @@ export default {
     },
 
     computed: {
-        ...mapStores(userStore),
+        ...mapStores(userStore, paginationSizesStore),
         ...mapState(useLgStore, ['lg']),
     },
 
@@ -95,6 +96,11 @@ export default {
 
     mounted() {
         this.loadUser();
-    }
+        this.paginationSizesStore.calculatePaginationStep();
+        window.addEventListener('resize', this.paginationSizesStore.calculatePaginationStep);
+    },
+    beforeUnmount() {
+        window.removeEventListener('resize', this.paginationSizesStore.calculatePaginationStep);
+    },
 }
 </script>
