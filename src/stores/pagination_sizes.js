@@ -15,7 +15,7 @@ export const paginationSizesStore = defineStore('paginationSizes', {
                 this.topSize = 4;
                 return;
             }
-            if (window.innerWidth > 900) {
+            if (window.innerWidth > 915) {
                 this.topSize = 3;
                 return;
             }
@@ -23,11 +23,11 @@ export const paginationSizesStore = defineStore('paginationSizes', {
                 this.topSize = 2;
                 return;
             }
-            if (window.innerWidth > 665) {
+            if (window.innerWidth > 685) {
                 this.topSize = 3;
                 return;
             }
-            if (window.innerWidth > 500) {
+            if (window.innerWidth > 505) {
                 this.topSize = 2;
                 return;
             }

@@ -244,6 +244,16 @@ export const useLgStore = defineStore('active_lg', {
                 SR: 'pogodak',
                 EN: 'user(s) found',
             },
+            friend_country: {
+                HU: 'Ország',
+                SR: 'Država',
+                EN: 'Country',
+            },
+            friend_des: {
+                HU: 'Bemutatkozó',
+                SR: 'Predstavljamo',
+                EN: 'Introducing',
+            },
         },
     }),
     getters: {
