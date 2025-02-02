@@ -326,6 +326,10 @@ label span {
     color: var(--color-danger);
 }
 
+.text-primary {
+    color: var(--color-text);
+}
+
 .lg-select-box {
     position: relative;
 }

@@ -254,6 +254,31 @@ export const useLgStore = defineStore('active_lg', {
                 SR: 'Predstavljamo',
                 EN: 'Introducing',
             },
+            send_message: {
+                HU: 'Üzenet Küldése',
+                SR: 'Pošalji Poruku',
+                EN: 'Send Message',
+            },
+            accept_request: {
+                HU: 'Kérelem Elfogadása',
+                SR: 'Prihvati Zahtev',
+                EN: 'Accept Request',
+            },
+            already_send: {
+                HU: 'Már elküldve',
+                SR: 'Već Poslati',
+                EN: 'Already Send',
+            },
+            send_request: {
+                HU: 'Kérelem Küldése',
+                SR: 'Pošalji Zahtev',
+                EN: 'Send Request',
+            },
+            sending: {
+                HU: 'Küldés...',
+                SR: 'Slanje...',
+                EN: 'Sending...',
+            },
         },
     }),
     getters: {

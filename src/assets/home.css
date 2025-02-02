@@ -132,3 +132,7 @@
 .pag-btn:hover {
     cursor: pointer;
 }
+
+.friend-modal-des p {
+    color: var(--color-text);
+}
