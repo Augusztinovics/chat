@@ -136,3 +136,15 @@
 .friend-modal-des p {
     color: var(--color-text);
 }
+
+.request-modal-body {
+    text-align: left;
+    padding: 1rem;
+}
+
+.request-modal-body textarea {
+    padding: 10px;
+    font-size: 1rem;
+    width: 100%;
+    min-height: 6rem;
+}

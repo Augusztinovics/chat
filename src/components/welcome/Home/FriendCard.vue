@@ -9,9 +9,12 @@
         </div>
         <div class="friend-card-action">
             <button v-if="isFriend" class="btn-sm btn-primary" @click="sendMessage" :disabled="sending">{{ sending ? lg('sending') : lg('send_message') }}</button>
-            <button v-else-if="isReqGet" class="btn-sm btn-primary" @click="acceptFriendRequest" :disabled="sending">{{ sending ? lg('sending') : lg('accept_request') }}</button>
+            <div v-else-if="isReqGet">
+                <button class="btn-sm btn-primary" @click="acceptFriendRequest" :disabled="sending">{{ sending ? lg('sending') : lg('accept_request') }}</button>
+                <button class="btn-sm btn-danger" @click="denieFriendRequest" :disabled="sending">{{ sending ? lg('sending') : lg('denie_request') }}</button>
+            </div>
             <p v-else-if="isReqSend">{{ lg('already_send') }}</p>
-            <button v-else class="btn-sm btn-primary" @click="sendFriendRequest" :disabled="sending">{{ sending ? lg('sending') : lg('send_request') }}</button>
+            <button v-else class="btn-sm btn-primary" @click="openRequestModal" :disabled="sending">{{ sending ? lg('sending') : lg('send_request') }}</button>
         </div>
         <Modal
             :show="showDetails"
@@ -31,7 +34,28 @@
                     <p><span class="text-bold">{{ lg('friend_country') }} :</span>{{ friend.friendCountry ?? '????' }}</p>
                     <p><span class="text-bold">{{ lg('friend_des') }}</span></p>
                     <p class="mb-2">{{ friend.friendDescription ?? '??????' }}</p>
+                    <div v-if="isReqGet">
+                        <!-- Request elfogadasa, a kerelem szovege, accept refuse buttons -->
+                    </div>
                 </div>
+            </div>
+        </Modal>
+        <Modal
+            :show="showRequestModal"
+            :size="'sm'"
+            :title="lg('send_request')"
+            :headerClass="'text-left'"
+            :showCancel="true"
+            :cancelBtnText="lg('cancel')"
+            :okBtnText="lg('send')"
+            @close="showRequestModal=false"
+            @cancel="showRequestModal=false"
+            @ok="sendFriendRequest"
+        >
+            <div class="request-modal-body">
+                <p>{{ lg('addresse') }} <span>{{ friend.friendName }}</span></p>
+                <label for="request_text_input_field">{{ lg('few_words') }}</label>
+                <textarea name="requestText" id="request_text_input_field" v-model="requestText"></textarea>
             </div>
         </Modal>
     </div>
@@ -60,7 +84,7 @@
                         reqId:             null,
                         reqAcceptedDate:   null,
                         sendId:            null,
-                        sendAcceptedDate:  null
+                        sendAcceptedDate:  null,
                     };
                 }
             }
@@ -75,6 +99,8 @@
             return {
                 showDetails: false,
                 sending: false,
+                showRequestModal: false,
+                requestText: '',
             };
         },
 
@@ -110,11 +136,21 @@
                 this.showDetails = true;
             },
 
+            openRequestModal() {
+                this.requestText = '';
+                this.showRequestModal = true;
+                setTimeout(() => {
+                    document.getElementById('request_text_input_field').focus();
+                }, 300);
+            },
+
             sendFriendRequest() {
+                this.showRequestModal = false;
                 this.sending = true;
-                this.sendRequest({friendId: this.friend.friendId})
+                this.sendRequest({friendId: this.friend.friendId, text: this.requestText.trim()})
                     .then(() => {
                         this.sending = false;
+                        this.requestText = '';
                         //the store will reload, here just dumy out for change
                         this.friend.sendId = 1;
                     })
@@ -136,6 +172,10 @@
                         this.sending = false;
                         //Handle somehow the error, maybe emit?
                     });
+            },
+
+            denieFriendRequest() {
+
             },
 
             sendMessage() {},
