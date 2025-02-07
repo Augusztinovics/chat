@@ -13,7 +13,10 @@
                 <button class="btn-sm btn-primary" @click="acceptFriendRequest" :disabled="sending">{{ sending ? lg('sending') : lg('accept_request') }}</button>
                 <button class="btn-sm btn-danger" @click="denieFriendRequest" :disabled="sending">{{ sending ? lg('sending') : lg('denie_request') }}</button>
             </div>
-            <p v-else-if="isReqSend">{{ lg('already_send') }}</p>
+            <div v-else-if="isReqSend">
+                <p >{{ lg('already_send') }}</p>
+                <button class="btn-sm btn-danger" @click="cancelRequest" :disabled="sending">{{ sending ? lg('sending') : lg('cancel_request') }}</button>
+            </div>
             <button v-else class="btn-sm btn-primary" @click="openRequestModal" :disabled="sending">{{ sending ? lg('sending') : lg('send_request') }}</button>
         </div>
         <Modal
@@ -177,6 +180,8 @@
             denieFriendRequest() {
 
             },
+
+            cancelRequest() {},
 
             sendMessage() {},
         },

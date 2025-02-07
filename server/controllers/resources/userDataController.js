@@ -1,6 +1,7 @@
 function userData(req, res) {
     if (!req.user) {
         res.sendStatus(401);
+        return;
     }
 
     res.json({

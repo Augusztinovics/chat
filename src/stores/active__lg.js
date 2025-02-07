@@ -299,6 +299,11 @@ export const useLgStore = defineStore('active_lg', {
                 SR: 'Odbij',
                 EN: 'Refuse',
             },
+            cancel_request: {
+                HU: 'Visszavon',
+                SR: 'Uzeti Nazad',
+                EN: 'Take Back',
+            },
         },
     }),
     getters: {

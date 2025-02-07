@@ -1,6 +1,7 @@
 async function userSearch(req, res) {
     if (!req.user) {
         res.sendStatus(401);
+        return;
     }
 
     let queryText = req.query.un;
