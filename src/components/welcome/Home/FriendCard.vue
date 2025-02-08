@@ -39,6 +39,19 @@
                     <p class="mb-2">{{ friend.friendDescription ?? '??????' }}</p>
                     <div v-if="isReqGet">
                         <!-- Request elfogadasa, a kerelem szovege, accept refuse buttons -->
+                        <p>Friend say</p>
+                        <p v-if="friend.messageFromFriend">{{ friend.messageFromFriend }}</p>
+                        <p v-else>Dont say anything</p>
+                        <div>
+                            <button class="btn-sm btn-primary" @click="acceptFriendRequest" :disabled="sending">{{ sending ? lg('sending') : lg('accept_request') }}</button>
+                            <button class="btn-sm btn-danger" @click="denieFriendRequest" :disabled="sending">{{ sending ? lg('sending') : lg('denie_request') }}</button>
+                        </div>
+                    </div>
+                    <div v-if="isReqSend">
+                        <p>{{ lg('you_request_text') }}</p>
+                        <p v-if="friend.messageToFriend">{{ friend.messageToFriend }}</p>
+                        <p v-else>{{ lg('no_request_send_text') }}</p>
+                        <p><span class="icon-edit-btn" @click="editRequestMessage"><IconEdit /></span></p>
                     </div>
                 </div>
             </div>
@@ -71,6 +84,7 @@
     import { useLgStore } from '@/stores/active__lg';
     import { requestSendStore } from '@/stores/request_send';
     import { requestGetStore } from '@/stores/request_get';
+    import IconEdit from '@/components/icons/IconEdit.vue';
 
     export default {
         props: {
@@ -88,6 +102,8 @@
                         reqAcceptedDate:   null,
                         sendId:            null,
                         sendAcceptedDate:  null,
+                        messageToFriend:   '',
+                        messageFromFriend: '',
                     };
                 }
             }
@@ -96,14 +112,16 @@
         components: {
             IconUser,
             Modal,
+            IconEdit,
         },
 
         data() {
             return {
-                showDetails: false,
-                sending: false,
+                showDetails:      false,
+                sending:          false,
                 showRequestModal: false,
-                requestText: '',
+                requestText:      '',
+                editing:          false,
             };
         },
 
@@ -128,7 +146,7 @@
         },
 
         methods: {
-            ...mapActions(requestSendStore, ['sendRequest']),
+            ...mapActions(requestSendStore, ['sendRequest', 'cancelFrienRequest', 'editFriendRequest']),
             ...mapActions(requestGetStore, ['acceptRequest']),
 
             modalClose() {
@@ -148,19 +166,38 @@
             },
 
             sendFriendRequest() {
-                this.showRequestModal = false;
-                this.sending = true;
-                this.sendRequest({friendId: this.friend.friendId, text: this.requestText.trim()})
-                    .then(() => {
-                        this.sending = false;
-                        this.requestText = '';
-                        //the store will reload, here just dumy out for change
-                        this.friend.sendId = 1;
-                    })
-                    .catch(() => {
-                        this.sending = false;
-                        //Handle somehow the error, maybe emit?
-                    });
+                if (this.editing) {
+                    this.showRequestModal = false;
+                    this.sending = true;
+                    this.editFriendRequest({requestId: this.friend.sendId, text: this.requestText.trim()})
+                        .then(() => {
+                            this.sending = false;
+                            this.friend.messageToFriend = this.requestText;
+                            this.editing = false;
+                            this.showDetails = true;
+                        })
+                        .catch(() => {
+                            this.sending = false;
+                            this.editing = false;
+                            //Handle somehow the error, maybe emit?
+                        });
+                    
+                } else {
+                    this.showRequestModal = false;
+                    this.sending = true;
+                    this.sendRequest({friendId: this.friend.friendId, text: this.requestText.trim()})
+                        .then(() => {
+                            this.sending = false;
+                            this.friend.messageToFriend = this.requestText;
+                            this.requestText = '';
+                            //the store will reload, here just dumy out for change
+                            this.friend.sendId = 1;
+                        })
+                        .catch(() => {
+                            this.sending = false;
+                            //Handle somehow the error, maybe emit?
+                        });
+                }
             },
 
             acceptFriendRequest() {
@@ -181,7 +218,31 @@
 
             },
 
-            cancelRequest() {},
+            cancelRequest() {
+                if (this.friend.sendId == 1) return;
+                this.sending = true;
+                this.cancelFrienRequest({requestId: this.friend.sendId})
+                    .then(() => {
+                        this.sending = false;
+                        this.friend.messageToFriend = '';
+                        //the store will reload, here just dumy out for change
+                        this.friend.sendId = null;
+                    })
+                    .catch(() => {
+                        this.sending = false;
+                        //Handle somehow the error, maybe emit?
+                    });
+            },
+
+            editRequestMessage() {
+                this.showDetails = false;
+                this.editing = true;
+                this.requestText = this.friend.messageToFriend ?? '';
+                this.showRequestModal = true;
+                setTimeout(() => {
+                    document.getElementById('request_text_input_field').focus().select();
+                }, 300);
+            },
 
             sendMessage() {},
         },

@@ -304,6 +304,16 @@ export const useLgStore = defineStore('active_lg', {
                 SR: 'Uzeti Nazad',
                 EN: 'Take Back',
             },
+            you_request_text: {
+                HU: 'Üzeneted:',
+                SR: 'Tvoj Poruka:',
+                EN: 'Your Message:',
+            },
+            no_request_send_text: {
+                HU: 'Nem üzentél semmit...',
+                SR: 'Niste ništa poslali...',
+                EN: 'You didn\'t message anything...',
+            },
         },
     }),
     getters: {

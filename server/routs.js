@@ -11,7 +11,8 @@ const deleteUserController = require('./controllers/resources/userDeleteControll
 const userSearchController = require('./controllers/resources/userSearchController.js');
 const getSendedFriendRequestsController = require('./controllers/resources/friendRequests/getSendedFriendRequestsController.js');
 const sendFriendRequestController = require('./controllers/resources/friendRequests/sendFriendRequestController.js');
-const deleteSendedRequestController = require('./controllers/resources/friendRequests/deleteSendedRequestController.js')
+const deleteSendedRequestController = require('./controllers/resources/friendRequests/deleteSendedRequestController.js');
+const editFriendRequestController = require('./controllers/resources/friendRequests/editFriendRequestController.js');
 
 function apiRouts(app) {
     app.get('/login', async (req, res) => testController(req, res));
@@ -31,6 +32,7 @@ function apiRouts(app) {
     app.get('/api/resources/sended-friend-requests', auth, async (req, res) => getSendedFriendRequestsController(req, res));
     app.post('/api/resources/friend-request-send', auth, async (req, res) => sendFriendRequestController(req, res));
     app.post('/api/resources/friend-request-delete', auth, async (req, res) => deleteSendedRequestController(req, res));
+    app.post('/api/resources/friend-request-edit', auth, async (req, res) => editFriendRequestController(req, res));
 
 
     app.get('/home', auth,  (req, res) => {

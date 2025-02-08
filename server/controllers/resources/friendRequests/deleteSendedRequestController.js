@@ -12,7 +12,7 @@ async function deleteFriendRequest(req, res) {
     }
 
     let requestId = parseInt(req.body.requestId);
-    if (!toId) {
+    if (!requestId) {
         res.sendStatus(400);
         return;
     }

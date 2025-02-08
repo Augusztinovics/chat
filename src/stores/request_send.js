@@ -57,5 +57,22 @@ export const requestSendStore = defineStore('requestSend', {
                     });
             });
         },
+
+        editFriendRequest(payload) {
+            return new Promise((resolve,reject) => {
+                axios.post('/api/resources/friend-request-edit', payload)
+                    .then((res) => {
+                        this.requests = res.data?.sendedRequests ?? [];
+                        resolve(true);
+                    })
+                    .catch((e) => {
+                        if (e.response.status == 401) {
+                            reject(401);
+                        } else {
+                            reject(e);
+                        }
+                    });
+            });
+        },
     },
 });

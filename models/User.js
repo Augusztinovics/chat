@@ -98,14 +98,14 @@ class User extends Model
                         r.id AS reqId,
                         r.accepted_at AS reqAcceptedDate,
                         s.id AS sendId,
-                        s.accepted_at AS sendAcceptedDate
+                        s.accepted_at AS sendAcceptedDate,
+                        s.message AS messageToFriend,
+                        r.message AS messageFromFriend
                         FROM users u
-                        LEFT JOIN friends r ON r.to_user=${this.id}
-                        LEFT JOIN friends s ON s.from_user=${this.id}
+                        LEFT JOIN friends r ON r.to_user=${this.id} AND r.from_user=u.id AND r.denided_at IS NULL
+                        LEFT JOIN friends s ON s.from_user=${this.id} AND s.to_user=u.id AND s.denided_at IS NULL
                         WHERE u.id <> ${this.id}
-                        AND u.username LIKE ?
-                        AND r.denided_at IS NULL
-                        AND s.denided_at IS NULL`;
+                        AND u.username LIKE ?`;
             Model.returnMany(query, [searchText])
             .then((result) => {
                 resolve(result);
