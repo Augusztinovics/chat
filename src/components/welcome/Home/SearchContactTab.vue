@@ -31,7 +31,6 @@
                 <p v-else>{{ lg('user_search_not_find') }}</p>
             </div>
         </div>
-        <LoadingOverlay v-if="submitting"/>
         <FailToast v-if="searchError"/>
     </div>
 </template>
@@ -40,8 +39,8 @@
     import { mapStores, mapState } from 'pinia';
     import { useLgStore } from '@/stores/active__lg';
     import { paginationSizesStore } from '@/stores/pagination_sizes';
+    import { loadingStore } from '@/stores/loadin';
     import IconSearch from '@/components/icons/IconSearch.vue';
-    import LoadingOverlay from '@/components/LoadingOverlay.vue';
     import axios from 'axios';
     import FailToast from '@/components/FailToast.vue';
     import FriendCard from './FriendCard.vue';
@@ -49,7 +48,6 @@
     export default {
         components: {
             IconSearch,
-            LoadingOverlay,
             FailToast,
             FriendCard,
         },
@@ -68,7 +66,7 @@
         computed: {
             ...mapState(useLgStore, ['lg']),
 
-            ...mapStores(paginationSizesStore),
+            ...mapStores(paginationSizesStore, loadingStore),
 
             hasSearchResult() {
                 return this.searchResult.length > 0;
@@ -110,14 +108,17 @@
                 if (this.searchText.trim() == '') return;
                 this.firstSearch = false;
                 this.submitting = true;
+                this.loadingStore.startLoading();
                 this.searchError = false;
                 axios.get('/api/resources/search-user?un=' + this.searchText.trim())
                     .then((res) => {
                         this.submitting = false;
+                        this.loadingStore.finishLoading();
                         this.searchResult = res.data.users;
                     })
                     .catch((e) => {
                         this.submitting = false;
+                        this.loadingStore.finishLoading();
                         this.searchError = true;
                         setTimeout(() => {
                             this.searchError = false;

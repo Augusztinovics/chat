@@ -3,8 +3,21 @@ import axios from 'axios';
 
 export const requestSendStore = defineStore('requestSend', {
     state: () => ({
+        loaded: false,
         requests: [],
     }),
+
+    getters: {
+        numSendRequests: (state) => {
+            return state.requests.length ?? 0;
+        },
+        isLoaded: (state) => {
+            return state.loaded;
+        },
+        sendRequests: (state) => {
+            return state.requests;
+        },
+    },
 
     actions: {
         loadRequests() {
@@ -12,6 +25,7 @@ export const requestSendStore = defineStore('requestSend', {
                 axios.get('/api/resources/sended-friend-requests')
                     .then((res) => {
                         this.requests = res.data?.sendedRequests ?? [];
+                        this.loaded = true;
                         resolve(true);
                     })
                     .catch((e) => {

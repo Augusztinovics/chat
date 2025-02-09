@@ -154,7 +154,6 @@
                 </div>
             </div>
         </Modal>
-        <LoadingOverlay v-if="loading" />
         <SuccessToast v-if="saveSuccess"/>
         <FailToast v-if="saveError"/>
     </div>
@@ -164,10 +163,10 @@
     import { mapStores, mapState } from 'pinia';
     import { userStore } from '@/stores/user';
     import { useLgStore } from '@/stores/active__lg';
+    import { loadingStore } from '@/stores/loadin';
     import IconUser from '@/components/icons/IconUser.vue';
     import IconEdit from '@/components/icons/IconEdit.vue';
     import Modal from '@/components/Modal.vue';
-    import LoadingOverlay from '@/components/LoadingOverlay.vue';
     import DescriptionUpdate from './ProfileUpdates/DescriptionUpdate.vue';
     import SuccessToast from '@/components/SuccessToast.vue';
     import FailToast from '@/components/FailToast.vue';
@@ -185,7 +184,6 @@
             IconUser,
             IconEdit,
             Modal,
-            LoadingOverlay,
             DescriptionUpdate,
             SuccessToast,
             FailToast,
@@ -202,7 +200,6 @@
         data() {
             return {
                 showModal: false,
-                loading: false,
                 selectedUpdate: '',
                 saveError: false,
                 saveSuccess: false,
@@ -213,7 +210,7 @@
             }
         },
         computed: {
-            ...mapStores(userStore),
+            ...mapStores(userStore, loadingStore),
             ...mapState(useLgStore, ['lg']),
 
             modalTitle() {
@@ -264,11 +261,11 @@
             },
 
             startLoad() {
-                this.loading = true;
+                this.loadingStore.startLoading();
             },
 
             finishLoad() {
-                this.loading = false;
+                this.loadingStore.finishLoading();
             },
 
             successUpdate() {
@@ -312,18 +309,19 @@
                     return;
                 }
 
-                this.loading = true;
+                this.loadingStore.startLoading();
                 let payload = {
                     password: this.password
                 }
 
                 this.userStore.deleteUser(payload)
                     .then(() => {
+                        this.loadingStore.finishLoading();
                         this.$router.push('/register');
                     })
                     .catch((e) => {
                         console.log(e);
-                        this.loading = false;
+                        this.loadingStore.finishLoading();
                         this.deleteCancel();
                         this.saveError = true;
                         setTimeout(() => {

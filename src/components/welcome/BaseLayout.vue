@@ -29,7 +29,7 @@
             </div>
         </div>
         <div class="content"><slot></slot></div>
-        <LoadingOverlay v-if="loading" />
+        <LoadingOverlay v-if="loadingStore.showLoading" />
     </div>
 </template>
 
@@ -38,6 +38,7 @@ import { mapStores, mapState } from 'pinia';
 import { userStore } from '@/stores/user';
 import { useLgStore } from '@/stores/active__lg';
 import { paginationSizesStore } from '@/stores/pagination_sizes';
+import { loadingStore } from '@/stores/loadin';
 import { RouterLink } from 'vue-router';
 import IconIdCard from '@/components/icons/IconIdCard.vue';
 import IconTerms from '@/components/icons/IconTerms.vue';
@@ -63,27 +64,26 @@ export default {
 
     data() {
         return {
-            loading: false,
             loadingError: false,
         }
     },
 
     computed: {
-        ...mapStores(userStore, paginationSizesStore),
+        ...mapStores(userStore, paginationSizesStore, loadingStore),
         ...mapState(useLgStore, ['lg']),
     },
 
     methods: {
         loadUser() {
             if (this.userStore.loaded) return;
-            this.loading = true;
+            this.loadingStore.startLoading();
             this.loadingError = false;
             this.userStore.load()
                     .then(() => {
-                        this.loading = false;
+                        this.loadingStore.finishLoading();
                     })
                     .catch((e) => {
-                        this.loading = false;
+                        this.loadingStore.finishLoading();
                         if (e == 401) {
                             this.$router.push('/login');
                         } else {

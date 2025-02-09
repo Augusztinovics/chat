@@ -176,10 +176,14 @@
                             this.editing = false;
                             this.showDetails = true;
                         })
-                        .catch(() => {
+                        .catch((e) => {
                             this.sending = false;
                             this.editing = false;
-                            //Handle somehow the error, maybe emit?
+                            if (e == 401) {
+                                this.$router.push('/login');
+                            } else {
+                                //Handle somehow the error, maybe emit?
+                            }
                         });
                     
                 } else {
@@ -193,9 +197,13 @@
                             //the store will reload, here just dumy out for change
                             this.friend.sendId = 1;
                         })
-                        .catch(() => {
+                        .catch((e) => {
                             this.sending = false;
-                            //Handle somehow the error, maybe emit?
+                            if (e == 401) {
+                                this.$router.push('/login');
+                            } else {
+                                //Handle somehow the error, maybe emit?
+                            }
                         });
                 }
             },
@@ -208,9 +216,13 @@
                         //the store will reload, here just dumy out for change
                         this.friend.reqAcceptedDate = true;
                     })
-                    .catch(() => {
+                    .catch((e) => {
                         this.sending = false;
-                        //Handle somehow the error, maybe emit?
+                        if (e == 401) {
+                            this.$router.push('/login');
+                        } else {
+                            //Handle somehow the error, maybe emit?
+                        }
                     });
             },
 
@@ -228,9 +240,13 @@
                         //the store will reload, here just dumy out for change
                         this.friend.sendId = null;
                     })
-                    .catch(() => {
+                    .catch((e) => {
                         this.sending = false;
-                        //Handle somehow the error, maybe emit?
+                        if (e == 401) {
+                            this.$router.push('/login');
+                        } else {
+                            //Handle somehow the error, maybe emit?
+                        }
                     });
             },
 

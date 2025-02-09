@@ -314,6 +314,11 @@ export const useLgStore = defineStore('active_lg', {
                 SR: 'Niste ništa poslali...',
                 EN: 'You didn\'t message anything...',
             },
+            not_send_any_request_yet: {
+                HU: 'Nincs aktív kérelmed!',
+                SR: 'Nemaš aktivnih zahteva!',
+                EN: 'You have no active requests!',
+            },
         },
     }),
     getters: {
