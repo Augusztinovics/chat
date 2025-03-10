@@ -19,7 +19,7 @@
                         <button type="button" :disabled="paginationIndex == 0" class="pag-btn" @click="paginateLeft"><</button>
                     </div>
                     <div class="result-cards">
-                        <FriendCard v-for="friend in cardsToShow" :key="'friend_' + friend.friendId"  :friend="friend"/>
+                        <FriendCard v-for="friend in cardsToShow" :key="'friend_' + friend.friendId"  :friend="friend" @reloadData="reloadData"/>
                     </div>
                     <div v-if="hasPagination">
                         <button type="button" :disabled="rightPaginationDisabled"class="pag-btn" @click="paginateRight">></button>
@@ -134,6 +134,10 @@
             paginateRight() {
                 this.paginationIndex++;
             },
+
+            reloadData(type, msg) {
+                this.$emit('reloadData', type, msg);
+            }
         },
 
         mounted() {

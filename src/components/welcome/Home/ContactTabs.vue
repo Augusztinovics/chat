@@ -1,11 +1,6 @@
 <template>
     <div class="contact-tabs">
         <div class="tab">
-            <span class="tab-menu" :class="{'active-tab': selectedTab == 'SOME'}" @click="selectTab('SOME')">
-                <span class="icon"><IconUser /></span>
-                <span class="icon"><IconEarth /></span>
-                <span class="tab-text">{{ lg('who_can_know') }}</span>
-            </span>
             <span class="tab-menu" :class="{'active-tab': selectedTab == 'SEARCH'}" @click="selectTab('SEARCH')">
                 <span class="icon"><IconUser /></span>
                 <span class="icon"><IconSearch /></span>
@@ -25,17 +20,17 @@
             </span>
         </div>
         <div v-if="selectedTab != 'NONE'" class="tab-content">
-            <div v-if="selectedTab == 'SOME'">Ajanlas</div>
-            <div v-if="selectedTab == 'SEARCH'"><SearchContactTab /></div>
-            <div v-if="selectedTab == 'GET'">Kapottak</div>
-            <div v-if="selectedTab == 'SEND'"><SendRequestsTab @changeTab="selectTab('SEARCH')"/></div>
+            <div v-if="selectedTab == 'SEARCH'"><SearchContactTab @reloadData="loadStores"/></div>
+            <div v-if="selectedTab == 'GET'"><GetRequestsTab @changeTab="selectTab('SEARCH')" @reloadData="loadStores"/></div>
+            <div v-if="selectedTab == 'SEND'"><SendRequestsTab @changeTab="selectTab('SEARCH')" @reloadData="loadStores"/></div>
         </div>
+        <SuccessToast v-if="saveSuccess" :msg="toastMessage"/>
+        <FailToast v-if="saveError":msg="toastMessage"/>
     </div>
 </template>
 
 <script>
     import IconUser from '@/components/icons/IconUser.vue';
-    import IconEarth from '@/components/icons/IconEarth.vue';
     import IconSearch from '@/components/icons/IconSearch.vue';
     import IconLeft from '@/components/icons/IconLeft.vue';
     import IconRight from '@/components/icons/IconRight.vue';
@@ -46,21 +41,29 @@
     import { loadingStore } from '@/stores/loadin';
     import SearchContactTab from './SearchContactTab.vue';
     import SendRequestsTab from './SendRequestsTab.vue';
+    import GetRequestsTab from './GetRequestsTab.vue';
+    import SuccessToast from '@/components/SuccessToast.vue';
+    import FailToast from '@/components/FailToast.vue';
 
     export default {
         components: {
             IconUser,
-            IconEarth,
             IconSearch,
             IconLeft,
             IconRight,
             SearchContactTab,
             SendRequestsTab,
+            GetRequestsTab,
+            SuccessToast,
+            FailToast,
         },
 
         data() {
             return {
-                selectedTab: 'SOME',
+                selectedTab: 'GET',
+                saveSuccess: false,
+                saveError: false,
+                toastMessage: '',
             }
         },
 
@@ -95,7 +98,7 @@
                 }
             },
 
-            loadStores() {
+            loadStores(type='NONE', msg='') {
                 let promisies = [];
                 if (!this.isSendStoreLoaded) {
                     promisies.push(this.loadSendRequests())
@@ -109,13 +112,42 @@
                     .then(() => {
                         this.loadingStore.finishLoading();
                         //some loading finish
+                        if (this.numGetRequests > 0) {
+                            this.selectedTab = 'GET';
+                        } else {
+                            this.selectedTab = 'NONE';
+                        }
+                        if (type !== 'NONE') {
+                            //There was some action reload, need to show some toaster
+                            if (type === 'SUCCESS') {
+                                this.toastMessage = msg;
+                                this.saveSuccess = true;
+                                setTimeout(() => {
+                                    this.saveSuccess = false;
+                                    this.toastMessage = '';
+                                }, 3000);
+                            }
+                            if (type === 'ERROR') {
+                                this.toastMessage = msg;
+                                this.saveError = true;
+                                setTimeout(() => {
+                                    this.saveError = false;
+                                    this.toastMessage = '';
+                                }, 3000);
+                            }
+                        }
                     })
                     .catch((e) => {
                         this.loadingStore.finishLoading();
                         if (e == 401) {
                             this.$router.push('/login');
                         } else {
-                            //Handle somehow the error, maybe emit?
+                            this.toastMessage = this.lg('general_error');
+                            this.saveError = true;
+                            setTimeout(() => {
+                                this.saveError = false;
+                                this.toastMessage = '';
+                            }, 3000);
                         }
                     });
             },

@@ -14,6 +14,9 @@ export const requestGetStore = defineStore('requestGet', {
         isLoaded: (state) => {
             return state.loaded;
         },
+        getRequests: (state) => {
+            return state.requests;
+        },
     },
 
     actions: {
@@ -27,6 +30,15 @@ export const requestGetStore = defineStore('requestGet', {
         },
 
         acceptRequest(payload) {
+            return new Promise((resolve,reject) => {
+                console.log(payload);
+                setTimeout(() => {
+                    resolve(true)
+                }, 1000);
+            });
+        },
+
+        denieRequest(payload) {
             return new Promise((resolve,reject) => {
                 console.log(payload);
                 setTimeout(() => {

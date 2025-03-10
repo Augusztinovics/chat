@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div v-if="numSendRequests" class="search-result-holder">
+        <div v-if="numGetRequests" class="search-result-holder">
             <div class="results">
                 <div v-if="hasPagination">
                     <button type="button" :disabled="paginationIndex == 0" class="pag-btn" @click="paginateLeft"><</button>
@@ -23,7 +23,7 @@
     import { mapStores, mapState } from 'pinia';
     import { useLgStore } from '@/stores/active__lg';
     import { paginationSizesStore } from '@/stores/pagination_sizes';
-    import { requestSendStore } from '@/stores/request_send';
+    import { requestGetStore } from '@/stores/request_get';
     import FriendCard from './FriendCard.vue';
 
     export default {
@@ -40,35 +40,35 @@
         computed: {
             ...mapState(useLgStore, ['lg']),
 
-            ...mapState(requestSendStore, ['numSendRequests', 'sendRequests']),
+            ...mapState(requestGetStore, ['numGetRequests', 'getRequests']),
 
             ...mapStores(paginationSizesStore),
 
             hasPagination() {
-                return this.numSendRequests > this.paginationSizesStore.topSize;
+                return this.numGetRequests > this.paginationSizesStore.topSize;
             },
 
             rightPaginationDisabled() {
-                return (this.paginationIndex * this.paginationSizesStore.topSize) + this.paginationSizesStore.topSize >= this.numSendRequests;
+                return (this.paginationIndex * this.paginationSizesStore.topSize) + this.paginationSizesStore.topSize >= this.numGetRequests;
             },
 
             cardsToShow() {
                 let cards = [];
-                if (this.numSendRequests < 1) return cards;
+                if (this.numGetRequests < 1) return cards;
                 let startIndex = this.paginationIndex * this.paginationSizesStore.topSize;
-                if (startIndex > this.sendRequests.length - 1) {
-                    startIndex = this.sendRequests.length - 1;
+                if (startIndex > this.getRequests.length - 1) {
+                    startIndex = this.getRequests.length - 1;
                 }
-                if (this.paginationSizesStore.topSize >= this.sendRequests.length) {
+                if (this.paginationSizesStore.topSize >= this.getRequests.length) {
                     startIndex = 0;
                 }
                 let endIndex = startIndex + this.paginationSizesStore.topSize;
-                if (endIndex > this.sendRequests.length) {
-                    endIndex = this.sendRequests.length;
+                if (endIndex > this.getRequests.length) {
+                    endIndex = this.getRequests.length;
                 }
 
                 for (let index = startIndex; index < endIndex; index++) {
-                    cards.push(this.sendRequests[index]);
+                    cards.push(this.getRequests[index]);
                 }
                 return cards;
             },

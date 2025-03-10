@@ -147,7 +147,7 @@
 
         methods: {
             ...mapActions(requestSendStore, ['sendRequest', 'cancelFrienRequest', 'editFriendRequest']),
-            ...mapActions(requestGetStore, ['acceptRequest']),
+            ...mapActions(requestGetStore, ['acceptRequest', 'denieRequest']),
 
             modalClose() {
                 this.showDetails = false;
@@ -227,7 +227,21 @@
             },
 
             denieFriendRequest() {
-
+                this.sending = true;
+                this.denieRequest({friendId: this.friend.friendId, reqId: this.friend.reqId})
+                    .then(() => {
+                        this.sending = false;
+                        //Emit the msg from lg store!!! Add emit to all ajax!!!
+                        this.$emit('reloadData', 'SUCCESS', 'elutasitva');
+                    })
+                    .catch((e) => {
+                        this.sending = false;
+                        if (e == 401) {
+                            this.$router.push('/login');
+                        } else {
+                            this.$emit('reloadData', 'ERROR', 'nem jott ossze');
+                        }
+                    });
             },
 
             cancelRequest() {
