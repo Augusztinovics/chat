@@ -22,10 +22,19 @@ export const requestGetStore = defineStore('requestGet', {
     actions: {
         loadRequests() {
             return new Promise((resolve,reject) => {
-                setTimeout(() => {
-                    this.loaded = true;
-                    resolve(true)
-                }, 300);
+                axios.get('/api/resources/received-friend-requests')
+                    .then((res) => {
+                        this.requests = res.data?.receivedRequests ?? [];
+                        this.loaded = true;
+                        resolve(true);
+                    })
+                    .catch((e) => {
+                        if (e.response.status == 401) {
+                            reject(401);
+                        } else {
+                            reject(e);
+                        }
+                    });
             });
         },
 

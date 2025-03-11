@@ -13,6 +13,7 @@ const getSendedFriendRequestsController = require('./controllers/resources/frien
 const sendFriendRequestController = require('./controllers/resources/friendRequests/sendFriendRequestController.js');
 const deleteSendedRequestController = require('./controllers/resources/friendRequests/deleteSendedRequestController.js');
 const editFriendRequestController = require('./controllers/resources/friendRequests/editFriendRequestController.js');
+const getReceivedFriendRequestsController = require('./controllers/resources/friendRequests/getReceivedRequestController.js');
 
 function apiRouts(app) {
     app.get('/login', async (req, res) => testController(req, res));
@@ -33,6 +34,7 @@ function apiRouts(app) {
     app.post('/api/resources/friend-request-send', auth, async (req, res) => sendFriendRequestController(req, res));
     app.post('/api/resources/friend-request-delete', auth, async (req, res) => deleteSendedRequestController(req, res));
     app.post('/api/resources/friend-request-edit', auth, async (req, res) => editFriendRequestController(req, res));
+    app.get('/api/resources/received-friend-requests', auth, async (req, res) => getReceivedFriendRequestsController(req, res));
 
 
     app.get('/home', auth,  (req, res) => {

@@ -314,6 +314,31 @@ export const useLgStore = defineStore('active_lg', {
                 SR: 'Nemaš aktivnih zahteva!',
                 EN: 'You have no active requests!',
             },
+            frind_request_send: {
+                HU: 'Kérelem sikeresen elküldve!',
+                SR: 'Zahtev je uspešno poslat!',
+                EN: 'Request sent successfully!',
+            },
+            frind_request_send_fail: {
+                HU: 'Nemvárt esemény történt a kérelem küldése közben!',
+                SR: 'Došlo je do neočekivanog događaja prilikom slanja zahteva!',
+                EN: 'An unexpected event occurred while sending the request!',
+            },
+            frien_request_accepted: {
+                HU: 'Gratulálun, új ismerősöd van!',
+                SR: 'Čestitamo, imate novog prijatelja!',
+                EN: 'Congratulations, you have a new friend!',
+            },
+            request_denited: {
+                HU: 'Kérelmet sikeresen elutasítottad, többé már nem fog zavarni!',
+                SR: 'Uspešno ste odbili zahtev, to vam više neće smetati!',
+                EN: 'You have successfully rejected the request, it will not bother you anymore!',
+            },
+            request_canceled: {
+                HU: 'Kérelmedet sikeresen visszavontad!',
+                SR: 'Uspešno ste povukli svoj zahtev!',
+                EN: 'You have successfully withdrawn your request!',
+            },
         },
     }),
     getters: {

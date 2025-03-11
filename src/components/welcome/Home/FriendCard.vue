@@ -182,7 +182,7 @@
                             if (e == 401) {
                                 this.$router.push('/login');
                             } else {
-                                //Handle somehow the error, maybe emit?
+                                //
                             }
                         });
                     
@@ -192,17 +192,14 @@
                     this.sendRequest({friendId: this.friend.friendId, text: this.requestText.trim()})
                         .then(() => {
                             this.sending = false;
-                            this.friend.messageToFriend = this.requestText;
-                            this.requestText = '';
-                            //the store will reload, here just dumy out for change
-                            this.friend.sendId = 1;
+                            this.$emit('reloadData', 'SUCCESS', this.lg('frind_request_send'));
                         })
                         .catch((e) => {
                             this.sending = false;
                             if (e == 401) {
                                 this.$router.push('/login');
                             } else {
-                                //Handle somehow the error, maybe emit?
+                                this.$emit('reloadData', 'ERROR', this.lg('frind_request_send_fail'));
                             }
                         });
                 }
@@ -213,15 +210,14 @@
                 this.acceptRequest({friendId: this.friend.friendId, reqId: this.friend.reqId})
                     .then(() => {
                         this.sending = false;
-                        //the store will reload, here just dumy out for change
-                        this.friend.reqAcceptedDate = true;
+                        this.$emit('reloadData', 'SUCCESS', this.lg('frien_request_accepted'));
                     })
                     .catch((e) => {
                         this.sending = false;
                         if (e == 401) {
                             this.$router.push('/login');
                         } else {
-                            //Handle somehow the error, maybe emit?
+                            this.$emit('reloadData', 'ERROR', this.lg('general_error'));
                         }
                     });
             },
@@ -231,15 +227,14 @@
                 this.denieRequest({friendId: this.friend.friendId, reqId: this.friend.reqId})
                     .then(() => {
                         this.sending = false;
-                        //Emit the msg from lg store!!! Add emit to all ajax!!!
-                        this.$emit('reloadData', 'SUCCESS', 'elutasitva');
+                        this.$emit('reloadData', 'SUCCESS', this.lg('request_denited'));
                     })
                     .catch((e) => {
                         this.sending = false;
                         if (e == 401) {
                             this.$router.push('/login');
                         } else {
-                            this.$emit('reloadData', 'ERROR', 'nem jott ossze');
+                            this.$emit('reloadData', 'ERROR', this.lg('general_error'));
                         }
                     });
             },
@@ -250,16 +245,14 @@
                 this.cancelFrienRequest({requestId: this.friend.sendId})
                     .then(() => {
                         this.sending = false;
-                        this.friend.messageToFriend = '';
-                        //the store will reload, here just dumy out for change
-                        this.friend.sendId = null;
+                        this.$emit('reloadData', 'SUCCESS', this.lg('request_canceled'));
                     })
                     .catch((e) => {
                         this.sending = false;
                         if (e == 401) {
                             this.$router.push('/login');
                         } else {
-                            //Handle somehow the error, maybe emit?
+                            this.$emit('reloadData', 'ERROR', this.lg('general_error'));
                         }
                     });
             },

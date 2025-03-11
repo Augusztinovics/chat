@@ -46,7 +46,7 @@ class User extends Model
 
     recivedFriendRequests() {
         return new Promise((resolve) => {
-            let query = `f.id AS requestId,
+            let query = `f.id AS reqId,
                         f.from_user AS friendId,
                         f.message AS messageToFriend,
                         u.username AS friendName,
