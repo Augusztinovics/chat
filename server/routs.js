@@ -14,6 +14,9 @@ const sendFriendRequestController = require('./controllers/resources/friendReque
 const deleteSendedRequestController = require('./controllers/resources/friendRequests/deleteSendedRequestController.js');
 const editFriendRequestController = require('./controllers/resources/friendRequests/editFriendRequestController.js');
 const getReceivedFriendRequestsController = require('./controllers/resources/friendRequests/getReceivedRequestController.js');
+const acceptFriendRequestController = require('./controllers/resources/friendRequests/acceptFriendRequestController.js');
+const denieFriendRequestController = require('./controllers/resources/friendRequests/denieFriendRequestController.js');
+const getFriendsController = require('./controllers/resources/friendRequests/getFriendsController.js');
 
 function apiRouts(app) {
     app.get('/login', async (req, res) => testController(req, res));
@@ -35,6 +38,9 @@ function apiRouts(app) {
     app.post('/api/resources/friend-request-delete', auth, async (req, res) => deleteSendedRequestController(req, res));
     app.post('/api/resources/friend-request-edit', auth, async (req, res) => editFriendRequestController(req, res));
     app.get('/api/resources/received-friend-requests', auth, async (req, res) => getReceivedFriendRequestsController(req, res));
+    app.post('/api/resources/friend-request-accept', auth, async (req, res) => acceptFriendRequestController(req, res));
+    app.post('/api/resources/friend-request-denie', auth, async (req, res) => denieFriendRequestController(req, res));
+    app.get('/api/resources/friends', auth, async (req, res) => getFriendsController(req, res));
 
 
     app.get('/home', auth,  (req, res) => {

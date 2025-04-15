@@ -25,7 +25,7 @@ export const requestGetStore = defineStore('requestGet', {
                 axios.get('/api/resources/received-friend-requests')
                     .then((res) => {
                         this.requests = res.data?.receivedRequests ?? [];
-                        this.loaded = true;
+                        this.loaded = true;;
                         resolve(true);
                     })
                     .catch((e) => {
@@ -40,19 +40,35 @@ export const requestGetStore = defineStore('requestGet', {
 
         acceptRequest(payload) {
             return new Promise((resolve,reject) => {
-                console.log(payload);
-                setTimeout(() => {
-                    resolve(true)
-                }, 1000);
+                axios.post('/api/resources/friend-request-accept', payload)
+                    .then((res) => {
+                        this.requests = res.data?.receivedRequests ?? [];
+                        resolve(true);
+                    })
+                    .catch((e) => {
+                        if (e.response.status == 401) {
+                            reject(401);
+                        } else {
+                            reject(e);
+                        }
+                    });
             });
         },
 
         denieRequest(payload) {
             return new Promise((resolve,reject) => {
-                console.log(payload);
-                setTimeout(() => {
-                    resolve(true)
-                }, 1000);
+                axios.post('/api/resources/friend-request-denie', payload)
+                    .then((res) => {
+                        this.requests = res.data?.receivedRequests ?? [];
+                        resolve(true);
+                    })
+                    .catch((e) => {
+                        if (e.response.status == 401) {
+                            reject(401);
+                        } else {
+                            reject(e);
+                        }
+                    });
             });
         },
     },

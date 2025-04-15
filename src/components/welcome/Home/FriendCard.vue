@@ -8,16 +8,16 @@
             <h5>{{ friend.friendName }}</h5>
         </div>
         <div class="friend-card-action">
-            <button v-if="isFriend" class="btn-sm btn-primary" @click="sendMessage" :disabled="sending">{{ sending ? lg('sending') : lg('send_message') }}</button>
+            <button v-if="isFriend" class="btn-sm btn-primary btn-block" @click="sendMessage" :disabled="sending">{{ sending ? lg('sending') : lg('send_message') }}</button>
             <div v-else-if="isReqGet">
-                <button class="btn-sm btn-primary" @click="acceptFriendRequest" :disabled="sending">{{ sending ? lg('sending') : lg('accept_request') }}</button>
-                <button class="btn-sm btn-danger" @click="denieFriendRequest" :disabled="sending">{{ sending ? lg('sending') : lg('denie_request') }}</button>
+                <button class="btn-sm btn-primary btn-block" @click="acceptFriendRequest" :disabled="sending">{{ sending ? lg('sending') : lg('accept_request') }}</button>
+                <button class="btn-sm btn-danger btn-block" @click="denieFriendRequest" :disabled="sending">{{ sending ? lg('sending') : lg('denie_request') }}</button>
             </div>
             <div v-else-if="isReqSend">
                 <p >{{ lg('already_send') }}</p>
-                <button class="btn-sm btn-danger" @click="cancelRequest" :disabled="sending">{{ sending ? lg('sending') : lg('cancel_request') }}</button>
+                <button class="btn-sm btn-danger btn-block" @click="cancelRequest" :disabled="sending">{{ sending ? lg('sending') : lg('cancel_request') }}</button>
             </div>
-            <button v-else class="btn-sm btn-primary" @click="openRequestModal" :disabled="sending">{{ sending ? lg('sending') : lg('send_request') }}</button>
+            <button v-else class="btn-sm btn-primary btn-block" @click="openRequestModal" :disabled="sending">{{ sending ? lg('sending') : lg('send_request') }}</button>
         </div>
         <Modal
             :show="showDetails"
@@ -35,23 +35,22 @@
                 <div class="friend-modal-des">
                     <p><span class="text-bold">{{ lg('city') }} :</span>{{ friend.friendCity ?? '????' }}</p>
                     <p><span class="text-bold">{{ lg('friend_country') }} :</span>{{ friend.friendCountry ?? '????' }}</p>
-                    <p><span class="text-bold">{{ lg('friend_des') }}</span></p>
+                    <p><span class="text-bold">{{ lg('friend_des') }} :</span></p>
                     <p class="mb-2">{{ friend.friendDescription ?? '??????' }}</p>
                     <div v-if="isReqGet">
                         <!-- Request elfogadasa, a kerelem szovege, accept refuse buttons -->
-                        <p>Friend say</p>
+                        <p>{{ lg('message') }}</p>
                         <p v-if="friend.messageFromFriend">{{ friend.messageFromFriend }}</p>
-                        <p v-else>Dont say anything</p>
-                        <div>
-                            <button class="btn-sm btn-primary" @click="acceptFriendRequest" :disabled="sending">{{ sending ? lg('sending') : lg('accept_request') }}</button>
-                            <button class="btn-sm btn-danger" @click="denieFriendRequest" :disabled="sending">{{ sending ? lg('sending') : lg('denie_request') }}</button>
+                        <p v-else>{{ lg('no_message') }}</p>
+                        <div class="mt-2 friend-card-btns">
+                            <button class="btn btn-primary" @click="acceptFriendRequest" :disabled="sending">{{ sending ? lg('sending') : lg('accept_request') }}</button>
+                            <button class="btn btn-danger" @click="denieFriendRequest" :disabled="sending">{{ sending ? lg('sending') : lg('denie_request') }}</button>
                         </div>
                     </div>
                     <div v-if="isReqSend">
                         <p>{{ lg('you_request_text') }}</p>
-                        <p v-if="friend.messageToFriend">{{ friend.messageToFriend }}</p>
-                        <p v-else>{{ lg('no_request_send_text') }}</p>
-                        <p><span class="icon-edit-btn" @click="editRequestMessage"><IconEdit /></span></p>
+                        <p v-if="friend.messageToFriend">{{ friend.messageToFriend }} <span class="icon-edit-btn ml-1" @click="editRequestMessage"><IconEdit /></span></p>
+                        <p v-else>{{ lg('no_request_send_text') }} <span class="icon-edit-btn ml-1" @click="editRequestMessage"><IconEdit /></span></p>
                     </div>
                 </div>
             </div>
@@ -207,7 +206,7 @@
 
             acceptFriendRequest() {
                 this.sending = true;
-                this.acceptRequest({friendId: this.friend.friendId, reqId: this.friend.reqId})
+                this.acceptRequest({requestId: this.friend.reqId})
                     .then(() => {
                         this.sending = false;
                         this.$emit('reloadData', 'SUCCESS', this.lg('frien_request_accepted'));
@@ -224,7 +223,7 @@
 
             denieFriendRequest() {
                 this.sending = true;
-                this.denieRequest({friendId: this.friend.friendId, reqId: this.friend.reqId})
+                this.denieRequest({requestId: this.friend.reqId})
                     .then(() => {
                         this.sending = false;
                         this.$emit('reloadData', 'SUCCESS', this.lg('request_denited'));

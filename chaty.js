@@ -10,7 +10,8 @@ if (help) {
     console.log('-m or --migrate  : to run migration files up function');
     console.log('-r or --rollback : to run migration files down function (from last up run)');
     console.log('-s or --seed     : to run the seeder file');
-    console.log('');
+    console.log('-l or --logs     : to see log entries');
+    console.log('-u or --users    : to see users entries');
     process.exit(1);
 }
 
@@ -88,6 +89,60 @@ if (logs && !roll && !migrations) {
         res.forEach(element => {
             console.log(element.created_at + ' - ' + element.level + ' - ' + element.log);
         });
+    }).catch((e) => {
+        console.log(e);
+    })
+}
+
+const users = (process.argv.indexOf('-u') > -1 || process.argv.indexOf('--users') > -1) ? true : false;
+
+if (users && !logs && !roll && !migrations) {
+    const User = require('./models/User.js');
+    let result = User.whereRaw('id>0');
+    console.log('Users:');
+
+    result.then((res) => {
+        res.forEach(element => {
+            console.log('Id: ' + element.id);
+            console.log('Username: ' + element.username);
+            console.log('Email: ' + element.email);
+            console.log('Lg: ' + element.lg);
+            console.log('Country: ' + element.country);
+            console.log('City: ' + element.city);
+            console.log('Description: ' + element.description);
+            console.log('Has Image: ' + (element.profile_img ? 'Yes' : 'No'));
+            console.log('Ip: ' + element.ip);
+            console.log('Device data: ' + element.device_data);
+            console.log('Remember token: ' + element.remember_token);
+            console.log('Push token: ' + element.push_token);
+            console.log('Created at: ' + element.created_at);
+            console.log(' ');
+        });
+       
+    }).catch((e) => {
+        console.log(e);
+    })
+}
+
+const friends = (process.argv.indexOf('-f') > -1 || process.argv.indexOf('--friends') > -1) ? true : false;
+
+if (friends && !users && !logs && !roll && !migrations) {
+    const Friend = require('./models/Friend.js');
+    let result = Friend.whereRaw('id>0');
+    console.log('Friends:');
+
+    result.then((res) => {
+        res.forEach(element => {
+            console.log('Id: ' + element.id);
+            console.log('From user: ' + element.from_user);
+            console.log('To user: ' + element.to_user);
+            console.log('Message: ' + element.message);
+            console.log('Accepted at: ' + element.accepted_at);
+            console.log('Denided at: ' + element.denided_at);
+            console.log('Created at: ' + element.created_at);
+            console.log(' ');
+        });
+       
     }).catch((e) => {
         console.log(e);
     })

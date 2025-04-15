@@ -339,6 +339,16 @@ export const useLgStore = defineStore('active_lg', {
                 SR: 'Uspešno ste povukli svoj zahtev!',
                 EN: 'You have successfully withdrawn your request!',
             },
+            message: {
+                HU: 'Üzenet',
+                SR: 'Poruka',
+                EN: 'Message',
+            },
+            no_message: {
+                HU: 'Nem üzent semmit',
+                SR: 'Nije ništa rekao',
+                EN: 'Didn\'t say anything',
+            },
         },
     }),
     getters: {

@@ -148,6 +148,19 @@
     color: var(--color-text);
 }
 
+.friend-modal-des .friend-card-btns {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-direction: column;
+}
+
+@media (min-width: 500px) {
+    .friend-modal-des .friend-card-btns {
+        flex-direction: row;
+    }
+}
+
 .request-modal-body {
     text-align: left;
     padding: 1rem;

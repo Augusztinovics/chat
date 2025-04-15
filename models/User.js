@@ -74,14 +74,14 @@ class User extends Model
                         u.country AS friendCountry,
                         u.city AS friendCity,
                         u.profile_img AS friendImg
-                        FROM friends f
-                        LEFT JOIN users u ON IF(f.from_user==${this.id}, f.to_user=u.id, f.from_user=u.id)
-                        WHERE IF(f.from_user==${this.id}, f.from_user=${this.id}, f.to_user=${this.id})
-                        AND f.accepted_at IS NOT NULL
-                        AND f.denided_at IS NULL`;
+                        FROM users u
+                        LEFT JOIN friends r ON r.to_user=${this.id} AND r.from_user=u.id AND r.denided_at IS NULL AND r.accepted_at IS NOT NULL
+                        LEFT JOIN friends s ON s.from_user=${this.id} AND s.to_user=u.id AND s.denided_at IS NULL AND s.accepted_at IS NOT NULL
+                        WHERE u.id <> ${this.id}
+                        AND (r.id IS NOT NULL OR s.id IS NOT NULL)`;
             Model.returnMany(query)
             .then((result) => {
-                resolve(result);
+                resolve(result);//AND f.accepted_at IS NOT NULL
             });
         });
     }
@@ -102,10 +102,12 @@ class User extends Model
                         s.message AS messageToFriend,
                         r.message AS messageFromFriend
                         FROM users u
-                        LEFT JOIN friends r ON r.to_user=${this.id} AND r.from_user=u.id AND r.denided_at IS NULL
-                        LEFT JOIN friends s ON s.from_user=${this.id} AND s.to_user=u.id AND s.denided_at IS NULL
+                        LEFT JOIN friends r ON r.to_user=${this.id} AND r.from_user=u.id
+                        LEFT JOIN friends s ON s.from_user=${this.id} AND s.to_user=u.id
                         WHERE u.id <> ${this.id}
-                        AND u.username LIKE ?`;
+                        AND u.username LIKE ?
+                        AND r.denided_at IS NULL
+                        AND s.denided_at IS NULL`;
             Model.returnMany(query, [searchText])
             .then((result) => {
                 resolve(result);

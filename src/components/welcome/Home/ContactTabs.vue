@@ -39,6 +39,7 @@
     import { requestSendStore } from '@/stores/request_send';
     import { requestGetStore } from '@/stores/request_get';
     import { loadingStore } from '@/stores/loadin';
+    import { friendsStore } from '@/stores/friends';
     import SearchContactTab from './SearchContactTab.vue';
     import SendRequestsTab from './SendRequestsTab.vue';
     import GetRequestsTab from './GetRequestsTab.vue';
@@ -90,6 +91,10 @@
                 loadGetRequests: 'loadRequests'
             }),
 
+            ...mapActions(friendsStore, {
+                loadFriends: 'loadFriends'
+            }),
+
             selectTab(tab) {
                 if (tab == this.selectedTab) {
                     this.selectedTab = 'NONE';
@@ -106,6 +111,8 @@
                 if (!this.isGetStoreLoaded) {
                     promisies.push(this.loadGetRequests())
                 }
+
+                promisies.push(this.loadFriends())
 
                 this.loadingStore.startLoading();
                 Promise.all(promisies)
