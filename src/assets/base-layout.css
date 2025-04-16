@@ -43,6 +43,7 @@
     grid-area: content;
     justify-content:center;
     height: 80vh;
+    overflow-y: auto;
     background-color: var(--color-background);
 }
 

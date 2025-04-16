@@ -1,0 +1,29 @@
+.friend-list-container {
+    margin: 0 20px;
+}
+
+.friend-list-container .contact-total {
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 25px;
+}
+
+.friend-list-container .friend-list {
+    margin-bottom: 10vh;
+}
+
+.friend-list-container .friend-list .friend-wrapper {
+    display: flex;
+    width: 100%;
+    border: 2px solid var(--color-border-hover);
+    border-radius: 6px;
+    padding: 12px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.friend-list-container .friend-list .friend-wrapper .friend-data {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}

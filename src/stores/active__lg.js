@@ -349,6 +349,11 @@ export const useLgStore = defineStore('active_lg', {
                 SR: 'Nije ništa rekao',
                 EN: 'Didn\'t say anything',
             },
+            friends_count: {
+                HU: 'Ismerősök összesen',
+                SR: 'Totalni prijatelji',
+                EN: 'Friends total',
+            },
         },
     }),
     getters: {
