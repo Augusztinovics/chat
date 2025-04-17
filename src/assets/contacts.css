@@ -16,8 +16,9 @@
     display: flex;
     width: 100%;
     border: 2px solid var(--color-border-hover);
+    box-shadow: var(--shadow);
     border-radius: 6px;
-    padding: 12px;
+    padding: 6px;
     justify-content: space-between;
     align-items: center;
 }
@@ -26,4 +27,19 @@
     display: flex;
     align-items: center;
     gap: 20px;
+}
+
+.friend-list-container .friend-list .friend-wrapper .friend-data h5 {
+    font-size: 0.8rem;
+}
+
+@media (min-width: 750px) {
+    .friend-list-container .friend-list .friend-wrapper {
+        width: 80%;
+        padding: 12px;
+    }
+
+    .friend-list-container .friend-list .friend-wrapper .friend-data h5 {
+        font-size: 1.25rem;
+    }
 }

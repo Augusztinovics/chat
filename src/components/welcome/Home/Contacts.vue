@@ -5,7 +5,7 @@
             <div v-for="friend in friends" :key="friend.friendId" class="friend-wrapper">
                 <div class="friend-data">
                     <div class="friend-img">
-                        <img v-if="friend.friendImg" :src="friend.friendImg" alt="Profile Image" class="profile-img md">
+                        <img v-if="friend.friendImg" :src="friend.friendImg" alt="Profile Image" class="profile-img sm">
                         <span v-else class="icon-lg"><IconUser /></span>
                     </div>
                     <div>
