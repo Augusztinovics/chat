@@ -147,3 +147,45 @@ if (friends && !users && !logs && !roll && !migrations) {
         console.log(e);
     })
 }
+
+const group = (process.argv.indexOf('-g') > -1 || process.argv.indexOf('--group') > -1) ? true : false;
+
+if (group && !friends && !users && !logs && !roll && !migrations) {
+    const Group = require('./models/Group.js');
+    let result = Group.whereRaw('id>0');
+    console.log('Groups:');
+
+    result.then((res) => {
+        res.forEach(element => {
+            console.log('Id: ' + element.id);
+            console.log('Main User: ' + element.main_user);
+            console.log('Group Name: ' + element.group_name);
+            console.log('Created at: ' + element.created_at);
+            console.log(' ');
+        });
+       
+    }).catch((e) => {
+        console.log(e);
+    })
+}
+
+const groupUser = (process.argv.indexOf('-gu') > -1 || process.argv.indexOf('--groupUser') > -1) ? true : false;
+
+if (groupUser && !group && !friends && !users && !logs && !roll && !migrations) {
+    const GroupUser = require('./models/GroupUser.js');
+    let result = GroupUser.whereRaw('id>0');
+    console.log('GroupUsers:');
+
+    result.then((res) => {
+        res.forEach(element => {
+            console.log('Id: ' + element.id);
+            console.log('Group Id: ' + element.group_id);
+            console.log('User Id: ' + element.user_id);
+            console.log('Created at: ' + element.created_at);
+            console.log(' ');
+        });
+       
+    }).catch((e) => {
+        console.log(e);
+    })
+}

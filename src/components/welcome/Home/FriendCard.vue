@@ -239,7 +239,6 @@
             },
 
             cancelRequest() {
-                if (this.friend.sendId == 1) return;
                 this.sending = true;
                 this.cancelFrienRequest({requestId: this.friend.sendId})
                     .then(() => {

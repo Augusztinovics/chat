@@ -1,4 +1,5 @@
 const Model = require('./Model.js');
+const User = require('./User.js');
 
 class Friend extends Model
 {
@@ -13,6 +14,30 @@ class Friend extends Model
         denided_at:  null,
         created_at:  null,
     };
+
+    fromUser() {
+        return new Promise((resolve) => {
+            User.find(this.from_user)
+                .then((result) => {
+                    resolve(result);
+                })
+                .catch(() => {
+                    resolve(false);
+                })
+        });
+    }
+
+    toUser() {
+        return new Promise((resolve) => {
+            User.find(this.to_user)
+                .then((result) => {
+                    resolve(result);
+                })
+                .catch(() => {
+                    resolve(false);
+                })
+        });
+    }
 
 }
 
