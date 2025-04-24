@@ -1,5 +1,5 @@
-const { resolveComponent } = require('vue');
 const Model = require('./Model.js');
+const Group = require('./Group.js');
 
 class User extends Model
 {
@@ -111,6 +111,23 @@ class User extends Model
             Model.returnMany(query, [searchText])
             .then((result) => {
                 resolve(result);
+            });
+        });
+    }
+
+    groupIds() {
+        return new Promise((resolve) => {
+            let query = `group_id FROM group_users WHERE user_id=${this.id}`;
+            Model.returnMany(query)
+            .then((result) => {
+                if (result) {
+                    resolve(result);
+                } else {
+                    resolve([]);
+                }
+            })
+            .catch(()=> {
+                resolve([]);
             });
         });
     }

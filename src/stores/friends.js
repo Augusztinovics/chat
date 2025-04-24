@@ -4,6 +4,7 @@ import axios from 'axios';
 export const friendsStore = defineStore('friends', {
     state: () => ({
         friends: [],
+        groups: [],
     }),
 
     getters: {
@@ -21,6 +22,8 @@ export const friendsStore = defineStore('friends', {
                 axios.get('/api/resources/friends')
                     .then((res) => {
                         this.friends = res.data?.friends ?? [];
+                        this.groups = res.data?.groups ?? [];
+                        console.log(this.groups);
                         resolve(true);
                     })
                     .catch((e) => {
