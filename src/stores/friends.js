@@ -11,8 +11,19 @@ export const friendsStore = defineStore('friends', {
         numFriends: (state) => {
             return state.friends.length ?? 0;
         },
+        numGroups: (state) => {
+            return state.groups.length ?? 0;
+        },
         allFriends: (state) => {
             return state.friends;
+        },
+        allGroups: (state) => {
+            return state.groups;
+        },
+        getFriendData: (state) => {
+            return (id) => {
+                return state.friends.find(f => {return f.friendId == id});
+            }
         },
     },
 

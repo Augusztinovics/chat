@@ -2,10 +2,21 @@
     margin: 0 20px;
 }
 
-.friend-list-container .contact-total {
+.friend-list-container .friend-actions {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 25px;
+}
+
+.friend-list-container .friend-actions .btn-sm {
+    margin-left: 2rem;
+}
+
+.friend-list-container .friend-actions .contact-total {
     font-size: 12px;
     font-weight: 700;
-    margin-bottom: 25px;
 }
 
 .friend-list-container .friend-list {
@@ -33,7 +44,21 @@
     font-size: 0.8rem;
 }
 
+.friend-list-container .friend-list .friend-wrapper .friend-data .friend-img .profile-init {
+    font-weight: 900;
+    font-size: 1rem;
+    padding: 5px;
+    border: 1px solid var(--color-border-hover);
+    border-radius: 6px;
+    box-shadow: var(--shadow);
+    background-color: var(--color-background-soft);
+}
+
 @media (min-width: 750px) {
+    .friend-list-container .friend-actions {
+        width: 80%;
+    }
+
     .friend-list-container .friend-list .friend-wrapper {
         width: 80%;
         padding: 12px;

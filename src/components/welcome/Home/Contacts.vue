@@ -1,15 +1,16 @@
 <template>
     <div class="friend-list-container">
-        <p class="contact-total">{{ lg('friends_count') }} : {{ numFriends }}</p>
+        <div class="friend-actions">
+            <p class="contact-total">{{ lg('friends_count') }} : {{ numGroups }}</p>
+            <button class="btn-sm btn-secondary">{{ lg('create_group') }}</button>
+        </div>
+        
         <div class="friend-list">
-            <div v-for="friend in friends" :key="friend.friendId" class="friend-wrapper">
+            <div v-for="card in groupCards" :key="card.groupId" class="friend-wrapper mb-1">
                 <div class="friend-data">
-                    <div class="friend-img">
-                        <img v-if="friend.friendImg" :src="friend.friendImg" alt="Profile Image" class="profile-img sm">
-                        <span v-else class="icon-lg"><IconUser /></span>
-                    </div>
+                    <ContactImage :friends="card.groupUsers"/>
                     <div>
-                        <h5>{{ friend.friendName }}</h5>
+                        <h5>{{ card.groupName }}</h5>
                     </div>
                 </div>
                 <div>
@@ -17,26 +18,71 @@
                 </div>
             </div>
         </div>
+
+        <SuccessToast v-if="saveSuccess"/>
+        <FailToast v-if="saveError"/>
     </div>
 </template>
 
 <script>
-    import IconUser from '@/components/icons/IconUser.vue';
-    import { mapState } from 'pinia';
+    import { mapStores, mapState } from 'pinia';
     import { friendsStore } from '@/stores/friends';
     import { useLgStore } from '@/stores/active__lg';
+    import { userStore } from '@/stores/user';
+    import ContactImage from './ContactImage.vue';
+    import Modal from '@/components/Modal.vue';
+    import SuccessToast from '@/components/SuccessToast.vue';
+    import FailToast from '@/components/FailToast.vue';
+    import { loadingStore } from '@/stores/loadin';
 
     export default {
         components: {
-            IconUser,
+            Modal,
+            ContactImage,
+            SuccessToast,
+            FailToast,
+        },
+
+        data() {
+            return {
+                showCreateGroupModal: false,
+                saveError: false,
+                saveSuccess: false,
+            }
         },
 
         computed: {
+            ...mapStores(userStore, loadingStore),
             ...mapState(friendsStore, {
                 numFriends: 'numFriends',
                 friends: 'allFriends',
+                groups: 'allGroups',
+                numGroups: 'numGroups',
+                friendData: 'getFriendData',
             }),
             ...mapState(useLgStore, ['lg']),
+
+            groupCards() {
+                let cards = [];
+                this.groups.forEach(g => {
+                    let oneCard = {
+                        groupId: g.id,
+                        groupName: g.group_name,
+                        groupCreated: g.created_at,
+                        groupUsers: [],
+                    };
+                    g.users.forEach(gu => {
+                        if (gu !== this.userStore.id) {
+                            let data = this.friendData(gu);
+                            if (data) {
+                                oneCard.groupUsers.push(data);
+                            }
+                        }
+                    });
+                    cards.push(oneCard);
+                });
+                return cards;
+            },
         },
     }
 </script>

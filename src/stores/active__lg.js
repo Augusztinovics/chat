@@ -350,9 +350,14 @@ export const useLgStore = defineStore('active_lg', {
                 EN: 'Didn\'t say anything',
             },
             friends_count: {
-                HU: 'Ismerősök összesen',
-                SR: 'Totalni prijatelji',
-                EN: 'Friends total',
+                HU: 'Ismerősök és csoportok száma',
+                SR: 'Broj prijatelja i grupa',
+                EN: 'Number of friends and groups',
+            },
+            create_group: {
+                HU: 'Csoport Készítése',
+                SR: 'Kreiranje Grupe',
+                EN: 'Group Creation',
             },
         },
     }),
