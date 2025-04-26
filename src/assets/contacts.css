@@ -14,7 +14,7 @@
     margin-left: 2rem;
 }
 
-.friend-list-container .friend-actions .contact-total {
+.contact-total {
     font-size: 12px;
     font-weight: 700;
 }
@@ -44,7 +44,7 @@
     font-size: 0.8rem;
 }
 
-.friend-list-container .friend-list .friend-wrapper .friend-data .friend-img .profile-init {
+.friend-img .profile-init {
     font-weight: 900;
     font-size: 1rem;
     padding: 5px;
@@ -52,6 +52,30 @@
     border-radius: 6px;
     box-shadow: var(--shadow);
     background-color: var(--color-background-soft);
+    color: var(--color-text);
+}
+
+.friend-checkbox {
+    margin: 25px 0;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.friend-checkbox input {
+    cursor: pointer;
+}
+
+.friend-checkbox label {
+    cursor: pointer;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.friend-checkbox label:hover {
+    color: var(--color-text-muted);
 }
 
 @media (min-width: 750px) {

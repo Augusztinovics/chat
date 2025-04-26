@@ -1,8 +1,8 @@
 <template>
     <div class="friend-list-container">
         <div class="friend-actions">
-            <p class="contact-total">{{ lg('friends_count') }} : {{ numGroups }}</p>
-            <button class="btn-sm btn-secondary">{{ lg('create_group') }}</button>
+            <p class="contact-total">{{ lg('friends_and_groups_count') }} : {{ numGroups }}</p>
+            <button class="btn-sm btn-secondary" @click="createGroupModalOpen">{{ lg('create_group') }}</button>
         </div>
         
         <div class="friend-list">
@@ -18,6 +18,34 @@
                 </div>
             </div>
         </div>
+
+        <Modal 
+            :show="showCreateGroupModal"
+            :size="'lg'"
+            :title="lg('create_group')"
+            :showFooter="false"
+            @close="createGroupModalClose"
+        >
+            <div>
+                <div>
+                    <label for="new_group_name">{{ lg('new_group_name_lbl') }}</label>
+                    <input type="text" id="new_group_name" @input="clearNameError" v-model="newGroupName">
+                    <p v-if="missingGroupName" class="text-danger">{{ lg('new_group_name_missing') }}</p>
+                </div>
+                <hr class="mt-2">
+                <div>
+                    <p class="contact-total">{{ lg('friends_count') }} : {{ numFriends }}</p>
+                    <div v-for="friend in friends" :key="'friends_' + friend.friendId" class="friend-checkbox">
+                        <input type="checkbox" :id="'friend_' + friend.friendId" :value="friend.friendId" @change="checkBoxChange" v-model="selectedFriendsForNewGroup" />
+                        <label :for="'friend_' + friend.friendId"><ContactImage :friends="[friend]"/> {{ friend.friendName }} <span v-if="friend.friendCity">( {{ friend.friendCity }} )</span></label>
+                    </div>
+                    <p v-if="noFriendSelected" class="text-danger">{{ lg('no_friend_selected') }}</p>
+                </div>
+                <div class="mt-2">
+                    <button class="btn btn-primary" @click="validateAndCreateGroup">{{ lg('create_group') }}</button>
+                </div>
+            </div>
+        </Modal>
 
         <SuccessToast v-if="saveSuccess"/>
         <FailToast v-if="saveError"/>
@@ -48,6 +76,10 @@
                 showCreateGroupModal: false,
                 saveError: false,
                 saveSuccess: false,
+                newGroupName: '',
+                missingGroupName: false,
+                selectedFriendsForNewGroup: [],
+                noFriendSelected: false,
             }
         },
 
@@ -82,6 +114,44 @@
                     cards.push(oneCard);
                 });
                 return cards;
+            },
+        },
+
+        methods: {
+            createGroupModalOpen() {
+                this.newGroupName = '';
+                this.missingGroupName = false;
+                this.selectedFriendsForNewGroup = [];
+                this.noFriendSelected = false;
+                this.showCreateGroupModal = true;
+                setTimeout(() => {
+                    document.getElementById("new_group_name").focus();
+                }, 500);
+            },
+
+            createGroupModalClose() {
+                this.showCreateGroupModal = false;
+            },
+
+            clearNameError() {
+                this.missingGroupName = false;
+            },
+
+            checkBoxChange() {
+                this.noFriendSelected = false;
+            },
+
+            validateAndCreateGroup() {
+                if (this.newGroupName.trim() == '') {
+                    this.missingGroupName = true;
+                    document.getElementById("new_group_name").focus();
+                }
+                if (this.selectedFriendsForNewGroup.length < 1) {
+                    this.noFriendSelected = true;
+                }
+                if (this.missingGroupName || this.noFriendSelected) {
+                    return;
+                }
             },
         },
     }
