@@ -34,11 +34,26 @@ export const friendsStore = defineStore('friends', {
                     .then((res) => {
                         this.friends = res.data?.friends ?? [];
                         this.groups = res.data?.groups ?? [];
-                        console.log(this.groups);
                         resolve(true);
                     })
                     .catch((e) => {
                         console.log(e);
+                        if (e.response.status == 401) {
+                            reject(401);
+                        } else {
+                            reject(e);
+                        }
+                    });
+            });
+        },
+
+        createGroup(payload) {
+            return new Promise((resolve,reject) => {
+                axios.post('/api/resources/create-group', payload)
+                    .then(() => {
+                        resolve(true);
+                    })
+                    .catch((e) => {
                         if (e.response.status == 401) {
                             reject(401);
                         } else {

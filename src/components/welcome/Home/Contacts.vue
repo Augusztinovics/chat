@@ -10,12 +10,21 @@
                 <div class="friend-data">
                     <ContactImage :friends="card.groupUsers"/>
                     <div>
+
+                        <!-- TODO Details view on click, if 1 friend right away, if more selector -->
                         <h5>{{ card.groupName }}</h5>
+                        <!-- END TODO -->
+
                     </div>
                 </div>
+
+                <!-- TODO: Responsive style and actions!!! -->
                 <div>
+                    <span class="icon-edit-btn mr-1"><IconEdit /></span>
                     <button class="btn-sm btn-primary">{{ lg('send_message') }}</button>
                 </div>
+                <!-- END TODO -->
+
             </div>
         </div>
 
@@ -53,7 +62,7 @@
 </template>
 
 <script>
-    import { mapStores, mapState } from 'pinia';
+    import { mapStores, mapState, mapActions } from 'pinia';
     import { friendsStore } from '@/stores/friends';
     import { useLgStore } from '@/stores/active__lg';
     import { userStore } from '@/stores/user';
@@ -62,6 +71,7 @@
     import SuccessToast from '@/components/SuccessToast.vue';
     import FailToast from '@/components/FailToast.vue';
     import { loadingStore } from '@/stores/loadin';
+    import IconEdit from '@/components/icons/IconEdit.vue';
 
     export default {
         components: {
@@ -69,6 +79,7 @@
             ContactImage,
             SuccessToast,
             FailToast,
+            IconEdit,
         },
 
         data() {
@@ -118,6 +129,8 @@
         },
 
         methods: {
+            ...mapActions(friendsStore, ['createGroup', 'loadFriends']),
+
             createGroupModalOpen() {
                 this.newGroupName = '';
                 this.missingGroupName = false;
@@ -152,6 +165,33 @@
                 if (this.missingGroupName || this.noFriendSelected) {
                     return;
                 }
+
+                this.saveSuccess = false;
+                this.loadingStore.startLoading();
+                this.createGroup({groupName: this.newGroupName.trim(), friends: this.selectedFriendsForNewGroup})
+                    .then(() => {
+                        this.loadFriends();
+                        this.loadingStore.finishLoading();
+                        this.createGroupModalClose();
+                        this.saveSuccess = true;
+                        setTimeout(() => {
+                            this.saveSuccess = false;
+                            this.toastMessage = '';
+                        }, 3000);
+                    })
+                    .catch((e) => {
+                        this.loadingStore.finishLoading();
+                        this.createGroupModalClose();
+                        if (e == 401) {
+                            this.$router.push('/login');
+                        } else {
+                            this.saveError = true;
+                            setTimeout(() => {
+                                this.saveError = false;
+                                this.toastMessage = '';
+                            }, 3000);
+                        }
+                    });
             },
         },
     }

@@ -1,4 +1,5 @@
 const Group = require('../../../../models/Group.js');
+const GroupUser = require('../../../../models/GroupUser.js');
 
 async function createGroup(req, res) {
     if (!req.user) {
@@ -18,7 +19,15 @@ async function createGroup(req, res) {
         return;
     }
 
+    console.log('Group Name: ' + newGroupName);
+
     if (!req.body?.friends) {
+        res.sendStatus(400);
+        return;
+    }
+
+    let friends = req.body.friends;
+    if (friends.length < 1) {
         res.sendStatus(400);
         return;
     }
@@ -33,8 +42,26 @@ async function createGroup(req, res) {
             throw new Error("Failed to create group");
         }
 
-        let result = await req.user.sendedFriendRequests();
-        res.json({sendedRequests: result});
+        let groupUsers = [];
+        groupUsers.push(GroupUser.create({
+            group_id: newGroup.id,
+            user_id: req.user.id,
+        }));
+
+        friends.forEach(f => {
+            groupUsers.push(GroupUser.create({
+                group_id: newGroup.id,
+                user_id: f,
+            }));
+        });
+
+        Promise.all(groupUsers).then(() => {
+            res.sendStatus(200);
+            return;
+        })
+        .catch(() => {
+            throw new Error("Failed to create group");
+        });
     } catch (error) {
         console.log('CREATE GROUP CATCH ERROR');
         console.log(error);
