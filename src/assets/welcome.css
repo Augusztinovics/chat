@@ -171,3 +171,12 @@
 .btn-link:hover {
     color: var(--color-link-hover);
 }
+
+.btn-link-no-underline {
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.btn-link-no-underline:hover {
+    text-decoration: underline;
+}

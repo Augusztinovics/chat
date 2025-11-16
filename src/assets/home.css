@@ -4,6 +4,10 @@
     flex-wrap: nowrap;
 }
 
+.contact-tabs.left-tabs .tab {
+    justify-content:flex-start;
+}
+
 .contact-tabs .tab .tab-menu {
     border-bottom: 2px solid var(--color-border-hover);
     padding: 0.5rem 1rem;

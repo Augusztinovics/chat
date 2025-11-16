@@ -42,12 +42,28 @@
 
 .friend-list-container .friend-list .friend-wrapper .friend-data h5 {
     font-size: 0.8rem;
+    cursor: pointer;
+}
+
+.friend-list-container .friend-list .friend-wrapper .friend-data h5:hover {
+    text-decoration: underline;
 }
 
 .friend-img .profile-init {
     font-weight: 900;
     font-size: 1rem;
     padding: 5px;
+    border: 1px solid var(--color-border-hover);
+    border-radius: 6px;
+    box-shadow: var(--shadow);
+    background-color: var(--color-background-soft);
+    color: var(--color-text);
+}
+
+.profile-init-lg {
+    font-weight: 900;
+    font-size: 2rem;
+    padding: 5px 20px;
     border: 1px solid var(--color-border-hover);
     border-radius: 6px;
     box-shadow: var(--shadow);

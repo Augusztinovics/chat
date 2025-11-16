@@ -10,11 +10,7 @@
                 <div class="friend-data">
                     <ContactImage :friends="card.groupUsers"/>
                     <div>
-
-                        <!-- TODO Details view on click, if 1 friend right away, if more selector -->
-                        <h5>{{ card.groupName }}</h5>
-                        <!-- END TODO -->
-
+                        <h5 @click="showGroupDetail(card)">{{ card.groupName }}</h5>
                     </div>
                 </div>
 
@@ -56,6 +52,8 @@
             </div>
         </Modal>
 
+        <ContactGroupDetailModal :friendGroup="groupDetail" @closeDetails="hideGroupDetail" />
+
         <SuccessToast v-if="saveSuccess"/>
         <FailToast v-if="saveError"/>
     </div>
@@ -72,6 +70,7 @@
     import FailToast from '@/components/FailToast.vue';
     import { loadingStore } from '@/stores/loadin';
     import IconEdit from '@/components/icons/IconEdit.vue';
+    import ContactGroupDetailModal from './ContactGroupDetailModal.vue';
 
     export default {
         components: {
@@ -80,6 +79,7 @@
             SuccessToast,
             FailToast,
             IconEdit,
+            ContactGroupDetailModal,
         },
 
         data() {
@@ -91,6 +91,7 @@
                 missingGroupName: false,
                 selectedFriendsForNewGroup: [],
                 noFriendSelected: false,
+                groupDetail: null,
             }
         },
 
@@ -193,6 +194,14 @@
                         }
                     });
             },
+
+            showGroupDetail(group) {
+                this.groupDetail = group;
+            },
+
+            hideGroupDetail() {
+                this.groupDetail = null;
+            }
         },
     }
 </script>

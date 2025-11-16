@@ -249,6 +249,11 @@ export const useLgStore = defineStore('active_lg', {
                 SR: 'Predstavljamo',
                 EN: 'Introducing',
             },
+            friend_name: {
+                HU: 'Név',
+                SR: 'Ime',
+                EN: 'Name',
+            },
             send_message: {
                 HU: 'Üzenet Küldése',
                 SR: 'Pošalji Poruku',
@@ -378,6 +383,11 @@ export const useLgStore = defineStore('active_lg', {
                 HU: 'Választj legalább egy barátot a csoportba.',
                 SR: 'Izaberite barem jednog prijatelja da se pridruži grupi.',
                 EN: 'Choose at least one friend to join the group.',
+            },
+            group_created_date: {
+                HU: 'Csoport Létrehozva',
+                SR: 'Grupa Je Napravljena',
+                EN: 'Group Created',
             },
         },
     }),
