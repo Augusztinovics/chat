@@ -16,7 +16,7 @@
 
                 <!-- TODO: Responsive style and actions!!! -->
                 <div>
-                    <span class="icon-edit-btn mr-1"><IconEdit /></span>
+                    <span class="icon-edit-btn mr-1" @click="showGroupEdit(card)"><IconEdit /></span>
                     <button class="btn-sm btn-primary">{{ lg('send_message') }}</button>
                 </div>
                 <!-- END TODO -->
@@ -53,6 +53,7 @@
         </Modal>
 
         <ContactGroupDetailModal :friendGroup="groupDetail" @closeDetails="hideGroupDetail" />
+        <EditContactModal :friendGroup="groupEdit" :allFriends="friends" @closeEditDetails="hideGroupEdit" />
 
         <SuccessToast v-if="saveSuccess"/>
         <FailToast v-if="saveError"/>
@@ -71,6 +72,7 @@
     import { loadingStore } from '@/stores/loadin';
     import IconEdit from '@/components/icons/IconEdit.vue';
     import ContactGroupDetailModal from './ContactGroupDetailModal.vue';
+    import EditContactModal from './EditContactModal.vue';
 
     export default {
         components: {
@@ -80,6 +82,7 @@
             FailToast,
             IconEdit,
             ContactGroupDetailModal,
+            EditContactModal,
         },
 
         data() {
@@ -92,6 +95,7 @@
                 selectedFriendsForNewGroup: [],
                 noFriendSelected: false,
                 groupDetail: null,
+                groupEdit: null,
             }
         },
 
@@ -177,7 +181,6 @@
                         this.saveSuccess = true;
                         setTimeout(() => {
                             this.saveSuccess = false;
-                            this.toastMessage = '';
                         }, 3000);
                     })
                     .catch((e) => {
@@ -189,7 +192,6 @@
                             this.saveError = true;
                             setTimeout(() => {
                                 this.saveError = false;
-                                this.toastMessage = '';
                             }, 3000);
                         }
                     });
@@ -201,7 +203,15 @@
 
             hideGroupDetail() {
                 this.groupDetail = null;
-            }
+            },
+
+            showGroupEdit(group) {
+                this.groupEdit = group;
+            },
+
+            hideGroupEdit() {
+                this.groupEdit = null;
+            },
         },
     }
 </script>

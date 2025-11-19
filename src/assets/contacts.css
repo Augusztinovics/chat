@@ -78,6 +78,14 @@
     gap: 15px;
 }
 
+.friend-checkbox.danger-check input[type="checkbox"]:checked + label {
+    color: var(--color-danger);
+}
+
+.friend-checkbox.green-check input[type="checkbox"]:checked + label {
+    color: var(--color-success);
+}
+
 .friend-checkbox input {
     cursor: pointer;
 }
