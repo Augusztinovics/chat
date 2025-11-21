@@ -62,5 +62,21 @@ export const friendsStore = defineStore('friends', {
                     });
             });
         },
+
+        updateGroup(payload) {
+            return new Promise((resolve,reject) => {
+                axios.post('/api/resources/update-group', payload)
+                    .then(() => {
+                        resolve(true);
+                    })
+                    .catch((e) => {
+                        if (e.response.status == 401) {
+                            reject(401);
+                        } else {
+                            reject(e);
+                        }
+                    });
+            });
+        }
     },
 });

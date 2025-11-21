@@ -14,9 +14,9 @@
                     </div>
                 </div>
 
-                <!-- TODO: Responsive style and actions!!! -->
+                <!-- TODO: Responsive style -->
                 <div>
-                    <span class="icon-edit-btn mr-1" @click="showGroupEdit(card)"><IconEdit /></span>
+                    <span v-if="card.owner" class="icon-edit-btn mr-1" @click="showGroupEdit(card)"><IconEdit /></span>
                     <button class="btn-sm btn-primary">{{ lg('send_message') }}</button>
                 </div>
                 <!-- END TODO -->
@@ -117,6 +117,7 @@
                         groupId: g.id,
                         groupName: g.group_name,
                         groupCreated: g.created_at,
+                        owner: g.main_user == this.userStore.id,
                         groupUsers: [],
                     };
                     g.users.forEach(gu => {
@@ -206,11 +207,26 @@
             },
 
             showGroupEdit(group) {
+                console.log(group);
                 this.groupEdit = group;
             },
 
-            hideGroupEdit() {
+            hideGroupEdit(msg) {
                 this.groupEdit = null;
+                if (msg) {
+                    if (msg == 'SUC') {
+                        this.saveSuccess = true;
+                        setTimeout(() => {
+                            this.saveSuccess = false;
+                        }, 3000);
+                    }
+                    if (msg == 'ER') {
+                        this.saveError = true;
+                        setTimeout(() => {
+                            this.saveError = false;
+                        }, 3000);
+                    }
+                }
             },
         },
     }

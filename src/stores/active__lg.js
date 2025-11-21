@@ -374,6 +374,16 @@ export const useLgStore = defineStore('active_lg', {
                 SR: 'Unesite ime za novu grupu.',
                 EN: 'Please enter a name for the new group.',
             },
+            group_new_name_lbl: {
+                HU: 'Az csoport új neve',
+                SR: 'Nove ime grupe',
+                EN: 'The new name of the group',
+            },
+            group_new_name_missing: {
+                HU: 'Kérem adja meg a csoport új nevét.',
+                SR: 'Unesite novu ime za grupu.',
+                EN: 'Please enter the new name for the group.',
+            },
             friends_count: {
                 HU: 'Ismerősök száma',
                 SR: 'Broj prijatelja',
@@ -388,6 +398,21 @@ export const useLgStore = defineStore('active_lg', {
                 HU: 'Csoport Létrehozva',
                 SR: 'Grupa Je Napravljena',
                 EN: 'Group Created',
+            },
+            delete_group: {
+                HU: 'Csoport Törlése',
+                SR: 'Izbriši Grupa',
+                EN: 'Delete Group',
+            },
+            friends_in_group: {
+                HU: 'Ismerősök a csoportban',
+                SR: 'Prijatelji u grupi',
+                EN: 'Friends in the group',
+            },
+            friends_outside_group: {
+                HU: 'Ismerősök a csoporton kívül',
+                SR: 'Prijatelji van grupe',
+                EN: 'Friends outside the group',
             },
         },
     }),
