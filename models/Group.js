@@ -1,6 +1,5 @@
 const Model = require('./Model.js');
 const GroupUsers = require('./GroupUser.js');
-const User = require('./User.js');
 
 class Group extends Model
 {

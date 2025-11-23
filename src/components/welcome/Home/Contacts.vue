@@ -183,6 +183,7 @@
                         setTimeout(() => {
                             this.saveSuccess = false;
                         }, 3000);
+                        //TODO fire group created event!!!!!
                     })
                     .catch((e) => {
                         this.loadingStore.finishLoading();
@@ -207,7 +208,6 @@
             },
 
             showGroupEdit(group) {
-                console.log(group);
                 this.groupEdit = group;
             },
 

@@ -61,7 +61,6 @@ class Model {
                 if (err) {
                     resolve(false);
                 } else {
-                    //TODO If it was create need id to put on model!!!
                     resolve(true);
                 }
             });
@@ -289,6 +288,32 @@ class Model {
             let query = `DELETE FROM ${this.table} WHERE ${this.primaryKey} = ?`;
             try {
                 db.run(query, [id], (err) => {
+                    if (err) {
+                        console.log(err);
+                        resolve(false);
+                    } else {
+                        resolve(true);
+                    }
+                })
+            } catch (error) {
+                console.log(error);
+                resolve(false);
+            }
+        });
+    }
+
+    /**
+     * Delete the models the query will start DELETE FROM ${this.table} WHERE
+     *
+     * @param {string} query 
+     * @param {any[]} values
+     * @returns Boolean
+     */
+    static deleteRaw(query, values=[]) {
+        return new Promise((resolve) => {
+            let deletion = `DELETE FROM ${this.table} WHERE ${query}`;
+            try {
+                db.run(deletion, values, (err) => {
                     if (err) {
                         console.log(err);
                         resolve(false);

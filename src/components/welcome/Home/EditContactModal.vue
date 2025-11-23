@@ -42,7 +42,7 @@
                     <div class="text-center mt-2">
                         <button type="button" class="btn btn-secondary" @click="modalClose">{{ lg('cancel') }}</button>
                         <button v-if="showSaveBtn && !removeGroup" type="button" class="btn btn-primary ml-1" @click="saveChanges" >{{ lg('save') }}</button>
-                        <button v-if="showSaveBtn && removeGroup" type="button" class="btn btn-danger ml-1" @click="saveChanges(true)">{{ lg('delete_group') }}</button>
+                        <button v-if="showSaveBtn && removeGroup" type="button" class="btn btn-danger ml-1" @click="saveChanges(e, true)">{{ lg('delete_group') }}</button>
                     </div>
                 </div>
             </div>
@@ -143,7 +143,7 @@
                 return true;
             },
 
-            saveChanges(del = false) {
+            saveChanges(e, del = false) {
                 if (!this.showSaveBtn) {
                     return;
                 }
@@ -155,18 +155,28 @@
 
                 this.loadingStore.startLoading();
 
-                //Need to put together the submit data!!!! (create the actual controller as well, with rout)
-                //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                //TODO
                 let submitData = {
-                    groupId: this.friendGroup.groupId
+                    groupId: this.friendGroup.groupId,
+                    del: del,
                 };
-                //END TODO
+                if (!del) {
+                    if (this.editName) {
+                        submitData.groupName = this.editGroupName.trim()
+                    }
+                    if (this.selectedFriendsForDeleteFromGroup.length > 0) {
+                        submitData.removeIds = this.selectedFriendsForDeleteFromGroup;
+                    }
+                    if (this.selectedFriendsToAddGroup.length > 0) {
+                        submitData.addIds = this.selectedFriendsToAddGroup;
+                    }
+                }
+
                 this.updateGroup(submitData)
                     .then(() => {
                         this.loadFriends();
                         this.loadingStore.finishLoading();
                         this.modalClose('SUC');
+                        //TODO fire group update event!!!!!
                     })
                     .catch((e) => {
                         this.loadingStore.finishLoading();

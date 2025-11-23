@@ -19,8 +19,6 @@ async function createGroup(req, res) {
         return;
     }
 
-    console.log('Group Name: ' + newGroupName);
-
     if (!req.body?.friends) {
         res.sendStatus(400);
         return;

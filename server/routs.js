@@ -18,6 +18,7 @@ const acceptFriendRequestController = require('./controllers/resources/friendReq
 const denieFriendRequestController = require('./controllers/resources/friendRequests/denieFriendRequestController.js');
 const getFriendsController = require('./controllers/resources/friendRequests/getFriendsController.js');
 const createGroupController = require('./controllers/resources/friendRequests/createGroupController.js');
+const updateGroupController = require('./controllers/resources/friendRequests/updateGroupController.js');
 
 function apiRouts(app) {
     app.get('/login', async (req, res) => testController(req, res));
@@ -45,6 +46,7 @@ function apiRouts(app) {
 
     //Group requests
     app.post('/api/resources/create-group', auth, async (req, res) => createGroupController(req, res));
+    app.post('/api/resources/update-group', auth, async (req, res) => updateGroupController(req, res));
 
 
     app.get('/home', auth,  (req, res) => {

@@ -174,6 +174,7 @@
                             this.friend.messageToFriend = this.requestText;
                             this.editing = false;
                             this.showDetails = true;
+                            //TODO fire friend request send event!!!!!
                         })
                         .catch((e) => {
                             this.sending = false;
@@ -210,6 +211,7 @@
                     .then(() => {
                         this.sending = false;
                         this.$emit('reloadData', 'SUCCESS', this.lg('frien_request_accepted'));
+                        //TODO fire friend request accepted event!!!!!
                     })
                     .catch((e) => {
                         this.sending = false;
@@ -227,6 +229,7 @@
                     .then(() => {
                         this.sending = false;
                         this.$emit('reloadData', 'SUCCESS', this.lg('request_denited'));
+                        //TODO fire friend request denie event!!!!!
                     })
                     .catch((e) => {
                         this.sending = false;
