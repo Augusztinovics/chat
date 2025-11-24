@@ -11,6 +11,5 @@ export default {
         BaseLayout,
         Home,
     },
-    props: ['socket'],
 }
 </script>

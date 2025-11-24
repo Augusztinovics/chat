@@ -39,6 +39,7 @@ import { userStore } from '@/stores/user';
 import { useLgStore } from '@/stores/active__lg';
 import { paginationSizesStore } from '@/stores/pagination_sizes';
 import { loadingStore } from '@/stores/loadin';
+import { socketStore } from '@/stores/socket';
 import { RouterLink } from 'vue-router';
 import IconIdCard from '@/components/icons/IconIdCard.vue';
 import IconTerms from '@/components/icons/IconTerms.vue';
@@ -69,7 +70,7 @@ export default {
     },
 
     computed: {
-        ...mapStores(userStore, paginationSizesStore, loadingStore),
+        ...mapStores(userStore, paginationSizesStore, loadingStore, socketStore),
         ...mapState(useLgStore, ['lg']),
     },
 
@@ -81,6 +82,9 @@ export default {
             this.userStore.load()
                     .then(() => {
                         this.loadingStore.finishLoading();
+                        if (this.socketStore.socket) {
+                            this.socketStore.socket.emit('identify', {user_id: this.userStore.id});
+                        }
                     })
                     .catch((e) => {
                         this.loadingStore.finishLoading();

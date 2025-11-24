@@ -16,7 +16,7 @@ app.use(cookieParser());
 
 apiRouts(app);
 
-io.on('connection', socket => onConnection(socket));
+io.on('connection', socket => onConnection(socket, io));
 
 const PORT = process.env.PORT || 3000;
 
