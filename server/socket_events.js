@@ -28,6 +28,7 @@ function onConnection(socket, io) {
         // from: (sender name(maybe not need, will see))
         // msg: (text message)
         // img: (image data, if any)
+        // reaction: (selected reaction)
         //}
         //Audio(video, maybe) call will go on different event
         io.to('group_' + msg.group_id).emit(msg);

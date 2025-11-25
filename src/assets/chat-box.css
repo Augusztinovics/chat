@@ -1,0 +1,63 @@
+.chat-container {
+    width: 40vw;
+    height: 50vh;
+    position: fixed;
+    top: 20vh;
+    left: 30vw;
+    border: 2px solid var(--color-border);
+    border-radius: 6px;
+    background-color: var(--color-background);
+    box-shadow: var(--shadow);
+}
+
+.chat-container .chat-header {
+    height: 10%;
+    border-bottom: 2px solid var(--color-border);
+    background-color: var(--color-background-mute);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.chat-container .chat-header h4 {
+    margin-left: 10px;
+}
+
+.chat-container .chat-header .controls {
+    width: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.chat-container .chat-header .controls button {
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    border: 0;
+    margin-right: 20px;
+    cursor: pointer;
+}
+
+.chat-container .chat-header .controls:last-child {
+    padding-bottom: 1px;
+}
+
+.chat-container .chat-header .controls button .icon svg {
+    fill: var(--color-link);
+}
+
+.chat-container .chat-header .controls button:hover .icon svg {
+    fill: var(--color-link-hover);
+}
+
+.chat-container .chat-body {
+    height: 75%;
+}
+
+.chat-container .chat-footer {
+    height: 15%;
+    border-top: 2px solid var(--color-border);
+    background-color: var(--color-background-mute);
+    display: flex;
+}
