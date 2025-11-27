@@ -1,14 +1,18 @@
 <template>
-    <div v-if="showChat" class="chat-container">
-        <div class="chat-header">
+    <div v-if="showChat" 
+        class="chat-container"
+        :class="{'full-screen': fullScreen, 'closing': closing}"
+        :style="{ left: xVW + 'vw', top: yVH + 'vh' }"
+    >
+        <div class="chat-header"  @mousedown="startDrag" @touchstart="startDrag">
             <!-- Group name, full-screen toogle, close -->
             <h4>The group name</h4>
             <div class="controls">
-                <button type="button">
+                <button type="button" class="minimaize-btn" @click="toogleFullScreen">
                     <span v-if="fullScreen" class="icon"><IconMinimize /></span>
                     <span v-else class="icon"><IconMaximize /></span>
                 </button>
-                <button type="button"><span class="icon"><IconX /></span></button>
+                <button type="button" @click="closeChat"><span class="icon"><IconX /></span></button>
             </div>
         </div>
         <div class="chat-body">
@@ -58,9 +62,13 @@
         },
         data() {
             return {
-                posX: 0,
-                posY: 0,
+                xVW: 1, // position in vw units
+                yVH: 1, // position in vh units
+                dragging: false,
+                startX: 0,
+                startY: 0,
                 showChat: true,
+                closing: false,
                 fullScreen: false,
                 tumsUp: '👍',
             }
@@ -71,7 +79,82 @@
         },
 
         methods: {
+            closeChat() {
+                this.closing = true;
+                setTimeout(() => {
+                    this.showChat = false;
+                    this.closing = false;
+                }, 150);
+            },
 
+            toogleFullScreen() {
+                this.fullScreen = !this.fullScreen;
+                if (this.fullScreen) {
+                    if (this.dragging) {
+                        this.endDrag();
+                    }
+                    this.xVW = 1;
+                    this.yVH = 1;
+                }
+            },
+
+            startDrag(e) {
+                if (this.fullScreen) {
+                    return;
+                }
+                this.dragging = true;
+
+                const point = this.getPoint(e);
+                this.startX = point.x - this.vwToPx(this.xVW);
+                this.startY = point.y - this.vhToPx(this.yVH);
+
+                window.addEventListener("mousemove", this.onDrag);
+                window.addEventListener("mouseup", this.endDrag);
+
+                window.addEventListener("touchmove", this.onDrag, { passive: false });
+                window.addEventListener("touchend", this.endDrag);
+            },
+
+            onDrag(e) {
+                if (!this.dragging) return;
+
+                e.preventDefault();
+
+                const point = this.getPoint(e);
+                const newXvw = ((point.x - this.startX) / window.innerWidth) * 100;
+                const newYvh = ((point.y - this.startY) / window.innerHeight) * 100;
+
+                this.xVW = Math.max(0, Math.min(75, newXvw));
+                this.yVH = Math.max(0, Math.min(75, newYvh));
+            },
+
+            endDrag() {
+                this.dragging = false;
+
+                window.removeEventListener("mousemove", this.onDrag);
+                window.removeEventListener("mouseup", this.endDrag);
+
+                window.removeEventListener("touchmove", this.onDrag);
+                window.removeEventListener("touchend", this.endDrag);
+            },
+
+            getPoint(e) {
+                if (e.touches) {
+                    return {
+                    x: e.touches[0].clientX,
+                    y: e.touches[0].clientY
+                    };
+                }
+                return { x: e.clientX, y: e.clientY };
+            },
+
+            vwToPx(v) {
+                return (window.innerWidth * v) / 100;
+            },
+
+            vhToPx(v) {
+                return (window.innerHeight * v) / 100;
+            }
         },
     }
 </script>
