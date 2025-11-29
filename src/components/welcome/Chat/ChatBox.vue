@@ -20,19 +20,21 @@
         </div>
         <div class="chat-footer">
             <!-- message input field, send button, img upload, emojis... -->
-             <div>
+             <div class="icon-btn-container">
                 <!-- file upload -->
-                <span class="icon"><ImageIcon /></span>
-             </div>
-             <div>
+                <button type="button">
+                    <span class="icon"><ImageIcon /></span>
+                </button>
                 <!-- emojis -->
-                <span class="icon"><EmojiIcon /></span>
+                <button type="button">
+                    <span class="icon"><EmojiIcon /></span>
+                </button>
              </div>
-            <div>
+            <div class="msg-input-container">
                 <input type="text">
                 <button type="button" class="chat-send-btn"><span class="icon"><IconSend /></span></button>
             </div>
-            <div>
+            <div class="icon-btn-container reaction">
                 <!-- reactions -->
                 <button type="button" class="reaction-btn">👍</button>
                 <button type="button" class="reaction-btn"><span class="icon"><IconDots /></span></button>
