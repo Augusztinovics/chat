@@ -16,28 +16,61 @@
             </div>
         </div>
         <div class="chat-body">
-            <!-- the messages, auto scroll button -->
+            <!-- the messages and users in group conteiners-->
+            <div class="msg-and-user" :style="{'max-height' : maxHeight}">
+                <!-- Users in group container -->
+                <div class="user-box">
+
+                </div>
+                <!-- messages container -->
+                <div class="msg-box">
+                    <p>first message</p>
+                    <p>second message</p>
+                    <p>second message</p>
+                    <p>second message</p>
+                    <p>second message</p>
+                    <p>second message</p>
+                    <p>second message</p>
+                    <p>second message</p>
+                    <p>second message</p>
+                    <p>second message</p>
+                    <p>second message</p>
+                    <p>second message</p>
+                    <p>second message</p>
+                    <p>last message</p>
+                </div>
+            </div>
+            <!-- Different helper input containers, one at the time can be open or none -->
+            <div v-if="openHelper == 'IMG'" class="help-box">
+                Image upload!!!!
+            </div>
+            <div v-if="openHelper == 'EMOJI'" class="help-box">
+                Emmojiiiisss!!!!
+            </div>
+            <div v-if="openHelper == 'REACTION'" class="help-box">
+                Reactions!!!!
+            </div>
         </div>
         <div class="chat-footer">
             <!-- message input field, send button, img upload, emojis... -->
              <div class="icon-btn-container">
                 <!-- file upload -->
-                <button type="button">
+                <button type="button" @click="openHelperContainer('IMG')">
                     <span class="icon"><ImageIcon /></span>
                 </button>
                 <!-- emojis -->
-                <button type="button">
+                <button type="button" @click="openHelperContainer('EMOJI')">
                     <span class="icon"><EmojiIcon /></span>
                 </button>
              </div>
             <div class="msg-input-container">
-                <input type="text">
-                <button type="button" class="chat-send-btn"><span class="icon"><IconSend /></span></button>
+                <input type="text" name="msg_text" ref="msg_text" @keyup.enter="sendMsg" v-model="msgText" />
+                <button v-if="showSendBtn" type="button" class="chat-send-btn" @click="sendMsg"><span class="icon"><IconSend /></span></button>
             </div>
             <div class="icon-btn-container reaction">
                 <!-- reactions -->
-                <button type="button" class="reaction-btn">👍</button>
-                <button type="button" class="reaction-btn"><span class="icon"><IconDots /></span></button>
+                <button type="button" class="reaction-btn" @click="sendReaction('👍')">👍</button>
+                <button type="button" class="reaction-btn" @click="openHelperContainer('REACTION')"><span class="icon"><IconDots /></span></button>
             </div>
         </div>
     </div>
@@ -72,15 +105,76 @@
                 showChat: true,
                 closing: false,
                 fullScreen: false,
-                tumsUp: '👍',
+                img: null,
+                msgText: '',
+                openHelper: 'NON',
+                maxHeight: '100%',
             }
         },
 
         computed: {
-
+            showSendBtn() {
+                return this.img || this.msgText.length > 0;
+            },
         },
 
         methods: {
+            sendMsg() {
+                if (!this.showSendBtn) return;
+                //DODO
+                let msgData = {
+                    //Will come from props, now just hardcode
+                    group_id: 1,
+                    //Will come from props, now just hardcode
+                    from_id: 1,
+                    //Will come from props, now just hardcode
+                    from: 'Somebody',
+                    msg: this.msgText,
+                    img: this.img,
+                    reaction: null,
+                };
+                console.log(msgData);
+                this.msgText = '';
+                this.img = null; //Maybe will need to empty the file input as well!!!!
+                this.$refs.msg_text.focus();
+            },
+
+            sendReaction(reaction) {
+                let msgData = {
+                    //Will come from props, now just hardcode
+                    group_id: 1,
+                    //Will come from props, now just hardcode
+                    from_id: 1,
+                    //Will come from props, now just hardcode
+                    from: 'Somebody',
+                    msg: '',
+                    img: null,
+                    reaction: reaction,
+                };
+                console.log(msgData);
+            },
+
+            openHelperContainer(helper) {
+                this.emtyFileInput();
+                if (helper == this.openHelper) {
+                    //Toogle of the helper
+                    this.openHelper = 'NON';
+                    this.maxHeight = '100%';
+                } else {
+                    this.openHelper = helper;
+                    if (this.fullScreen) {
+                        this.maxHeight = '85%';
+                    } else {
+                        this.maxHeight = '70%';
+                    }
+                }
+            },
+
+            emtyFileInput() {
+                //Need to empty the file input, for now just
+                this.img = null;
+            },
+
             closeChat() {
                 this.closing = true;
                 setTimeout(() => {
@@ -97,6 +191,13 @@
                     }
                     this.xVW = 1;
                     this.yVH = 1;
+                }
+                if (this.openHelper != 'NON') {
+                    if (this.fullScreen) {
+                        this.maxHeight = '85%';
+                    } else {
+                        this.maxHeight = '70%';
+                    }
                 }
             },
 
