@@ -24,20 +24,7 @@
                 </div>
                 <!-- messages container -->
                 <div class="msg-box">
-                    <p>first message</p>
-                    <p>second message</p>
-                    <p>second message</p>
-                    <p>second message</p>
-                    <p>second message</p>
-                    <p>second message</p>
-                    <p>second message</p>
-                    <p>second message</p>
-                    <p>second message</p>
-                    <p>second message</p>
-                    <p>second message</p>
-                    <p>second message</p>
-                    <p>second message</p>
-                    <p>last message</p>
+
                 </div>
             </div>
             <!-- Different helper input containers, one at the time can be open or none -->
@@ -45,10 +32,10 @@
                 Image upload!!!!
             </div>
             <div v-if="openHelper == 'EMOJI'" class="help-box">
-                Emmojiiiisss!!!!
+                <Emojis />
             </div>
             <div v-if="openHelper == 'REACTION'" class="help-box">
-                Reactions!!!!
+                <Emojis />
             </div>
         </div>
         <div class="chat-footer">
@@ -84,6 +71,7 @@
     import IconMaximize from '@/components/icons/IconMaximize.vue';
     import IconX from '@/components/icons/IconX.vue';
     import IconDots from '@/components/icons/IconDots.vue';
+    import Emojis from './Emojis.vue';
 
     export default {
         components: {
@@ -94,6 +82,7 @@
             IconMaximize,
             IconX,
             IconDots,
+            Emojis,
         },
         data() {
             return {
