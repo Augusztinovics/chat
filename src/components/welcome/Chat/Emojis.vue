@@ -1,23 +1,28 @@
 <template>
-    <div>
-        <div>
-            <!-- tabs -->
-             <input type="text" v-model="searchText">
+    <div class="emoji-container">
+        <div class="emoji-select-box">
+            <div>
+                <input type="text" v-model="searchText" name="icon-serch-field">
+                <span class="icon"><IconSearch /></span>
+            </div>
             <select name="group_select" id="group_select" v-model="activeGroup">
                 <option v-for="group in selectableGroups" :key="group.id" :value="group.id">{{ group.label }}</option>
             </select>
         </div>
-        <div>
-            <!-- selections -->
-             <button type="button" v-for="emoji in selectedGroup" :title="emoji.name" :key="emoji.dec">{{ emoji.emoji }}</button>
-
+        <div class="emoji-box">
+            <button type="button" v-for="emoji in selectedGroup" :title="emoji.name" :key="emoji.dec" @click="emojiSelect(emoji)">{{ emoji.emoji }}</button>
         </div>
     </div>
 </template>
 
 <script>
 import { GROUPS, selectByCategory, searchEmojis } from './EmojiFunctions.js';
+import IconSearch from '@/components/icons/IconSearch.vue';
+
 export default {
+    components: {
+        IconSearch,
+    },
     props: ['from'],
 
     data() {
