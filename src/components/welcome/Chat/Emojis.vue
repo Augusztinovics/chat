@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { GROUPS, selectByCategory, searchEmojis } from './EmojiFunctions.js';
+import { GROUPS, selectByCategory, searchEmojis, saveToLocal, getFromLocale } from './EmojiFunctions.js';
 import IconSearch from '@/components/icons/IconSearch.vue';
 
 export default {
@@ -27,7 +27,7 @@ export default {
 
     data() {
         return {
-            activeGroup: 'SMILES',
+            activeGroup: 'RECENT',
             searchText: '',
         };
     },
@@ -40,8 +40,13 @@ export default {
             if (this.searchText.length > 0) {
                 return searchEmojis(this.searchText);
             } else if (this.activeGroup == 'RECENT') {
-                // return recent from local store depending from prop
-                return [];
+                let result = getFromLocale(this.from);
+                if (result.length > 0) {
+                    return result;
+                } else {
+                    this.activeGroup = 'SMILES';
+                    return selectByCategory(this.activeGroup);
+                }
             } else {
                 return selectByCategory(this.activeGroup);
             }
@@ -49,6 +54,7 @@ export default {
     },
     methods: {
         emojiSelect(emoji) {
+            saveToLocal(emoji, this.from);
             this.$emit('selected', emoji);
         },
     },

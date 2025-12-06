@@ -32,21 +32,21 @@
                 Image upload!!!!
             </div>
             <div v-if="openHelper == 'EMOJI'" class="help-box">
-                <Emojis />
+                <Emojis :from="'emoji'" @selected="addEmoji" />
             </div>
             <div v-if="openHelper == 'REACTION'" class="help-box">
-                <Emojis />
+                <Emojis :from="'reaction'" @selected="sendReaction" />
             </div>
         </div>
         <div class="chat-footer">
             <!-- message input field, send button, img upload, emojis... -->
              <div class="icon-btn-container">
                 <!-- file upload -->
-                <button type="button" @click="openHelperContainer('IMG')">
+                <button type="button" @click="openHelperContainer('IMG')" :class="{'active': openHelper == 'IMG'}">
                     <span class="icon"><ImageIcon /></span>
                 </button>
                 <!-- emojis -->
-                <button type="button" @click="openHelperContainer('EMOJI')">
+                <button type="button" @click="openHelperContainer('EMOJI')" :class="{'active': openHelper == 'EMOJI'}">
                     <span class="icon"><EmojiIcon /></span>
                 </button>
              </div>
@@ -57,7 +57,9 @@
             <div class="icon-btn-container reaction">
                 <!-- reactions -->
                 <button type="button" class="reaction-btn" @click="sendReaction('👍')">👍</button>
-                <button type="button" class="reaction-btn" @click="openHelperContainer('REACTION')"><span class="icon"><IconDots /></span></button>
+                <button type="button" class="reaction-btn" @click="openHelperContainer('REACTION')" :class="{'active': openHelper == 'REACTION'}">
+                    <span class="icon"><IconDots /></span>
+                </button>
             </div>
         </div>
     </div>
@@ -125,10 +127,16 @@
                 console.log(msgData);
                 this.msgText = '';
                 this.img = null; //Maybe will need to empty the file input as well!!!!
+                this.openHelper = 'NON';
                 this.$refs.msg_text.focus();
             },
 
+            addEmoji(emoji) {
+                this.msgText += emoji.emoji;
+            },
+
             sendReaction(reaction) {
+                let reactionEmoji = reaction.emoji ?? reaction;
                 let msgData = {
                     //Will come from props, now just hardcode
                     group_id: 1,
@@ -138,8 +146,9 @@
                     from: 'Somebody',
                     msg: '',
                     img: null,
-                    reaction: reaction,
+                    reaction: reactionEmoji,
                 };
+                this.openHelper = 'NON';
                 console.log(msgData);
             },
 

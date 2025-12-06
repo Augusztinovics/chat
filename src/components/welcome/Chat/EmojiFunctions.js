@@ -111,3 +111,40 @@ export function searchEmojis(searchText) {
         return e.name.toLowerCase().includes(searchText.toLowerCase());
     });
 };
+
+export function saveToLocal(emoji, prefix = '') {
+    let storageName = prefix + '_chat_emojis';
+    let existingData = localStorage.getItem(storageName);
+    if (existingData) {
+        try {
+            existingData = JSON.parse(existingData);
+        } catch (error) {
+            existingData = [];
+        }
+    } else {
+        existingData = [];
+    }
+
+    let existingIndex = existingData.findIndex(data => data.dec == emoji.dec);
+    if (existingIndex !== -1) {
+        existingData.splice(existingIndex, 1);
+    }
+
+    existingData.unshift(emoji);
+    localStorage.setItem(storageName, JSON.stringify(existingData));
+};
+
+export function getFromLocale(prefix = '') {
+    let storageName = prefix + '_chat_emojis';
+    let existingData = localStorage.getItem(storageName);
+    if (existingData) {
+        try {
+            existingData = JSON.parse(existingData);
+        } catch (error) {
+            existingData = [];
+        }
+    } else {
+        existingData = [];
+    }
+    return existingData;
+};
