@@ -107,11 +107,62 @@
 .chat-container .chat-body .msg-and-user .msg-box {
     overflow-y: auto;
     padding: 10px;
+    scroll-behavior: smooth;
 }
 
 .chat-container .chat-body .help-box {
     height: 100px;
     border: 1px solid var(--color-border);
+}
+
+.chat-container .chat-body .help-box .chat-file-input {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.chat-container .chat-body .help-box .chat-file-input #img_input_field {
+    margin-top: 15px;
+    padding: 20px 50px;
+    border: 2px dashed var(--color-success);
+    border-radius: 0.25rem;
+}
+
+.chat-container .chat-body .help-box .chat-img-preview {
+    display: flex;
+    justify-content: center;
+}
+
+.chat-container .chat-body .help-box .chat-img-preview img {
+    height: 96px;
+    width: auto;
+    margin-top: 2px;
+    border-radius: 0.25rem;
+    box-shadow: var(--shadow);
+}
+
+.chat-container .chat-body .help-box .chat-img-preview button {
+    height: 20px;
+    width: 20px;
+    padding: 2px;
+    border-radius: 50%;
+    border-color: var(--color-danger);
+    align-self: flex-start;
+    margin-left: -5px;
+    background-color: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: var(--shadow);
+}
+
+.chat-container .chat-body .help-box .chat-img-preview button .icon {
+    line-height: 0;
+}
+
+.chat-container .chat-body .help-box .chat-img-preview button .icon svg {
+    fill: var(--color-danger);
 }
 
 .chat-container .chat-footer {

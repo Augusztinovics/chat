@@ -22,14 +22,20 @@
                 <div class="user-box">
 
                 </div>
-                <!-- messages container -->
-                <div class="msg-box">
-
+                <!-- TODO messages container grou id need to replaced with actual group id -->
+                <div class="msg-box" ref="msg_box_group_id">
+                    <MsgRender v-for="msg in msgs" :msg="msg"/>
                 </div>
             </div>
             <!-- Different helper input containers, one at the time can be open or none -->
             <div v-if="openHelper == 'IMG'" class="help-box">
-                Image upload!!!!
+                <div v-if="!img" class="chat-file-input">
+                    <input type="file" id="img_input_field" accept="image/*" capture="environment" @change="fileChange"></input>
+                </div>
+                <div v-if="img" class="chat-img-preview">
+                    <img :src="img" alt="Chat Image Preview">
+                    <button type="button" @click="emtyFileInput"><span class="icon"><IconX /></span></button>
+                </div>
             </div>
             <div v-if="openHelper == 'EMOJI'" class="help-box">
                 <Emojis :from="'emoji'" @selected="addEmoji" />
@@ -74,6 +80,8 @@
     import IconX from '@/components/icons/IconX.vue';
     import IconDots from '@/components/icons/IconDots.vue';
     import Emojis from './Emojis.vue';
+    import ImgResize from '@/utils/ImgResize.js';
+    import MsgRender from './MsgRender.vue';
 
     export default {
         components: {
@@ -85,6 +93,7 @@
             IconX,
             IconDots,
             Emojis,
+            MsgRender,
         },
         data() {
             return {
@@ -100,6 +109,7 @@
                 msgText: '',
                 openHelper: 'NON',
                 maxHeight: '100%',
+                msgs: [],
             }
         },
 
@@ -120,14 +130,18 @@
                     from_id: 1,
                     //Will come from props, now just hardcode
                     from: 'Somebody',
+                    sendTime: this.getFormattedDateTime(),
                     msg: this.msgText,
                     img: this.img,
                     reaction: null,
                 };
                 console.log(msgData);
+                this.msgs.push(msgData);
                 this.msgText = '';
                 this.img = null; //Maybe will need to empty the file input as well!!!!
                 this.openHelper = 'NON';
+                this.maxHeight = '100%';
+                this.scollToMsgBox();
                 this.$refs.msg_text.focus();
             },
 
@@ -144,12 +158,16 @@
                     from_id: 1,
                     //Will come from props, now just hardcode
                     from: 'Somebody',
+                    sendTime: this.getFormattedDateTime(),
                     msg: '',
                     img: null,
                     reaction: reactionEmoji,
                 };
                 this.openHelper = 'NON';
+                this.maxHeight = '100%';
                 console.log(msgData);
+                this.msgs.push(msgData);
+                this.scollToMsgBox();
             },
 
             openHelperContainer(helper) {
@@ -166,7 +184,36 @@
                         this.maxHeight = '70%';
                     }
                 }
+                this.scollToMsgBox();
             },
+
+            fileChange(event) {
+                let file = event.target.files[0];
+                if (!file) {
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    ImgResize(e.target.result, 1024)
+                    .then((r) => {
+                        this.img = r;
+                    })
+                    .catch((e) => {
+                        console.log(e);
+                        event.target.files = null;
+                        this.img = null;
+                    })
+                };
+
+                reader.onerror = (err) => {
+                    event.target.files = null;
+                    this.img = null;
+                };
+
+                reader.readAsDataURL(file);
+            },
+
 
             emtyFileInput() {
                 //Need to empty the file input, for now just
@@ -197,6 +244,7 @@
                         this.maxHeight = '70%';
                     }
                 }
+                this.scollToMsgBox();
             },
 
             startDrag(e) {
@@ -255,7 +303,28 @@
 
             vhToPx(v) {
                 return (window.innerHeight * v) / 100;
-            }
+            },
+
+            getFormattedDateTime() {
+                const now = new Date();
+                const year = now.getFullYear();
+                const month = (now.getMonth() + 1).toString().padStart(2, '0');
+                const day = now.getDate().toString().padStart(2, '0');
+
+                const hours = now.getHours().toString().padStart(2, '0');
+                const minutes = now.getMinutes().toString().padStart(2, '0');
+                const seconds = now.getSeconds().toString().padStart(2, '0');
+
+                return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+            },
+
+            scollToMsgBox() {
+                setTimeout(() => {
+                    if (this.$refs['msg_box_group_id']) {
+                        this.$refs['msg_box_group_id'].scrollTop = this.$refs['msg_box_group_id'].scrollHeight;
+                    }
+                }, 10)
+            },
         },
     }
 </script>
