@@ -82,6 +82,8 @@
     import Emojis from './Emojis.vue';
     import ImgResize from '@/utils/ImgResize.js';
     import MsgRender from './MsgRender.vue';
+    import { mapStores } from 'pinia';
+    import { userStore } from '@/stores/user';
 
     export default {
         components: {
@@ -114,6 +116,8 @@
         },
 
         computed: {
+            ...mapStores(userStore),
+
             showSendBtn() {
                 return this.img || this.msgText.length > 0;
             },
@@ -126,10 +130,8 @@
                 let msgData = {
                     //Will come from props, now just hardcode
                     group_id: 1,
-                    //Will come from props, now just hardcode
-                    from_id: 1,
-                    //Will come from props, now just hardcode
-                    from: 'Somebody',
+                    from_id: this.userStore.id,
+                    from: this.userStore.username,
                     sendTime: this.getFormattedDateTime(),
                     msg: this.msgText,
                     img: this.img,
@@ -154,10 +156,8 @@
                 let msgData = {
                     //Will come from props, now just hardcode
                     group_id: 1,
-                    //Will come from props, now just hardcode
-                    from_id: 1,
-                    //Will come from props, now just hardcode
-                    from: 'Somebody',
+                    from_id: this.userStore.id,
+                    from: this.userStore.username,
                     sendTime: this.getFormattedDateTime(),
                     msg: '',
                     img: null,

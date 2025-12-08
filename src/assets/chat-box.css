@@ -315,3 +315,56 @@
     cursor: pointer;
     background-color: inherit;
 }
+
+.one-msg .msg-from-line b {
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--color-text);
+}
+
+.one-msg .msg-from-line small {
+    font-size: 10px;
+    font-weight: 400;
+    margin-left: 10px;
+    color: var(--color-text-muted);
+}
+
+.one-msg .msg-reaction-box {
+    margin-top: -28px;
+}
+
+.one-msg .msg-reaction-box .msg-rection {
+    font-size: 3rem;
+    text-align: center;
+}
+
+.one-msg .msg-reaction-box .msg-from-line {
+    text-align: center;
+}
+
+.one-msg .msg-text-box {
+    margin-top: 20px;
+}
+
+.one-msg .msg-text-box .msg-img img {
+    width: 80%;
+    max-width: 1024px;
+    height: auto;
+    margin: 0 10px;
+    border-radius: 0.25rem;
+    box-shadow: var(--shadow);
+}
+
+.one-msg .msg-text-box .msg-text {
+    font-size: 1rem;
+    font-weight: 500;
+    padding: 10px;
+    border-radius: 1rem;
+    color: var(--color-text);
+    background-color: var(--color-background-mute);
+    box-shadow: var(--shadow);
+}
+
+.one-msg .msg-text-box.owner-msg {
+    text-align: right;
+}
