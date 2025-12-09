@@ -1,10 +1,12 @@
 import { defineStore } from 'pinia';
 import axios from 'axios';
+import { userStore } from './user';
 
 export const friendsStore = defineStore('friends', {
     state: () => ({
         friends: [],
         groups: [],
+        messages: [],
     }),
 
     getters: {
@@ -25,6 +27,30 @@ export const friendsStore = defineStore('friends', {
                 return state.friends.find(f => {return f.friendId == id});
             }
         },
+        getGroupsData: (state) => {
+            let cards = [];
+            const currentUser = userStore();
+            state.groups.forEach(g => {
+                let oneCard = {
+                    groupId: g.id,
+                    groupName: g.group_name,
+                    groupCreated: g.created_at,
+                    owner: g.main_user == currentUser.id,
+                    groupUsers: [],
+                };
+                g.users.forEach(gu => {
+                    if (gu !== currentUser.id) {
+                        let data = state.friends.find(f => {return f.friendId == gu});
+                        if (data) {
+                            oneCard.groupUsers.push(data);
+                        }
+                    }
+                });
+                cards.push(oneCard);
+            });
+            //TODO need to add messages to groups and order by latest messages
+            return cards;
+        },
     },
 
     actions: {
@@ -34,6 +60,7 @@ export const friendsStore = defineStore('friends', {
                     .then((res) => {
                         this.friends = res.data?.friends ?? [];
                         this.groups = res.data?.groups ?? [];
+                        this.messages = res.data?.messages ?? [];
                         resolve(true);
                     })
                     .catch((e) => {

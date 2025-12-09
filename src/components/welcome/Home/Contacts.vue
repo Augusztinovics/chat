@@ -104,34 +104,10 @@
             ...mapState(friendsStore, {
                 numFriends: 'numFriends',
                 friends: 'allFriends',
-                groups: 'allGroups',
                 numGroups: 'numGroups',
-                friendData: 'getFriendData',
+                groupCards: 'getGroupsData'
             }),
             ...mapState(useLgStore, ['lg']),
-
-            groupCards() {
-                let cards = [];
-                this.groups.forEach(g => {
-                    let oneCard = {
-                        groupId: g.id,
-                        groupName: g.group_name,
-                        groupCreated: g.created_at,
-                        owner: g.main_user == this.userStore.id,
-                        groupUsers: [],
-                    };
-                    g.users.forEach(gu => {
-                        if (gu !== this.userStore.id) {
-                            let data = this.friendData(gu);
-                            if (data) {
-                                oneCard.groupUsers.push(data);
-                            }
-                        }
-                    });
-                    cards.push(oneCard);
-                });
-                return cards;
-            },
         },
 
         methods: {
