@@ -7,6 +7,7 @@ export const friendsStore = defineStore('friends', {
         friends: [],
         groups: [],
         messages: [],
+        activeChatBoxs: [],
     }),
 
     getters: {
@@ -37,6 +38,7 @@ export const friendsStore = defineStore('friends', {
                     groupCreated: g.created_at,
                     owner: g.main_user == currentUser.id,
                     groupUsers: [],
+                    messages: [],
                 };
                 g.users.forEach(gu => {
                     if (gu !== currentUser.id) {
@@ -46,9 +48,14 @@ export const friendsStore = defineStore('friends', {
                         }
                     }
                 });
+                if (state.messages[g.id]) {
+                    state.messages[g.id].forEach(m => {
+                        oneCard.messages.push(m);
+                    });
+                }
                 cards.push(oneCard);
             });
-            //TODO need to add messages to groups and order by latest messages
+            //TODO order by latest messages
             return cards;
         },
     },
@@ -104,6 +111,23 @@ export const friendsStore = defineStore('friends', {
                         }
                     });
             });
-        }
+        },
+
+        addMessageToGroup(payload) {
+            if (this.messages[payload.group_id]) {
+                this.messages[payload.group_id].push(payload);
+            } else {
+                this.messages[payload.group_id] = [payload];
+            }
+        },
+
+        toogleChatbox(groupId) {
+            let existingIndex = this.activeChatBoxs.indexOf(groupId);
+            if (existingIndex !== -1) {
+                this.activeChatBoxs.splice(existingIndex, 1);
+            } else {
+                this.activeChatBoxs.push(groupId);
+            }
+        },
     },
 });

@@ -17,20 +17,10 @@
             </nav>
         </div>
         <div class="side-nav">
-            <div class="side-nav-box">
-                <p>Side</p>
-                <p>Side</p>
-                <p>Side</p>
-                <p>Side</p>
-                <p>Side</p>
-                <p>Side</p>
-                <p>Side</p>
-                <p>Side</p>
-            </div>
+            <ChatNav />
         </div>
         <div class="content"><slot></slot></div>
         <LoadingOverlay v-if="loadingStore.showLoading" />
-        <ChatBox />
     </div>
 </template>
 
@@ -50,7 +40,7 @@ import LgSelector from '@/components/LgSelector.vue';
 import IconHome from '@/components/icons/IconHome.vue';
 import ExitIcon from '@/components/icons/ExitIcon.vue';
 import LoadingOverlay from '@/components/LoadingOverlay.vue';
-import ChatBox from '@/components/welcome/Chat/ChatBox.vue';
+import ChatNav from '@/components/welcome/Chat/ChatNav.vue';
 
 export default {
     components: {
@@ -63,7 +53,7 @@ export default {
         IconHome,
         ExitIcon,
         LoadingOverlay,
-        ChatBox,
+        ChatNav,
     },
 
     data() {

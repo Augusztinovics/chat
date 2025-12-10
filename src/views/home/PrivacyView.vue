@@ -23,7 +23,6 @@ export default {
         PrivacySr,
         PrivacyEn,
     },
-    props: ['socket'],
 
     computed: {
         ...mapState(useLgStore, ['lg', 'lgCode']),

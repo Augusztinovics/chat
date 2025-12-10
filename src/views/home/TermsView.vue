@@ -23,7 +23,6 @@ export default {
         TermsSr,
         TermsEn,
     },
-    props: ['socket'],
 
     computed: {
         ...mapState(useLgStore, ['lg', 'lgCode']),

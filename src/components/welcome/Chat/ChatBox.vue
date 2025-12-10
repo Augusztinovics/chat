@@ -6,7 +6,7 @@
     >
         <div class="chat-header"  @mousedown="startDrag" @touchstart="startDrag">
             <!-- Group name, full-screen toogle, close -->
-            <h4>The group name</h4>
+            <h4>{{ card.groupName }}</h4>
             <div class="controls">
                 <button type="button" class="minimaize-btn" @click="toogleFullScreen">
                     <span v-if="fullScreen" class="icon"><IconMinimize /></span>
@@ -22,9 +22,8 @@
                 <div class="user-box">
 
                 </div>
-                <!-- TODO messages container grou id need to replaced with actual group id -->
-                <div class="msg-box" ref="msg_box_group_id">
-                    <MsgRender v-for="msg in msgs" :msg="msg"/>
+                <div class="msg-box" :ref="'msg_box_' + card.groupId">
+                    <MsgRender v-for="msg in card.messages" :msg="msg"/>
                 </div>
             </div>
             <!-- Different helper input containers, one at the time can be open or none -->
@@ -82,8 +81,9 @@
     import Emojis from './Emojis.vue';
     import ImgResize from '@/utils/ImgResize.js';
     import MsgRender from './MsgRender.vue';
-    import { mapStores } from 'pinia';
+    import { mapStores, mapActions } from 'pinia';
     import { userStore } from '@/stores/user';
+    import { friendsStore } from '@/stores/friends';
 
     export default {
         components: {
@@ -97,6 +97,11 @@
             Emojis,
             MsgRender,
         },
+        props: {
+            card: {
+                type: Object,
+            },
+        },
         data() {
             return {
                 xVW: 1, // position in vw units
@@ -104,7 +109,6 @@
                 dragging: false,
                 startX: 0,
                 startY: 0,
-                showChat: true,
                 closing: false,
                 fullScreen: false,
                 img: null,
@@ -116,20 +120,23 @@
         },
 
         computed: {
-            ...mapStores(userStore),
+            ...mapStores(userStore, friendsStore),
 
             showSendBtn() {
                 return this.img || this.msgText.length > 0;
             },
+
+            showChat() {
+                return this.friendsStore.activeChatBoxs.includes(this.card.groupId);
+            },
         },
 
         methods: {
+            ...mapActions(friendsStore, ['addMessageToGroup', 'toogleChatbox']),
             sendMsg() {
                 if (!this.showSendBtn) return;
-                //DODO
                 let msgData = {
-                    //Will come from props, now just hardcode
-                    group_id: 1,
+                    group_id: this.card.groupId,
                     from_id: this.userStore.id,
                     from: this.userStore.username,
                     sendTime: this.getFormattedDateTime(),
@@ -137,8 +144,9 @@
                     img: this.img,
                     reaction: null,
                 };
-                console.log(msgData);
-                this.msgs.push(msgData);
+                this.addMessageToGroup(msgData);
+                // TODO send the event
+
                 this.msgText = '';
                 this.img = null; //Maybe will need to empty the file input as well!!!!
                 this.openHelper = 'NON';
@@ -154,8 +162,7 @@
             sendReaction(reaction) {
                 let reactionEmoji = reaction.emoji ?? reaction;
                 let msgData = {
-                    //Will come from props, now just hardcode
-                    group_id: 1,
+                    group_id: this.card.groupId,
                     from_id: this.userStore.id,
                     from: this.userStore.username,
                     sendTime: this.getFormattedDateTime(),
@@ -165,8 +172,9 @@
                 };
                 this.openHelper = 'NON';
                 this.maxHeight = '100%';
-                console.log(msgData);
-                this.msgs.push(msgData);
+                this.addMessageToGroup(msgData);
+                // TODO send the event
+
                 this.scollToMsgBox();
             },
 
@@ -223,7 +231,7 @@
             closeChat() {
                 this.closing = true;
                 setTimeout(() => {
-                    this.showChat = false;
+                    this.toogleChatbox(this.card.groupId);
                     this.closing = false;
                 }, 150);
             },
@@ -320,8 +328,9 @@
 
             scollToMsgBox() {
                 setTimeout(() => {
-                    if (this.$refs['msg_box_group_id']) {
-                        this.$refs['msg_box_group_id'].scrollTop = this.$refs['msg_box_group_id'].scrollHeight;
+                    let box = 'msg_box_' + this.card.groupId;
+                    if (this.$refs[box]) {
+                        this.$refs[box].scrollTop = this.$refs[box].scrollHeight;
                     }
                 }, 10)
             },

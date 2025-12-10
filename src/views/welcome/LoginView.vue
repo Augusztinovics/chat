@@ -76,7 +76,6 @@ export default {
         IconEyeOpen,
         LgSelector,
     },
-    props: ['socket'],
 
     data() {
         return {
