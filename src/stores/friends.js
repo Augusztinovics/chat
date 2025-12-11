@@ -126,7 +126,11 @@ export const friendsStore = defineStore('friends', {
             if (existingIndex !== -1) {
                 this.activeChatBoxs.splice(existingIndex, 1);
             } else {
-                this.activeChatBoxs.push(groupId);
+                if (window.innerWidth < 750) {
+                    this.activeChatBoxs = [groupId];
+                } else {
+                    this.activeChatBoxs.push(groupId);
+                }
             }
         },
     },

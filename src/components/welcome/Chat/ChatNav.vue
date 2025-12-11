@@ -1,9 +1,10 @@
 <template>
-    <div>
-        <div class="side-nav-box">
-            <div v-for="card in groupCards" :key="'title_' + card.groupId" @click="toogleChatbox(card.groupId)">
+    <div class="side-nav-box">
+        <div class="side-nav-items">
+            <div v-for="card in groupCards" :key="'title_' + card.groupId" @click="toogleChatbox(card.groupId)" class="group-item">
+                <sup class="active">&#11044;</sup>
                 <ContactImage :friends="card.groupUsers"/>
-                <h5>{{ card.groupName }}</h5>
+                <p>{{ card.groupName }}</p>
             </div>
         </div>
         <ChatBox v-for="card in groupCards" :card="card" :key="'box_' + card.groupId" />

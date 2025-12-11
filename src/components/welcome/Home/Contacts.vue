@@ -17,7 +17,7 @@
                 <!-- TODO: Responsive style -->
                 <div>
                     <span v-if="card.owner" class="icon-edit-btn mr-1" @click="showGroupEdit(card)"><IconEdit /></span>
-                    <button class="btn-sm btn-primary">{{ lg('send_message') }}</button>
+                    <button class="btn-sm btn-primary" @click="toogleChatbox(card.groupId)">{{ lg('send_message') }}</button>
                 </div>
                 <!-- END TODO -->
 
@@ -111,7 +111,7 @@
         },
 
         methods: {
-            ...mapActions(friendsStore, ['createGroup', 'loadFriends']),
+            ...mapActions(friendsStore, ['createGroup', 'loadFriends', 'toogleChatbox']),
 
             createGroupModalOpen() {
                 this.newGroupName = '';

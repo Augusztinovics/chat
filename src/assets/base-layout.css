@@ -1,54 +1,97 @@
 .base-layout-body {
-    display: grid;
-    grid-template-areas: 
-        'top top top top top top top top top top top top'
-        'content content content content content content content content content content content content'
-        'content content content content content content content content content content content content'
-        'content content content content content content content content content content content content'
-        'content content content content content content content content content content content content'
-        'content content content content content content content content content content content content'
-        'content content content content content content content content content content content content'
-        'content content content content content content content content content content content content'
-        'content content content content content content content content content content content content'
-        'content content content content content content content content content content content content'
-        'content content content content content content content content content content content content'
-        'side side side side side side side side side side side side';
     height: 100vh;
 }
 
 .base-layout-body .top-nav {
-    grid-area: top;
     height: 10vh;
     background-image: linear-gradient(var(--color-background-mute), var(--color-background));
 }
 
-.base-layout-body .side-nav {
-    grid-area: side;
-    align-content: end;
+.base-layout-body .side-body {
+    display: flex;
+    flex-direction: column-reverse;
+    height: 90vh;
+}
+
+.base-layout-body .side-body .side-nav {
     height: 10vh;
-    width: 100vw;
+    width: 97vw;
+    display: flex;
+    justify-content: center;
     background-image: linear-gradient(to bottom, var(--color-background-mute), var(--color-background));
 }
 
-.base-layout-body .side-nav .side-nav-box {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    gap: 10px;
-    padding: 2rem;
+.base-layout-body .side-body .side-nav .side-nav-box {
+    width: 90%;
+    height: 80%;
     box-shadow: var(--shadow);
+    overflow: auto;
 }
 
-.base-layout-body .content {
-    grid-area: content;
+.base-layout-body .side-body .side-nav .side-nav-box .side-nav-items {
+    text-wrap-mode: nowrap;
+}
+
+.base-layout-body .side-body .side-nav .side-nav-box .side-nav-items .group-item {
+    display: inline-block;
+    margin-left: 5px;
+    margin-top: 5px;
+    padding: 2px;
+    border: 1px solid var(--color-border);
+    border-radius: 0.25rem;
+    cursor: pointer;
+}
+
+.base-layout-body .side-body .side-nav .side-nav-box .side-nav-items .group-item .friend-img {
+    display: inline-block;
+}
+
+.base-layout-body .side-body .side-nav .side-nav-box .side-nav-items .group-item .friend-img .profile-init {
+    font-size: 12px;
+    padding: 2px;
+    border-radius: 2px;
+}
+
+.base-layout-body .side-body .side-nav .side-nav-box .side-nav-items .group-item .friend-img .profile-img.sm {
+    border: 0;
+    border-radius: 2px;
+    width: 16px;
+    height: auto;
+}
+
+.base-layout-body .side-body .side-nav .side-nav-box .side-nav-items .group-item p {
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 600;
+    margin-left: 4px;
+}
+
+
+.base-layout-body .side-body .side-nav .side-nav-box .side-nav-items .group-item sup {
+    color: var(--color-background);
+    font-weight: 900;
+}
+
+.base-layout-body .side-body .side-nav .side-nav-box .side-nav-items .group-item sup.active {
+    color: var(--color-link);
+}
+
+.base-layout-body .side-body .side-nav .side-nav-box .side-nav-items .group-item:hover {
+    border-color: var(--color-border-hover);
+}
+
+.base-layout-body .side-body .content {
+    display: flex;
     justify-content:center;
     height: 80vh;
+    width: 97vw;
     overflow-y: auto;
     background-color: var(--color-background);
 }
 
-.base-layout-body .content .content-body {
+.base-layout-body .side-body .content .content-body {
     max-height: 80vh;
+    width: 100%;
     overflow-y: auto;
 }
 
@@ -75,35 +118,23 @@
     display: none;
 }
 
-@media (min-width: 750px) {
-    .base-layout-body {
-        grid-template-areas: 
-            'top top top top top top top top top top top top'
-            'side side content content content content content content content content content content'
-            'side side content content content content content content content content content content'
-            'side side content content content content content content content content content content'
-            'side side content content content content content content content content content content'
-            'side side content content content content content content content content content content'
-            'side side content content content content content content content content content content'
-            'side side content content content content content content content content content content'
-            'side side content content content content content content content content content content'
-            'side side content content content content content content content content content content'
-            'side side content content content content content content content content content content'
-            'side side content content content content content content content content content content';
+@media (min-width: 1024px) {
+    .base-layout-body .side-body {
+        flex-direction: row;
     }
 
-    .base-layout-body .side-nav {
+    .base-layout-body .side-body .side-nav {
+        flex-direction: column;
+        justify-content: start;
         height: 90vh;
         width: 25vw;
         background-image: linear-gradient(to right, var(--color-background-mute), var(--color-background));
     }
-    .base-layout-body .side-nav .side-nav-box {
-        flex-direction: column;
-        justify-content: start;
-        height: 100%;
-        width: 80%;
+    .base-layout-body .side-body .side-nav .side-nav-box .side-nav-items .group-item {
+        display: block;
     }
-    .base-layout-body .content {
+    .base-layout-body .side-body .content {
+        width: 75vw;
         height: 90vh;
     }
     .base-layout-body .content .content-body {

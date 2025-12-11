@@ -16,10 +16,12 @@
                 </div>
             </nav>
         </div>
-        <div class="side-nav">
-            <ChatNav />
+        <div class="side-body">
+            <div class="side-nav">
+                <ChatNav />
+            </div>
+            <div class="content"><slot></slot></div>
         </div>
-        <div class="content"><slot></slot></div>
         <LoadingOverlay v-if="loadingStore.showLoading" />
     </div>
 </template>
