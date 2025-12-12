@@ -43,6 +43,7 @@ import IconHome from '@/components/icons/IconHome.vue';
 import ExitIcon from '@/components/icons/ExitIcon.vue';
 import LoadingOverlay from '@/components/LoadingOverlay.vue';
 import ChatNav from '@/components/welcome/Chat/ChatNav.vue';
+import { friendsStore } from '@/stores/friends';
 
 export default {
     components: {
@@ -65,16 +66,25 @@ export default {
     },
 
     computed: {
-        ...mapStores(userStore, paginationSizesStore, loadingStore, socketStore),
+        ...mapStores(userStore, paginationSizesStore, loadingStore, socketStore, friendsStore),
         ...mapState(useLgStore, ['lg']),
     },
 
     methods: {
-        loadUser() {
-            if (this.userStore.loaded) return;
+        loadData() {
+            let promisies = [];
+
+            if (!this.userStore.loaded) {
+                promisies.push(this.userStore.load());
+            }
+            if (!this.friendsStore.loaded) {
+                promisies.push(this.friendsStore.loadFriends());
+            }
+
+            if (promisies.length < 1) return;
             this.loadingStore.startLoading();
             this.loadingError = false;
-            this.userStore.load()
+            Promise.all(promisies)
                     .then(() => {
                         this.loadingStore.finishLoading();
                         if (this.socketStore.socket) {
@@ -94,7 +104,7 @@ export default {
     },
 
     mounted() {
-        this.loadUser();
+        this.loadData();
         this.paginationSizesStore.calculatePaginationStep();
         window.addEventListener('resize', this.paginationSizesStore.calculatePaginationStep);
     },

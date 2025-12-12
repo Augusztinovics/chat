@@ -4,13 +4,18 @@ import { userStore } from './user';
 
 export const friendsStore = defineStore('friends', {
     state: () => ({
+        loaded: false,
         friends: [],
         groups: [],
         messages: [],
         activeChatBoxs: [],
+        activeChatBox: null,
     }),
 
     getters: {
+        isLoaded: (state) => {
+            return state.loaded;
+        },
         numFriends: (state) => {
             return state.friends.length ?? 0;
         },
@@ -68,6 +73,7 @@ export const friendsStore = defineStore('friends', {
                         this.friends = res.data?.friends ?? [];
                         this.groups = res.data?.groups ?? [];
                         this.messages = res.data?.messages ?? [];
+                        this.loaded = true;
                         resolve(true);
                     })
                     .catch((e) => {
@@ -125,13 +131,21 @@ export const friendsStore = defineStore('friends', {
             let existingIndex = this.activeChatBoxs.indexOf(groupId);
             if (existingIndex !== -1) {
                 this.activeChatBoxs.splice(existingIndex, 1);
+                if (this.activeChatBox == groupId) {
+                    this.activeChatBox = null;
+                }
             } else {
                 if (window.innerWidth < 750) {
                     this.activeChatBoxs = [groupId];
                 } else {
                     this.activeChatBoxs.push(groupId);
                 }
+                this.activeChatBox = groupId;
             }
+        },
+
+        setAsActiveBox(groupId) {
+            this.activeChatBox = groupId;
         },
     },
 });

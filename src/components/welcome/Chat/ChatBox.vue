@@ -2,7 +2,8 @@
     <div v-if="showChat" 
         class="chat-container"
         :class="{'full-screen': fullScreen, 'closing': closing}"
-        :style="{ left: xVW + 'vw', top: yVH + 'vh' }"
+        :style="{ left: xVW + 'vw', top: yVH + 'vh', 'z-index': currentZindex }"
+        @mousedown="setAsActiveBox(card.groupId)"
     >
         <div class="chat-header"  @mousedown="startDrag" @touchstart="startDrag">
             <!-- Group name, full-screen toogle, close -->
@@ -15,6 +16,7 @@
                 <button type="button" @click="closeChat"><span class="icon"><IconX /></span></button>
             </div>
         </div>
+
         <div class="chat-body">
             <!-- the messages and users in group conteiners-->
             <div class="msg-and-user" :style="{'max-height' : maxHeight}">
@@ -26,7 +28,7 @@
                     <MsgRender v-for="msg in card.messages" :msg="msg"/>
                 </div>
             </div>
-            <!-- Different helper input containers, one at the time can be open or none -->
+
             <div v-if="openHelper == 'IMG'" class="help-box">
                 <div v-if="!img" class="chat-file-input">
                     <input type="file" id="img_input_field" accept="image/*" capture="environment" @change="fileChange"></input>
@@ -43,14 +45,12 @@
                 <Emojis :from="'reaction'" @selected="sendReaction" />
             </div>
         </div>
-        <div class="chat-footer">
-            <!-- message input field, send button, img upload, emojis... -->
+
+        <div class="chat-footer">>
              <div class="icon-btn-container">
-                <!-- file upload -->
                 <button type="button" @click="openHelperContainer('IMG')" :class="{'active': openHelper == 'IMG'}">
                     <span class="icon"><ImageIcon /></span>
                 </button>
-                <!-- emojis -->
                 <button type="button" @click="openHelperContainer('EMOJI')" :class="{'active': openHelper == 'EMOJI'}">
                     <span class="icon"><EmojiIcon /></span>
                 </button>
@@ -60,7 +60,6 @@
                 <button v-if="showSendBtn" type="button" class="chat-send-btn" @click="sendMsg"><span class="icon"><IconSend /></span></button>
             </div>
             <div class="icon-btn-container reaction">
-                <!-- reactions -->
                 <button type="button" class="reaction-btn" @click="sendReaction('👍')">👍</button>
                 <button type="button" class="reaction-btn" @click="openHelperContainer('REACTION')" :class="{'active': openHelper == 'REACTION'}">
                     <span class="icon"><IconDots /></span>
@@ -129,10 +128,17 @@
             showChat() {
                 return this.friendsStore.activeChatBoxs.includes(this.card.groupId);
             },
+
+            currentZindex() {
+                let ind = this.friendsStore.activeChatBoxs.indexOf(this.card.groupId);
+                let act = this.friendsStore.activeChatBox == this.card.groupId ? 100 : 0;
+
+                return ind + act;
+            },
         },
 
         methods: {
-            ...mapActions(friendsStore, ['addMessageToGroup', 'toogleChatbox']),
+            ...mapActions(friendsStore, ['addMessageToGroup', 'toogleChatbox', 'setAsActiveBox']),
             sendMsg() {
                 if (!this.showSendBtn) return;
                 let msgData = {
@@ -148,7 +154,7 @@
                 // TODO send the event
 
                 this.msgText = '';
-                this.img = null; //Maybe will need to empty the file input as well!!!!
+                this.img = null;
                 this.openHelper = 'NON';
                 this.maxHeight = '100%';
                 this.scollToMsgBox();
@@ -181,7 +187,6 @@
             openHelperContainer(helper) {
                 this.emtyFileInput();
                 if (helper == this.openHelper) {
-                    //Toogle of the helper
                     this.openHelper = 'NON';
                     this.maxHeight = '100%';
                 } else {
@@ -224,7 +229,6 @@
 
 
             emtyFileInput() {
-                //Need to empty the file input, for now just
                 this.img = null;
             },
 

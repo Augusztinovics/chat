@@ -80,6 +80,10 @@
                 numGetRequests:   'numGetRequests',
                 isGetStoreLoaded: 'isLoaded'
             }),
+
+            ...mapState(friendsStore, {
+                isFriendStoreLoaded: 'isLoaded'
+            }),
         },
 
         methods: {
@@ -112,51 +116,55 @@
                     promisies.push(this.loadGetRequests())
                 }
 
-                promisies.push(this.loadFriends())
+                if (!this.isFriendStoreLoaded || type !== 'NONE') {
+                    promisies.push(this.loadFriends());
+                }
 
-                this.loadingStore.startLoading();
-                Promise.all(promisies)
-                    .then(() => {
-                        this.loadingStore.finishLoading();
-                        //some loading finish
-                        if (this.numGetRequests > 0) {
-                            this.selectedTab = 'GET';
-                        } else {
-                            this.selectedTab = 'NONE';
-                        }
-                        if (type !== 'NONE') {
-                            //There was some action reload, need to show some toaster
-                            if (type === 'SUCCESS') {
-                                this.toastMessage = msg;
-                                this.saveSuccess = true;
-                                setTimeout(() => {
-                                    this.saveSuccess = false;
-                                    this.toastMessage = '';
-                                }, 3000);
+                if (promisies.length > 0) {
+                    this.loadingStore.startLoading();
+                    Promise.all(promisies)
+                        .then(() => {
+                            this.loadingStore.finishLoading();
+                            //some loading finish
+                            if (this.numGetRequests > 0) {
+                                this.selectedTab = 'GET';
+                            } else {
+                                this.selectedTab = 'NONE';
                             }
-                            if (type === 'ERROR') {
-                                this.toastMessage = msg;
+                            if (type !== 'NONE') {
+                                //There was some action reload, need to show some toaster
+                                if (type === 'SUCCESS') {
+                                    this.toastMessage = msg;
+                                    this.saveSuccess = true;
+                                    setTimeout(() => {
+                                        this.saveSuccess = false;
+                                        this.toastMessage = '';
+                                    }, 3000);
+                                }
+                                if (type === 'ERROR') {
+                                    this.toastMessage = msg;
+                                    this.saveError = true;
+                                    setTimeout(() => {
+                                        this.saveError = false;
+                                        this.toastMessage = '';
+                                    }, 3000);
+                                }
+                            }
+                        })
+                        .catch((e) => {
+                            this.loadingStore.finishLoading();
+                            if (e == 401) {
+                                this.$router.push('/login');
+                            } else {
+                                this.toastMessage = this.lg('general_error');
                                 this.saveError = true;
                                 setTimeout(() => {
                                     this.saveError = false;
                                     this.toastMessage = '';
                                 }, 3000);
                             }
-                        }
-                    })
-                    .catch((e) => {
-                        this.loadingStore.finishLoading();
-                        if (e == 401) {
-                            this.$router.push('/login');
-                        } else {
-                            this.toastMessage = this.lg('general_error');
-                            this.saveError = true;
-                            setTimeout(() => {
-                                this.saveError = false;
-                                this.toastMessage = '';
-                            }, 3000);
-                        }
-                    });
+                        });
+                }
             },
         },
 
