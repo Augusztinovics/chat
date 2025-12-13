@@ -452,3 +452,11 @@ label span {
     width: 3rem;
     height: auto;
 }
+
+.user-active {
+    color: var(--color-background);
+}
+
+.user-active.active {
+    color: var(--color-success);
+}

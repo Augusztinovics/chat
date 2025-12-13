@@ -22,7 +22,7 @@
             <div class="msg-and-user" :style="{'max-height' : maxHeight}">
                 <!-- Users in group container -->
                 <div class="user-box">
-
+                    <ChatUsers :users="usersInChat"/>
                 </div>
                 <div class="msg-box" :ref="'msg_box_' + card.groupId">
                     <MsgRender v-for="msg in card.messages" :msg="msg"/>
@@ -83,6 +83,7 @@
     import { mapStores, mapActions } from 'pinia';
     import { userStore } from '@/stores/user';
     import { friendsStore } from '@/stores/friends';
+    import ChatUsers from './ChatUsers.vue';
 
     export default {
         components: {
@@ -95,6 +96,7 @@
             IconDots,
             Emojis,
             MsgRender,
+            ChatUsers,
         },
         props: {
             card: {
@@ -134,6 +136,10 @@
                 let act = this.friendsStore.activeChatBox == this.card.groupId ? 100 : 0;
 
                 return ind + act;
+            },
+
+            usersInChat() {
+                return this.card?.groupUsers ? this.card.groupUsers : [];
             },
         },
 

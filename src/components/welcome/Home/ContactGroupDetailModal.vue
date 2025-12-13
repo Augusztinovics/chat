@@ -13,6 +13,7 @@
                 <div v-if="hasUsers">
                     <div v-if="onlyOneUser">
                         <div class="mt-1 mb-2">
+                            <sup class="user-active" :class="{'active' : isFriendActive(getUserData.friendId)}">&#11044;</sup>
                             <img v-if="getUserData.friendImg" :src="getUserData.friendImg" alt="Profile Image" class="profile-img md">
                             <span v-else class="profile-init-lg">{{ friendInitiative(getUserData.friendName) }}</span>
                         </div>
@@ -41,6 +42,7 @@
                                 <ul>
                                     <li v-for="(friend, index) in friendGroup.groupUsers" :key="'friend_list_' + index" class="mb-1">
                                         <p><span class="friend-img">
+                                            <sup class="user-active" :class="{'active' : isFriendActive(friend.friendId)}">&#11044;</sup>
                                             <img v-if="friend.friendImg" :src="friend.friendImg" alt="Profile Image" class="profile-img sm">
                                             <span v-else class="profile-init">{{ friendInitiative(friend.friendName) }}</span>
                                             </span> <span @click="viewDetails(index)" class="btn-link-no-underline text-bold font-lg">
@@ -52,6 +54,7 @@
                             </div>
                             <div v-else>
                                 <div class="mt-1 mb-2">
+                                    <sup class="user-active" :class="{'active' : isFriendActive(getUserData.friendId)}">&#11044;</sup>
                                     <img v-if="getUserData.friendImg" :src="getUserData.friendImg" alt="Profile Image" class="profile-img md">
                                     <span v-else class="profile-init-lg">{{ friendInitiative(getUserData.friendName) }}</span>
                                 </div>
@@ -78,6 +81,7 @@
 <script>
     import { mapState } from 'pinia';
     import { useLgStore } from '@/stores/active__lg';
+    import { friendsStore } from '@/stores/friends';
     import Modal from '@/components/Modal.vue';
     import IconUser from '@/components/icons/IconUser.vue';
     import IconIdCard from '@/components/icons/IconIdCard.vue';
@@ -100,6 +104,7 @@
 
         computed: {
             ...mapState(useLgStore, ['lg']),
+            ...mapState(friendsStore, ['isFriendActive']),
 
             showModal() {
                 return this.friendGroup ? true : false;

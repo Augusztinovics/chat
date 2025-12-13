@@ -10,6 +10,7 @@ export const friendsStore = defineStore('friends', {
         messages: [],
         activeChatBoxs: [],
         activeChatBox: null,
+        activeFriends: [],
     }),
 
     getters: {
@@ -31,6 +32,11 @@ export const friendsStore = defineStore('friends', {
         getFriendData: (state) => {
             return (id) => {
                 return state.friends.find(f => {return f.friendId == id});
+            }
+        },
+        isFriendActive: (state) => {
+            return (id) => {
+                return state.activeFriends.indexOf(id) >= 0;
             }
         },
         getGroupsData: (state) => {
@@ -73,6 +79,11 @@ export const friendsStore = defineStore('friends', {
                         this.friends = res.data?.friends ?? [];
                         this.groups = res.data?.groups ?? [];
                         this.messages = res.data?.messages ?? [];
+                        this.friends.forEach(f => {
+                            if (f.active) {
+                                this.activeFriends.push(f.friendId);
+                            }
+                        });
                         this.loaded = true;
                         resolve(true);
                     })
@@ -147,5 +158,22 @@ export const friendsStore = defineStore('friends', {
         setAsActiveBox(groupId) {
             this.activeChatBox = groupId;
         },
+
+        addToActiveFriends(friendId) {
+            let friend = this.friends.find(f => {return f.friendId == friendId});
+            if (friend) {
+                let isAdded = this.activeFriends.indexOf(friendId) >= 0;
+                if (!isAdded) {
+                    this.activeFriends.push(friendId);
+                }
+            }
+        },
+
+        removeFromActiveFriens(friendId) {
+            let friendIndex = this.activeFriends.indexOf(friendId);
+            if (friendIndex !== -1) {
+                this.activeFriends.splice(friendIndex, 1);
+            }
+        }
     },
 });

@@ -10,6 +10,7 @@ function onConnection(socket, io) {
                         ids.forEach(id => {
                             socket.join('group_' + id.group_id);
                         });
+                        io.emit('user_join', u.id);
                     });
                 });
             });
@@ -42,6 +43,7 @@ function onConnection(socket, io) {
                 if (u) {
                     u.remember_token = null;
                     u.save();
+                    io.emit('user_left', u.id);
                 }
             });
         } catch (error) {

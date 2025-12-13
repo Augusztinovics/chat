@@ -26,7 +26,10 @@
                         <p class="text-bold">{{ lg('friends_in_group') }}</p>
                         <div v-for="friend in friendGroup.groupUsers" :key="'existing_friends_' + friend.friendId" class="friend-checkbox danger-check">
                             <input type="checkbox" :id="'existing_friends_' + friend.friendId" :value="friend.friendId" v-model="selectedFriendsForDeleteFromGroup" />
-                            <label :for="'existing_friends_' + friend.friendId"><ContactImage :friends="[friend]"/> {{ friend.friendName }} <span v-if="friend.friendCity">( {{ friend.friendCity }} )</span></label>
+                            <label :for="'existing_friends_' + friend.friendId">
+                                <sup class="user-active" :class="{'active' : isFriendActive(friend.friendId)}">&#11044;</sup>
+                                <ContactImage :friends="[friend]"/> {{ friend.friendName }} <span v-if="friend.friendCity">( {{ friend.friendCity }} )</span>
+                            </label>
                         </div>
                     </div>
                     <hr class="mt-2 mb-2">
@@ -35,7 +38,10 @@
                         <div v-for="allFriend in allFriends" :key="'all_friends_' + allFriend.friendId">
                             <div v-if="canAddToGroup(allFriend.friendId)" class="friend-checkbox green-check">
                                 <input type="checkbox" :id="'all_friends_' + allFriend.friendId" :value="allFriend.friendId" v-model="selectedFriendsToAddGroup" />
-                                <label :for="'all_friends_' + allFriend.friendId"><ContactImage :friends="[allFriend]"/> {{ allFriend.friendName }} <span v-if="allFriend.friendCity">( {{ allFriend.friendCity }} )</span></label>
+                                <label :for="'all_friends_' + allFriend.friendId">
+                                    <sup class="user-active" :class="{'active' : isFriendActive(allFriend.friendId)}">&#11044;</sup>
+                                    <ContactImage :friends="[allFriend]"/> {{ allFriend.friendName }} <span v-if="allFriend.friendCity">( {{ allFriend.friendCity }} )</span>
+                                </label>
                             </div>
                         </div>
                     </div>
@@ -81,6 +87,7 @@
         computed: {
             ...mapStores(loadingStore),
             ...mapState(useLgStore, ['lg']),
+            ...mapState(friendsStore, ['isFriendActive']),
 
             showModal() {
                 return this.friendGroup ? true : false;

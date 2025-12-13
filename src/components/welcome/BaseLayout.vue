@@ -107,6 +107,12 @@ export default {
         this.loadData();
         this.paginationSizesStore.calculatePaginationStep();
         window.addEventListener('resize', this.paginationSizesStore.calculatePaginationStep);
+        this.socketStore.socket.on('user_join', e => {
+            this.friendsStore.addToActiveFriends(parseInt(e));
+        });
+        this.socketStore.socket.on('user_left', e => {
+            this.friendsStore.removeFromActiveFriens(parseInt(e));
+        });
     },
     beforeUnmount() {
         window.removeEventListener('resize', this.paginationSizesStore.calculatePaginationStep);

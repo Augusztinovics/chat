@@ -73,7 +73,8 @@ class User extends Model
                         u.description AS friendDescription,
                         u.country AS friendCountry,
                         u.city AS friendCity,
-                        u.profile_img AS friendImg
+                        u.profile_img AS friendImg,
+                        u.remember_token AS active
                         FROM users u
                         LEFT JOIN friends r ON r.to_user=${this.id} AND r.from_user=u.id AND r.denided_at IS NULL AND r.accepted_at IS NOT NULL
                         LEFT JOIN friends s ON s.from_user=${this.id} AND s.to_user=u.id AND s.denided_at IS NULL AND s.accepted_at IS NOT NULL
