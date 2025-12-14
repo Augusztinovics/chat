@@ -18,14 +18,12 @@
         </div>
 
         <div class="chat-body">
-            <!-- the messages and users in group conteiners-->
             <div class="msg-and-user" :style="{'max-height' : maxHeight}">
-                <!-- Users in group container -->
                 <div class="user-box">
                     <ChatUsers :users="usersInChat"/>
                 </div>
                 <div class="msg-box" :ref="'msg_box_' + card.groupId">
-                    <MsgRender v-for="msg in card.messages" :msg="msg"/>
+                    <MsgRender v-for="msg in messages" :msg="msg"/>
                 </div>
             </div>
 
@@ -84,6 +82,7 @@
     import { userStore } from '@/stores/user';
     import { friendsStore } from '@/stores/friends';
     import ChatUsers from './ChatUsers.vue';
+    import { socketStore } from '@/stores/socket';
 
     export default {
         components: {
@@ -121,7 +120,7 @@
         },
 
         computed: {
-            ...mapStores(userStore, friendsStore),
+            ...mapStores(userStore, friendsStore, socketStore),
 
             showSendBtn() {
                 return this.img || this.msgText.length > 0;
@@ -141,6 +140,11 @@
             usersInChat() {
                 return this.card?.groupUsers ? this.card.groupUsers : [];
             },
+
+            messages() {
+                this.scollToMsgBox();
+                return this.card.messages;
+            }
         },
 
         methods: {
@@ -157,13 +161,11 @@
                     reaction: null,
                 };
                 this.addMessageToGroup(msgData);
-                // TODO send the event
-
+                this.socketStore.socket.emit('group_message', msgData);
                 this.msgText = '';
                 this.img = null;
                 this.openHelper = 'NON';
                 this.maxHeight = '100%';
-                this.scollToMsgBox();
                 this.$refs.msg_text.focus();
             },
 
@@ -185,9 +187,7 @@
                 this.openHelper = 'NON';
                 this.maxHeight = '100%';
                 this.addMessageToGroup(msgData);
-                // TODO send the event
-
-                this.scollToMsgBox();
+                this.socketStore.socket.emit('group_message', msgData);
             },
 
             openHelperContainer(helper) {
@@ -344,6 +344,10 @@
                     }
                 }, 10)
             },
+        },
+
+        mounted() {
+            this.scollToMsgBox();
         },
     }
 </script>

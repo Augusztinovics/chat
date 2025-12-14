@@ -66,7 +66,29 @@ export const friendsStore = defineStore('friends', {
                 }
                 cards.push(oneCard);
             });
-            //TODO order by latest messages
+
+            if (cards.length) {
+                cards = [...cards].sort((a, b) => {
+                    let aLast = a.messages.length
+                        ? new Date(a.messages[a.messages.length - 1].sendTime).getTime()
+                        : null;
+
+                    let bLast = b.messages.length
+                        ? new Date(b.messages[b.messages.length - 1].sendTime).getTime()
+                        : null;
+
+                    // both have no messages → keep order
+                    if (aLast === null && bLast === null) return 0;
+
+                    // one has no messages → push it down
+                    if (aLast === null) return 1;
+                    if (bLast === null) return -1;
+
+                    // newest first
+                    return bLast - aLast;
+                });
+            }
+
             return cards;
         },
     },

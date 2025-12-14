@@ -13,9 +13,10 @@
 
 <script>
     import ChatBox from '@/components/welcome/Chat/ChatBox.vue';
-    import { mapState, mapActions } from 'pinia';
+    import { mapStores, mapState, mapActions } from 'pinia';
     import { friendsStore } from '@/stores/friends';
     import ContactImage from '@/components/welcome/Home/ContactImage.vue';
+    import { socketStore } from '@/stores/socket';
 
     export default {
         components: {
@@ -24,13 +25,21 @@
         },
 
         computed: {
+            ...mapStores(socketStore),
             ...mapState(friendsStore, {
                 groupCards: 'getGroupsData',
+                addMessageToGroup: 'addMessageToGroup',
             }),
         },
 
         methods: {
             ...mapActions(friendsStore, ['toogleChatbox']),
+        },
+
+         mounted() {
+            this.socketStore.socket.on('group_message', e => {
+                this.addMessageToGroup(e);
+            });
         },
     }
 </script>

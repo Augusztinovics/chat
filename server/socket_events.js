@@ -20,19 +20,7 @@ function onConnection(socket, io) {
     });
 
     socket.on('group_message', (msg) => {
-        //Need some datastructure in msg, now just dumy
-        //expected datastructure maybe: 
-        //msg = 
-        //{
-        // group_id: (group id to send),
-        // from_id: (user id of the sender)
-        // from: (sender name(maybe not need, will see))
-        // msg: (text message)
-        // img: (image data, if any)
-        // reaction: (selected reaction)
-        //}
-        //Audio(video, maybe) call will go on different event
-        io.to('group_' + msg.group_id).emit(msg);
+        socket.to('group_' + msg.group_id).emit('group_message', msg);
     });
 
 
