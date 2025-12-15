@@ -63,6 +63,7 @@ async function migrateFile(file) {
             })
             .catch((err) => {
                 if (err.errno == 1) {
+                    console.log(err);
                     console.log(file + ' already migrated, skiping...');
                     index++;
                     resolve(true);

@@ -154,8 +154,8 @@
                 let msgData = {
                     group_id: this.card.groupId,
                     from_id: this.userStore.id,
-                    from: this.userStore.username,
-                    sendTime: this.getFormattedDateTime(),
+                    sender: this.userStore.username,
+                    send_time: this.getFormattedDateTime(),
                     msg: this.msgText,
                     img: this.img,
                     reaction: null,
@@ -178,8 +178,8 @@
                 let msgData = {
                     group_id: this.card.groupId,
                     from_id: this.userStore.id,
-                    from: this.userStore.username,
-                    sendTime: this.getFormattedDateTime(),
+                    sender: this.userStore.username,
+                    send_time: this.getFormattedDateTime(),
                     msg: '',
                     img: null,
                     reaction: reactionEmoji,

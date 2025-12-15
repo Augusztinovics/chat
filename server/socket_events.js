@@ -1,4 +1,5 @@
 const User = require('../models/User.js');
+const ChatMessage = require('../models/ChatMessage.js');
 
 function onConnection(socket, io) {
     socket.on('identify', (data) => {
@@ -20,6 +21,7 @@ function onConnection(socket, io) {
     });
 
     socket.on('group_message', (msg) => {
+        ChatMessage.create(msg);
         socket.to('group_' + msg.group_id).emit('group_message', msg);
     });
 

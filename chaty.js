@@ -189,3 +189,28 @@ if (groupUser && !group && !friends && !users && !logs && !roll && !migrations) 
         console.log(e);
     })
 }
+
+const message = (process.argv.indexOf('-ms') > -1 || process.argv.indexOf('--messages') > -1) ? true : false;
+
+if (message && !groupUser && !group && !friends && !users && !logs && !roll && !migrations) {
+    const ChatMessage = require('./models/ChatMessage.js');
+    let result = ChatMessage.getAll();
+    console.log('Chat Messages:');
+
+    result.then((res) => {
+        res.forEach(element => {
+            console.log('Id: ' + element.id);
+            console.log('Group Id: ' + element.group_id);
+            console.log('Sender Id: ' + element.from_id);
+            console.log('Sender Name: ' + element.sender);
+            console.log('Send Time: ' + element.send_time);
+            console.log('Message: ' + element.msg);
+            console.log('Reaction: ' + element.reaction);
+            console.log('Created at: ' + element.created_at);
+            console.log(' ');
+        });
+       
+    }).catch((e) => {
+        console.log(e);
+    })
+}

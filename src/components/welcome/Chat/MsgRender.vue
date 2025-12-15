@@ -2,10 +2,10 @@
     <div class="one-msg">
         <div v-if="msg.reaction" class="msg-reaction-box">
             <p class="msg-rection">{{ msg.reaction }}</p>
-            <p class="msg-from-line"><b>{{ msg.from }}</b><small>{{ msg.sendTime }}</small></p>
+            <p class="msg-from-line"><b>{{ msg.sender }}</b><small>{{ msg.send_time }}</small></p>
         </div>
         <div v-else class="msg-text-box" :class="{'owner-msg': ownMsg}">
-            <p class="msg-from-line"><b>{{ msg.from }}</b><small>{{ msg.sendTime }}</small></p>
+            <p class="msg-from-line"><b>{{ msg.sender }}</b><small>{{ msg.send_time }}</small></p>
             <div v-if="msg.img" class="msg-img">
                 <img :src="msg.img" alt="Chat Image">
             </div>
@@ -26,8 +26,8 @@
                     return {
                         group_id: 0,
                         from_id: 0,
-                        from: '',
-                        sendTime: '',
+                        sender: '',
+                        send_time: '',
                         msg: '',
                         img: null,
                         reaction: null,

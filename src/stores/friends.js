@@ -70,11 +70,11 @@ export const friendsStore = defineStore('friends', {
             if (cards.length) {
                 cards = [...cards].sort((a, b) => {
                     let aLast = a.messages.length
-                        ? new Date(a.messages[a.messages.length - 1].sendTime).getTime()
+                        ? new Date(a.messages[a.messages.length - 1].send_time).getTime()
                         : null;
 
                     let bLast = b.messages.length
-                        ? new Date(b.messages[b.messages.length - 1].sendTime).getTime()
+                        ? new Date(b.messages[b.messages.length - 1].send_time).getTime()
                         : null;
 
                     // both have no messages → keep order
@@ -89,6 +89,7 @@ export const friendsStore = defineStore('friends', {
                 });
             }
 
+            console.log(cards);
             return cards;
         },
     },
@@ -98,9 +99,11 @@ export const friendsStore = defineStore('friends', {
             return new Promise((resolve,reject) => {
                 axios.get('/api/resources/friends')
                     .then((res) => {
+                        console.log(res.data);
                         this.friends = res.data?.friends ?? [];
                         this.groups = res.data?.groups ?? [];
                         this.messages = res.data?.messages ?? [];
+                        console.log(this.messages);
                         this.friends.forEach(f => {
                             if (f.active) {
                                 this.activeFriends.push(f.friendId);

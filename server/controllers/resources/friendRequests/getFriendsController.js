@@ -1,4 +1,5 @@
 const Group = require('../../../../models/Group.js');
+const ChatMessage = require('../../../../models/ChatMessage.js');
 
 async function getFriends(req, res) {
     if (!req.user) {
@@ -14,6 +15,7 @@ async function getFriends(req, res) {
         let groups = [];
         groupIds.forEach(g => {
             groups.push(Group.find(g.group_id));
+            messages.push(ChatMessage.getMsgSet(g.group_id, 1));
         });
         Promise.all(groups).then((r) => {
             let fullGroups = [];
@@ -21,7 +23,19 @@ async function getFriends(req, res) {
                 fullGroups.push(g.groupUsers());
             });
             Promise.all(fullGroups).then(gu => {
-                res.json({friends: result, groups: gu, messages: messages});
+                Promise.all(messages).then(m => {
+                    let fullMessages = [];
+                    m.forEach(msg => {
+                        if (msg.length > 0) {
+                            let msgGroupData = {};
+                            msgGroupData[msg[0].group_id] = msg;
+                            console.log(msgGroupData);
+                            fullMessages.push(msgGroupData);
+                        }
+                    });
+                    console.log(fullMessages);
+                    res.json({friends: result, groups: gu, messages: fullMessages});
+                });
             })
         })
     } catch (error) {
