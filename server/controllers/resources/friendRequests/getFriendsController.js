@@ -24,16 +24,12 @@ async function getFriends(req, res) {
             });
             Promise.all(fullGroups).then(gu => {
                 Promise.all(messages).then(m => {
-                    let fullMessages = [];
+                    let fullMessages = {};
                     m.forEach(msg => {
                         if (msg.length > 0) {
-                            let msgGroupData = {};
-                            msgGroupData[msg[0].group_id] = msg;
-                            console.log(msgGroupData);
-                            fullMessages.push(msgGroupData);
+                            fullMessages[msg[0].group_id] = msg.reverse();
                         }
                     });
-                    console.log(fullMessages);
                     res.json({friends: result, groups: gu, messages: fullMessages});
                 });
             })

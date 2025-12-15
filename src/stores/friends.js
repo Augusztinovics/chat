@@ -7,7 +7,7 @@ export const friendsStore = defineStore('friends', {
         loaded: false,
         friends: [],
         groups: [],
-        messages: [],
+        messages: {},
         activeChatBoxs: [],
         activeChatBox: null,
         activeFriends: [],
@@ -102,8 +102,7 @@ export const friendsStore = defineStore('friends', {
                         console.log(res.data);
                         this.friends = res.data?.friends ?? [];
                         this.groups = res.data?.groups ?? [];
-                        this.messages = res.data?.messages ?? [];
-                        console.log(this.messages);
+                        this.messages = res.data?.messages ?? {};
                         this.friends.forEach(f => {
                             if (f.active) {
                                 this.activeFriends.push(f.friendId);
