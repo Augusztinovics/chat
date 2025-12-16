@@ -116,6 +116,8 @@
                 openHelper: 'NON',
                 maxHeight: '100%',
                 msgs: [],
+                audio1: null,
+                audio2: null,
             }
         },
 

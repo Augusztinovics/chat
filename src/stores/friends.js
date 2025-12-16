@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import axios from 'axios';
 import { userStore } from './user';
+import { saveMsgTimeToStore, checkMsgTime } from '@/components/welcome/Chat/MessageStoreFuntions.js';
 
 export const friendsStore = defineStore('friends', {
     state: () => ({
@@ -92,6 +93,25 @@ export const friendsStore = defineStore('friends', {
             console.log(cards);
             return cards;
         },
+
+        hasNewMessage:(state) => {
+            return (groupId) => {
+                if (!groupId) {
+                    return false;
+                }
+                let existingIndex = state.activeChatBoxs.indexOf(groupId);
+                if (existingIndex !== -1) {
+                    return false;
+                }
+                if (!state.messages[groupId]) {
+                    return false;
+                }
+                if (state.messages[groupId].length < 1) {
+                    return false;
+                }
+                return checkMsgTime(state.messages[groupId][state.messages[groupId].length - 1]);
+            };
+        },
     },
 
     actions: {
@@ -160,6 +180,10 @@ export const friendsStore = defineStore('friends', {
             } else {
                 this.messages[payload.group_id] = [payload];
             }
+            let existingIndex = this.activeChatBoxs.indexOf(payload.group_id);
+            if (existingIndex !== -1) {
+                saveMsgTimeToStore(payload);
+            }
         },
 
         toogleChatbox(groupId) {
@@ -176,6 +200,7 @@ export const friendsStore = defineStore('friends', {
                     this.activeChatBoxs.push(groupId);
                 }
                 this.activeChatBox = groupId;
+                this.saveLastMsgTimeToStore(groupId);
             }
         },
 
@@ -198,6 +223,12 @@ export const friendsStore = defineStore('friends', {
             if (friendIndex !== -1) {
                 this.activeFriends.splice(friendIndex, 1);
             }
-        }
+        },
+
+        saveLastMsgTimeToStore(groupId) {
+            if (this.messages[groupId] && this.messages[groupId].length) {
+                saveMsgTimeToStore(this.messages[groupId][this.messages[groupId].length - 1]);
+            }
+        },
     },
 });

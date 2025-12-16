@@ -8,6 +8,7 @@
         <div class="friend-list">
             <div v-for="card in groupCards" :key="card.groupId" class="friend-wrapper mb-1">
                 <div class="friend-data">
+                    <sup class="new-msg" :class="{'active' : hasNewMessage(card.groupId)}">&#11044;</sup>
                     <ContactImage :friends="card.groupUsers"/>
                     <div>
                         <h5 @click="showGroupDetail(card)">{{ card.groupName }}</h5>
@@ -105,7 +106,8 @@
                 numFriends: 'numFriends',
                 friends: 'allFriends',
                 numGroups: 'numGroups',
-                groupCards: 'getGroupsData'
+                groupCards: 'getGroupsData',
+                hasNewMessage: 'hasNewMessage',
             }),
             ...mapState(useLgStore, ['lg']),
         },
