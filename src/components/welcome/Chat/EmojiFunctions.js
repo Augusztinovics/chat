@@ -99,7 +99,6 @@ export function selectByCategory(category) {
         case 'SYMBOLS':
             return SYMBOLS;
         case 'RECENT':
-            // TODO save and read to from local storage
             return [];
         default:
             return ALL;

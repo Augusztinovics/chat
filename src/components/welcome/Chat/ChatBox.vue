@@ -6,7 +6,7 @@
         @mousedown="setAsActiveBox(card.groupId)"
     >
         <div class="chat-header"  @mousedown="startDrag" @touchstart="startDrag">
-            <!-- Group name, full-screen toogle, close -->
+            <!-- TODO create default unchangable group for new friend (database update) and for that group show the correct fried namenot group name -->
             <h4>{{ card.groupName }}</h4>
             <div class="controls">
                 <button type="button" class="minimaize-btn" @click="toogleFullScreen">
@@ -22,6 +22,7 @@
                 <div class="user-box">
                     <ChatUsers :users="usersInChat"/>
                 </div>
+                <!-- TODO ability to fetch, more older messages -->
                 <div class="msg-box" :ref="'msg_box_' + card.groupId">
                     <MsgRender v-for="msg in messages" :msg="msg"/>
                 </div>

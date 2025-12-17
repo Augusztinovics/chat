@@ -10,7 +10,6 @@ async function getFriends(req, res) {
     try {
         let result = await req.user.friends();
         let groupIds = await req.user.groupIds();
-        // TODO need to fetch messages from group ids, grouped by group ids ordered by send date and limit 10 by each?!
         let messages = [];
         let groups = [];
         groupIds.forEach(g => {

@@ -14,13 +14,10 @@
                         <h5 @click="showGroupDetail(card)">{{ card.groupName }}</h5>
                     </div>
                 </div>
-
-                <!-- TODO: Responsive style -->
                 <div>
                     <span v-if="card.owner" class="icon-edit-btn mr-1" @click="showGroupEdit(card)"><IconEdit /></span>
                     <button class="btn-sm btn-primary" @click="toogleChatbox(card.groupId)">{{ lg('send_message') }}</button>
                 </div>
-                <!-- END TODO -->
 
             </div>
         </div>

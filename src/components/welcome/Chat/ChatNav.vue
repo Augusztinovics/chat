@@ -66,6 +66,7 @@
                         console.error("Audio play failed:", error);
                     });
                 }
+                // TODO if chatbox not active Info Toast the new message
                 this.addMessageToGroup(e);
             });
         },
