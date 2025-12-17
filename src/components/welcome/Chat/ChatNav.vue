@@ -52,13 +52,13 @@
         },
 
          mounted() {
-            // if (!this.audio) {
-            //     this.audio = new Audio('Sounds/newmsg.mp3');
-            // }
-            // if (!this.audioClick) {
-            //     this.audioClick = new Audio('Sounds/click.mp3');
-            //     console.log(this.audioClick);
-            // }
+            if (!this.audio) {
+                this.audio = new Audio('sounds/new-notification.mp3');
+            }
+            if (!this.audioClick) {
+                this.audioClick = new Audio('sounds/click.mp3');
+                console.log(this.audioClick);
+            }
             this.socketStore.socket.on('group_message', e => {
                 if (this.audio) {
                     this.audio.currentTime = 0; 

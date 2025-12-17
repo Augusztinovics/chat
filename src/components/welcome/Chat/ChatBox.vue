@@ -153,6 +153,7 @@
             ...mapActions(friendsStore, ['addMessageToGroup', 'toogleChatbox', 'setAsActiveBox']),
             sendMsg() {
                 if (!this.showSendBtn) return;
+                this.playAudio1();
                 let msgData = {
                     group_id: this.card.groupId,
                     from_id: this.userStore.id,
@@ -172,10 +173,12 @@
             },
 
             addEmoji(emoji) {
+                this.playAudio2();
                 this.msgText += emoji.emoji;
             },
 
             sendReaction(reaction) {
+                this.playAudio2();
                 let reactionEmoji = reaction.emoji ?? reaction;
                 let msgData = {
                     group_id: this.card.groupId,
@@ -194,6 +197,7 @@
 
             openHelperContainer(helper) {
                 this.emtyFileInput();
+                this.playAudio1();
                 if (helper == this.openHelper) {
                     this.openHelper = 'NON';
                     this.maxHeight = '100%';
@@ -242,6 +246,7 @@
 
             closeChat() {
                 this.closing = true;
+                this.playAudio1();
                 setTimeout(() => {
                     this.toogleChatbox(this.card.groupId);
                     this.closing = false;
@@ -346,9 +351,29 @@
                     }
                 }, 10)
             },
+
+            playAudio1() {
+                if (this.audio1) {
+                    this.audio1.currentTime = 0;
+                    this.audio1.play().catch(e => {console.log(e)});
+                }
+            },
+
+            playAudio2() {
+                if (this.audio2) {
+                    this.audio2.currentTime = 0;
+                    this.audio2.play().catch(e => {console.log(e)});
+                }
+            },
         },
 
         mounted() {
+            if (!this.audio1) {
+                this.audio1 = new Audio('sounds/click.mp3');
+            }
+            if (!this.audio2) {
+                this.audio2 = new Audio('sounds/cursor.ogg');
+            }
             this.scollToMsgBox();
         },
     }
