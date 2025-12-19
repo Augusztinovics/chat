@@ -1,6 +1,9 @@
 <template>
     <div class="toaster info">
-        <h5><span>!</span>{{ message }}</h5>
+        <p class="text-right"><span @click="removeToast(toastId)">x</span></p>
+        <h5>{{ sender }}</h5>
+        <p>{{ message }}</p>
+        <button v-if="roomId" @click="openChetbox" class="btn btn-primary btn-block">{{ lg('visit_room') }}</button>
     </div>
 </template>
 
@@ -16,15 +19,38 @@
     //Removed to group. Need: sender name, group name, some text like: [Sender] removed from [Group Name]
     //Maybe marketing toast. Need title, img, description and action button (maybe separate toast)
 
-    import { mapState } from 'pinia';
+    import { mapState, mapActions } from 'pinia';
     import { useLgStore } from '@/stores/active__lg';
+    import { toastsStore } from '@/stores/toasts';
+    import { friendsStore } from '@/stores/friends';
 
     export default {
         props: ['msg'],
         computed: {
             ...mapState(useLgStore, ['lg']),
+            sender() {
+                return this.msg && this.msg.sender ? this.msg.sender : '';
+            },
+
             message() {
-                return this.msg ?? this.lg('saved');
+                return this.msg && this.msg.msg ? this.msg.msg : '';
+            },
+
+            roomId() {
+                return this.msg && this.msg.group_id ? this.msg.group_id : false;
+            },
+
+            toastId() {
+                return this.msg && this.msg.toast_id ? this.msg.toast_id : 0;
+            },
+        },
+
+        methods: {
+            ...mapActions(toastsStore, ['removeToast']),
+            ...mapActions(friendsStore, ['toogleChatbox']),
+            openChetbox() {
+                this.toogleChatbox(this.roomId);
+                this.removeToast(this.toastId);
             },
         },
     }

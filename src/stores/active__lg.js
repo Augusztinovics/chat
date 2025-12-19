@@ -414,6 +414,16 @@ export const useLgStore = defineStore('active_lg', {
                 SR: 'Prijatelji van grupe',
                 EN: 'Friends outside the group',
             },
+            visit_room: {
+                HU: 'Nézd meg',
+                SR: 'Pogledaj',
+                EN: 'Check it',
+            },
+            new_msg: {
+                HU: 'Új üzenetet küldött!',
+                SR: 'Nova poruka je poslata!',
+                EN: 'New message sent!',
+            },
         },
     }),
     getters: {

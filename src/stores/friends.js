@@ -94,7 +94,7 @@ export const friendsStore = defineStore('friends', {
             return cards;
         },
 
-        hasNewMessage:(state) => {
+        hasNewMessage: (state) => {
             return (groupId) => {
                 if (!groupId) {
                     return false;
@@ -110,6 +110,15 @@ export const friendsStore = defineStore('friends', {
                     return false;
                 }
                 return checkMsgTime(state.messages[groupId][state.messages[groupId].length - 1]);
+            };
+        },
+
+        isBoxOpen: (state) => {
+            return (groupId) => {
+                if (!groupId) {
+                    return false;
+                }
+                return state.activeChatBoxs.includes(groupId);
             };
         },
     },

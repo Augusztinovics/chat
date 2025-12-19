@@ -17,6 +17,8 @@
     import { friendsStore } from '@/stores/friends';
     import ContactImage from '@/components/welcome/Home/ContactImage.vue';
     import { socketStore } from '@/stores/socket';
+    import { toastsStore } from '@/stores/toasts';
+    import { useLgStore } from '@/stores/active__lg';
 
     export default {
         components: {
@@ -36,11 +38,15 @@
             ...mapState(friendsStore, {
                 groupCards: 'getGroupsData',
                 hasNewMessage: 'hasNewMessage',
+                isChatBoxOpen: 'isBoxOpen',
             }),
+            ...mapState(toastsStore, ['toastCount']),
+            ...mapState(useLgStore, ['lg']),
         },
 
         methods: {
             ...mapActions(friendsStore, ['toogleChatbox', 'addMessageToGroup']),
+            ...mapActions(toastsStore, ['addToast', 'removeToast']),
 
             toogleBox(groupId) {
                 if (this.audioClick) {
@@ -66,8 +72,20 @@
                         console.error("Audio play failed:", error);
                     });
                 }
-                // TODO if chatbox not active Info Toast the new message
                 this.addMessageToGroup(e);
+                if (e.group_id && !this.isChatBoxOpen(e.group_id)) {
+                    let toastId = this.toastCount + 1;
+                    let newToast = {
+                        toast_id: toastId,
+                        sender: e.sender ?? '',
+                        msg: this.lg('new_msg'),
+                        group_id: e.group_id,
+                    };
+                    this.addToast(newToast);
+                    setTimeout(() => {
+                        this.removeToast(toastId)
+                    }, 5000);
+                }
             });
         },
     }
