@@ -8,6 +8,7 @@
             </div>
         </div>
         <ChatBox v-for="card in groupCards" :card="card" :key="'box_' + card.groupId" />
+        <InfoToast v-for="toast in getToasts" :key="'info_' + toast.toast_id" :msg="toast"/>
     </div>
 </template>
 
@@ -19,11 +20,13 @@
     import { socketStore } from '@/stores/socket';
     import { toastsStore } from '@/stores/toasts';
     import { useLgStore } from '@/stores/active__lg';
+    import InfoToast from '@/components/InfoToast.vue';
 
     export default {
         components: {
             ChatBox,
             ContactImage,
+            InfoToast,
         },
 
         data() {
@@ -40,7 +43,7 @@
                 hasNewMessage: 'hasNewMessage',
                 isChatBoxOpen: 'isBoxOpen',
             }),
-            ...mapState(toastsStore, ['toastCount']),
+            ...mapState(toastsStore, ['toastCount', 'getToasts']),
             ...mapState(useLgStore, ['lg']),
         },
 
