@@ -79,11 +79,14 @@
 <script>
     import IconUser from '@/components/icons/IconUser.vue';
     import Modal from '@/components/Modal.vue';
-    import { mapState, mapActions } from 'pinia';
+    import { mapStores, mapState, mapActions } from 'pinia';
     import { useLgStore } from '@/stores/active__lg';
     import { requestSendStore } from '@/stores/request_send';
     import { requestGetStore } from '@/stores/request_get';
     import IconEdit from '@/components/icons/IconEdit.vue';
+    import { userStore } from '@/stores/user';
+    import { socketStore } from '@/stores/socket';
+    import { toastsStore } from '@/stores/toasts';
 
     export default {
         props: {
@@ -125,6 +128,7 @@
         },
 
         computed: {
+            ...mapStores(userStore, socketStore, toastsStore),
             ...mapState(useLgStore, ['lg']),
 
             hasFriend() {
@@ -174,7 +178,6 @@
                             this.friend.messageToFriend = this.requestText;
                             this.editing = false;
                             this.showDetails = true;
-                            //TODO fire friend request send event!!!!!
                         })
                         .catch((e) => {
                             this.sending = false;
@@ -191,6 +194,16 @@
                     this.sending = true;
                     this.sendRequest({friendId: this.friend.friendId, text: this.requestText.trim()})
                         .then(() => {
+                            if (this.socketStore.socket) {
+                                let eventData = {
+                                    event_type: this.toastsStore.EVENT_REQUST_SEND,
+                                    sender: this.userStore.username,
+                                    msg: this.requestText.trim(),
+                                    target_ids: [this.friend.friendId],
+                                    group_id: null,
+                                };
+                                this.socketStore.socket.emit('update', eventData);
+                            }
                             this.sending = false;
                             this.$emit('reloadData', 'SUCCESS', this.lg('frind_request_send'));
                         })
@@ -209,9 +222,18 @@
                 this.sending = true;
                 this.acceptRequest({requestId: this.friend.reqId})
                     .then(() => {
+                        if (this.socketStore.socket) {
+                            let eventData = {
+                                event_type: this.toastsStore.EVENT_REQUST_ACCEPT,
+                                sender: this.userStore.username,
+                                msg: this.lg('request_accept'),
+                                target_ids: [this.friend.friendId],
+                                group_id: null,
+                            };
+                            this.socketStore.socket.emit('update', eventData);
+                        }
                         this.sending = false;
                         this.$emit('reloadData', 'SUCCESS', this.lg('frien_request_accepted'));
-                        //TODO fire friend request accepted event!!!!!
                     })
                     .catch((e) => {
                         this.sending = false;
@@ -227,9 +249,18 @@
                 this.sending = true;
                 this.denieRequest({requestId: this.friend.reqId})
                     .then(() => {
+                        if (this.socketStore.socket) {
+                            let eventData = {
+                                event_type: this.toastsStore.EVENT_REQUST_DENIE,
+                                sender: this.userStore.username,
+                                msg: this.lg('request_denie'),
+                                target_ids: [this.friend.friendId],
+                                group_id: null,
+                            };
+                            this.socketStore.socket.emit('update', eventData);
+                        }
                         this.sending = false;
                         this.$emit('reloadData', 'SUCCESS', this.lg('request_denited'));
-                        //TODO fire friend request denie event!!!!!
                     })
                     .catch((e) => {
                         this.sending = false;
@@ -245,6 +276,16 @@
                 this.sending = true;
                 this.cancelFrienRequest({requestId: this.friend.sendId})
                     .then(() => {
+                        if (this.socketStore.socket) {
+                            let eventData = {
+                                event_type: this.toastsStore.EVENT_REQUST_DENIE,
+                                sender: this.userStore.username,
+                                msg: this.lg('request_cancel'),
+                                target_ids: [this.friend.friendId],
+                                group_id: null,
+                            };
+                            this.socketStore.socket.emit('update', eventData);
+                        }
                         this.sending = false;
                         this.$emit('reloadData', 'SUCCESS', this.lg('request_canceled'));
                     })

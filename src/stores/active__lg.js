@@ -330,7 +330,7 @@ export const useLgStore = defineStore('active_lg', {
                 EN: 'An unexpected event occurred while sending the request!',
             },
             frien_request_accepted: {
-                HU: 'Gratulálun, új ismerősöd van!',
+                HU: 'Gratulálunk, új ismerősöd van!',
                 SR: 'Čestitamo, imate novog prijatelja!',
                 EN: 'Congratulations, you have a new friend!',
             },
@@ -343,6 +343,21 @@ export const useLgStore = defineStore('active_lg', {
                 HU: 'Kérelmedet sikeresen visszavontad!',
                 SR: 'Uspešno ste povukli svoj zahtev!',
                 EN: 'You have successfully withdrawn your request!',
+            },
+            request_accept: {
+                HU: 'Elfogadta barátkérelmedet!',
+                SR: 'Prihvatio je tvoj zahtev za prijateljstvo!',
+                EN: 'Accepted your friend request!',
+            },
+            request_denie: {
+                HU: 'Elutasította barátkérelmedet!',
+                SR: 'Odbio tvoj zahtev za prijateljstvo!',
+                EN: 'Rejected your friend request!',
+            },
+            request_cancel: {
+                HU: 'Visszavonta barátkérelmét!',
+                SR: 'Povukao zahtev za prijateljstvo!',
+                EN: 'Withdrawn friend request!',
             },
             message: {
                 HU: 'Üzenet',

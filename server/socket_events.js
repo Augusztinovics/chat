@@ -25,6 +25,10 @@ function onConnection(socket, io) {
         socket.to('group_' + msg.group_id).emit('group_message', msg);
     });
 
+    socket.on('update', (data) => {
+        io.emit('user_update', data);
+    });
+
 
 
     socket.on('disconnect', () => {
