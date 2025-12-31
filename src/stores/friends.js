@@ -89,8 +89,6 @@ export const friendsStore = defineStore('friends', {
                     return bLast - aLast;
                 });
             }
-
-            console.log(cards);
             return cards;
         },
 
@@ -121,6 +119,15 @@ export const friendsStore = defineStore('friends', {
                 return state.activeChatBoxs.includes(groupId);
             };
         },
+
+        defaultGroupName: (state) => {
+            return (card) => {
+                if (card.groupName == 'DEFAULT_GRUP') {
+                    return (card.groupUsers && card.groupUsers.length) ? card.groupUsers[0].friendName : '????';
+                }
+                return card.groupName;
+            };
+        },
     },
 
     actions: {
@@ -128,7 +135,6 @@ export const friendsStore = defineStore('friends', {
             return new Promise((resolve,reject) => {
                 axios.get('/api/resources/friends')
                     .then((res) => {
-                        console.log(res.data);
                         this.friends = res.data?.friends ?? [];
                         this.groups = res.data?.groups ?? [];
                         this.messages = res.data?.messages ?? {};

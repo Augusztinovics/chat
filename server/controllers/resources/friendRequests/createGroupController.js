@@ -54,7 +54,7 @@ async function createGroup(req, res) {
         });
 
         Promise.all(groupUsers).then(() => {
-            res.sendStatus(200);
+            res.json({group_id: newGroup.id});
             return;
         })
         .catch(() => {

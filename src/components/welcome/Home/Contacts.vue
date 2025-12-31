@@ -11,11 +11,11 @@
                     <sup class="new-msg" :class="{'active' : hasNewMessage(card.groupId)}">&#11044;</sup>
                     <ContactImage :friends="card.groupUsers"/>
                     <div>
-                        <h5 @click="showGroupDetail(card)">{{ card.groupName }}</h5>
+                        <h5 @click="showGroupDetail(card)">{{ defaultGroupName(card) }}</h5>
                     </div>
                 </div>
                 <div>
-                    <span v-if="card.owner" class="icon-edit-btn mr-1" @click="showGroupEdit(card)"><IconEdit /></span>
+                    <span v-if="card.owner && card.groupName != 'DEFAULT_GRUP'" class="icon-edit-btn mr-1" @click="showGroupEdit(card)"><IconEdit /></span>
                     <button class="btn-sm btn-primary" @click="toogleChatbox(card.groupId)">{{ lg('send_message') }}</button>
                 </div>
 
@@ -71,6 +71,8 @@
     import IconEdit from '@/components/icons/IconEdit.vue';
     import ContactGroupDetailModal from './ContactGroupDetailModal.vue';
     import EditContactModal from './EditContactModal.vue';
+    import { socketStore } from '@/stores/socket';
+    import { toastsStore } from '@/stores/toasts';
 
     export default {
         components: {
@@ -98,13 +100,14 @@
         },
 
         computed: {
-            ...mapStores(userStore, loadingStore),
+            ...mapStores(userStore, loadingStore, socketStore, toastsStore),
             ...mapState(friendsStore, {
                 numFriends: 'numFriends',
                 friends: 'allFriends',
                 numGroups: 'numGroups',
                 groupCards: 'getGroupsData',
                 hasNewMessage: 'hasNewMessage',
+                defaultGroupName: 'defaultGroupName',
             }),
             ...mapState(useLgStore, ['lg']),
         },
@@ -150,15 +153,24 @@
                 this.saveSuccess = false;
                 this.loadingStore.startLoading();
                 this.createGroup({groupName: this.newGroupName.trim(), friends: this.selectedFriendsForNewGroup})
-                    .then(() => {
+                    .then((r) => {
                         this.loadFriends();
                         this.loadingStore.finishLoading();
                         this.createGroupModalClose();
+                        if (this.socketStore.socket) {
+                            let eventData = {
+                                event_type: this.toastsStore.EVENT_GROUP_UPDATE,
+                                sender: this.userStore.username,
+                                msg: this.lg('added_to_room'),
+                                target_ids: this.selectedFriendsForNewGroup,
+                                group_id: r.data?.group_id ? r.data.group_id : null,
+                            };
+                            this.socketStore.socket.emit('update_event', eventData);
+                        }
                         this.saveSuccess = true;
                         setTimeout(() => {
                             this.saveSuccess = false;
                         }, 3000);
-                        //TODO fire group created event!!!!!
                     })
                     .catch((e) => {
                         this.loadingStore.finishLoading();

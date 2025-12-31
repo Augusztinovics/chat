@@ -104,14 +104,14 @@
 
         computed: {
             ...mapState(useLgStore, ['lg']),
-            ...mapState(friendsStore, ['isFriendActive']),
+            ...mapState(friendsStore, ['isFriendActive', 'defaultGroupName']),
 
             showModal() {
                 return this.friendGroup ? true : false;
             },
 
             modalTitle() {
-                return this.friendGroup?.groupName ?? '';
+                return this.friendGroup ? this.defaultGroupName(this.friendGroup) : '';
             },
 
             groupCreatedDate() {

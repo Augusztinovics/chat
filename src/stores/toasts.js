@@ -1,11 +1,15 @@
 import { defineStore } from 'pinia';
 import { userStore } from './user';
+import { friendsStore } from './friends';
+import { requestGetStore } from './request_get';
+import { requestSendStore } from './request_send';
 
 export const toastsStore = defineStore('toasts', {
     state: () => ({
         EVENT_REQUST_SEND: 'EVENT_REQUST_SEND',
         EVENT_REQUST_ACCEPT: 'EVENT_REQUST_ACCEPT',
         EVENT_REQUST_DENIE: 'EVENT_REQUST_DENIE',
+        EVENT_GROUP_UPDATE: 'EVENT_GROUP_UPDATE',
         toasts: [],
     }),
 
@@ -34,7 +38,6 @@ export const toastsStore = defineStore('toasts', {
         },
 
         handleUpdateEvent(payload) {
-            //Validate event
             if (!payload) return;
             if (!payload.event_type) return;
             if (!payload.target_ids) return;
@@ -51,7 +54,23 @@ export const toastsStore = defineStore('toasts', {
                 group_id: payload.group_id ?? null,
             };
 
-            //TODO Reload neccesary stores, depending of event_type!!
+            const friendStore = friendsStore();
+            const sendStore = requestSendStore();
+            const getStore = requestGetStore();
+            if (payload.event_type == this.EVENT_REQUST_SEND || payload.event_type == this.EVENT_REQUST_DENIE) {
+                sendStore.loadRequests();
+                getStore.loadRequests();
+            }
+
+            if (payload.event_type == this.EVENT_REQUST_ACCEPT) {
+                sendStore.loadRequests();
+                getStore.loadRequests();
+                friendStore.loadFriends();
+            }
+
+            if (payload.event_type == this.EVENT_GROUP_UPDATE) {
+                friendStore.loadFriends();
+            }
 
             this.addToast(infoEvent);
             setTimeout(() => {

@@ -202,7 +202,7 @@
                                     target_ids: [this.friend.friendId],
                                     group_id: null,
                                 };
-                                this.socketStore.socket.emit('update', eventData);
+                                this.socketStore.socket.emit('update_event', eventData);
                             }
                             this.sending = false;
                             this.$emit('reloadData', 'SUCCESS', this.lg('frind_request_send'));
@@ -230,7 +230,7 @@
                                 target_ids: [this.friend.friendId],
                                 group_id: null,
                             };
-                            this.socketStore.socket.emit('update', eventData);
+                            this.socketStore.socket.emit('update_event', eventData);
                         }
                         this.sending = false;
                         this.$emit('reloadData', 'SUCCESS', this.lg('frien_request_accepted'));
@@ -257,7 +257,7 @@
                                 target_ids: [this.friend.friendId],
                                 group_id: null,
                             };
-                            this.socketStore.socket.emit('update', eventData);
+                            this.socketStore.socket.emit('update_event', eventData);
                         }
                         this.sending = false;
                         this.$emit('reloadData', 'SUCCESS', this.lg('request_denited'));
@@ -284,7 +284,7 @@
                                 target_ids: [this.friend.friendId],
                                 group_id: null,
                             };
-                            this.socketStore.socket.emit('update', eventData);
+                            this.socketStore.socket.emit('update_event', eventData);
                         }
                         this.sending = false;
                         this.$emit('reloadData', 'SUCCESS', this.lg('request_canceled'));

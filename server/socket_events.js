@@ -25,7 +25,7 @@ function onConnection(socket, io) {
         socket.to('group_' + msg.group_id).emit('group_message', msg);
     });
 
-    socket.on('update', (data) => {
+    socket.on('update_event', (data) => {
         io.emit('user_update', data);
     });
 

@@ -439,6 +439,16 @@ export const useLgStore = defineStore('active_lg', {
                 SR: 'Nova poruka je poslata!',
                 EN: 'New message sent!',
             },
+            added_to_room: {
+                HU: 'hozzáadott egy csoporthoz',
+                SR: 'te je dodao/la u grupu',
+                EN: 'added you to a group',
+            },
+            removed_from_room: {
+                HU: 'törölt egy csoportból',
+                SR: 'te je obrisala iz grupe',
+                EN: 'deleted you from a group',
+            },
         },
     }),
     getters: {

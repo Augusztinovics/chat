@@ -4,7 +4,7 @@
             <div v-for="card in groupCards" :key="'title_' + card.groupId" @click="toogleBox(card.groupId)" class="group-item">
                 <sup class="new-msg" :class="{'active' : hasNewMessage(card.groupId)}">&#11044;</sup>
                 <ContactImage :friends="card.groupUsers"/>
-                <p>{{ card.groupName }}</p>
+                <p>{{ defaultGroupName(card) }}</p>
             </div>
         </div>
         <ChatBox v-for="card in groupCards" :card="card" :key="'box_' + card.groupId" />
@@ -42,6 +42,7 @@
                 groupCards: 'getGroupsData',
                 hasNewMessage: 'hasNewMessage',
                 isChatBoxOpen: 'isBoxOpen',
+                defaultGroupName: 'defaultGroupName',
             }),
             ...mapState(toastsStore, ['toastCount', 'getToasts']),
             ...mapState(useLgStore, ['lg']),
@@ -49,7 +50,7 @@
 
         methods: {
             ...mapActions(friendsStore, ['toogleChatbox', 'addMessageToGroup']),
-            ...mapActions(toastsStore, ['addToast', 'removeToast']),
+            ...mapActions(toastsStore, ['addToast', 'removeToast', 'handleUpdateEvent']),
 
             toogleBox(groupId) {
                 if (this.audioClick) {
@@ -66,7 +67,6 @@
             }
             if (!this.audioClick) {
                 this.audioClick = new Audio('sounds/click.mp3');
-                console.log(this.audioClick);
             }
             this.socketStore.socket.on('group_message', e => {
                 if (this.audio) {
@@ -89,6 +89,10 @@
                         this.removeToast(toastId)
                     }, 5000);
                 }
+            });
+
+            this.socketStore.socket.on('user_update', update => {
+                this.handleUpdateEvent(update);
             });
         },
     }

@@ -6,8 +6,7 @@
         @mousedown="setAsActiveBox(card.groupId)"
     >
         <div class="chat-header"  @mousedown="startDrag" @touchstart="startDrag">
-            <!-- TODO create default unchangable group for new friend (database update) and for that group show the correct fried namenot group name -->
-            <h4>{{ card.groupName }}</h4>
+            <h4>{{ friendsStore.defaultGroupName(card) }}</h4>
             <div class="controls">
                 <button type="button" class="minimaize-btn" @click="toogleFullScreen">
                     <span v-if="fullScreen" class="icon"><IconMinimize /></span>

@@ -35,7 +35,7 @@ async function acceptFriendRequest(req, res) {
             }
             let newGroup = await Group.create({
                 main_user: req.user.id,
-                group_name: fromUser.username,
+                group_name: 'DEFAULT_GRUP',
             });
             if (!newGroup) {
                 throw new Error("Failed to create group");

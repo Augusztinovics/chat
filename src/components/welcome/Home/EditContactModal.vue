@@ -61,9 +61,12 @@
     import { useLgStore } from '@/stores/active__lg';
     import { friendsStore } from '@/stores/friends';
     import { loadingStore } from '@/stores/loadin';
+    import { socketStore } from '@/stores/socket';
+    import { userStore } from '@/stores/user';
     import Modal from '@/components/Modal.vue';
     import IconEdit from '@/components/icons/IconEdit.vue';
     import ContactImage from './ContactImage.vue';
+    import { toastsStore } from '@/stores/toasts';
 
     export default {
         components: {
@@ -85,7 +88,7 @@
         },
 
         computed: {
-            ...mapStores(loadingStore),
+            ...mapStores(loadingStore, socketStore, userStore, toastsStore),
             ...mapState(useLgStore, ['lg']),
             ...mapState(friendsStore, ['isFriendActive']),
 
@@ -180,12 +183,44 @@
 
                 this.updateGroup(submitData)
                     .then(() => {
+                        if (del && this.socketStore.socket) {
+                            let eventData = {
+                                event_type: this.toastsStore.EVENT_GROUP_UPDATE,
+                                sender: this.userStore.username,
+                                msg: this.lg('removed_from_room'),
+                                target_ids: (this.friendGroup?.groupUsers && this.friendGroup?.groupUsers.length) ? this.friendGroup.groupUsers.map(gu => gu.friendId) : [],
+                                group_id: null,
+                            };
+                            this.socketStore.socket.emit('update_event', eventData);
+                        }
+                        if (!del && this.socketStore.socket) {
+                            if (this.selectedFriendsForDeleteFromGroup.length > 0) {
+                                let eventData = {
+                                    event_type: this.toastsStore.EVENT_GROUP_UPDATE,
+                                    sender: this.userStore.username,
+                                    msg: this.lg('removed_from_room'),
+                                    target_ids: this.selectedFriendsForDeleteFromGroup,
+                                    group_id: null,
+                                };
+                                this.socketStore.socket.emit('update_event', eventData);
+                            }
+                            if (this.selectedFriendsToAddGroup.length > 0) {
+                                let eventData = {
+                                    event_type: this.toastsStore.EVENT_GROUP_UPDATE,
+                                    sender: this.userStore.username,
+                                    msg: this.lg('added_to_room'),
+                                    target_ids: this.selectedFriendsToAddGroup,
+                                    group_id: this.friendGroup.groupId,
+                                };
+                                this.socketStore.socket.emit('update_event', eventData);
+                            }
+                        }
                         this.loadFriends();
                         this.loadingStore.finishLoading();
                         this.modalClose('SUC');
-                        //TODO fire group update event!!!!!
                     })
                     .catch((e) => {
+                        console.log(e);
                         this.loadingStore.finishLoading();
                         if (e == 401) {
                             this.$router.push('/login');
