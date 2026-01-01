@@ -19,6 +19,7 @@ const denieFriendRequestController = require('./controllers/resources/friendRequ
 const getFriendsController = require('./controllers/resources/friendRequests/getFriendsController.js');
 const createGroupController = require('./controllers/resources/friendRequests/createGroupController.js');
 const updateGroupController = require('./controllers/resources/friendRequests/updateGroupController.js');
+const getMoreMessageController = require('./controllers/resources/getMoreMessageController.js');
 
 function apiRouts(app) {
     app.get('/login', async (req, res) => testController(req, res));
@@ -32,7 +33,8 @@ function apiRouts(app) {
     app.get('/api/resources/user-data', auth, (req, res) => userDataController(req, res));
     app.post('/api/resources/user-update', auth, async (req, res) => userUpdateController(req, res));
     app.post('/api/resources/user-delete', auth, async (req, res) => deleteUserController(req, res));
-    app.get('/api/resources/search-user', auth, (req, res) => userSearchController(req, res));
+    app.get('/api/resources/search-user', auth, async (req, res) => userSearchController(req, res));
+    app.get('/api/resources/more-message', auth, async (req, res) => getMoreMessageController(req, res));
 
     //Friend requests
     app.get('/api/resources/sended-friend-requests', auth, async (req, res) => getSendedFriendRequestsController(req, res));

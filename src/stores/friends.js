@@ -245,5 +245,22 @@ export const friendsStore = defineStore('friends', {
                 saveMsgTimeToStore(this.messages[groupId][this.messages[groupId].length - 1]);
             }
         },
+
+        fetchMoreMessage(payload) {
+            return new Promise((resolve) => {
+                if (!payload.group_id) {
+                    resolve(0);
+                    return;
+                }
+                if (!payload.set) {
+                    resolve(0);
+                    return;
+                }
+                if (payload.set < 2) {
+                    resolve(0);
+                    return;
+                }
+            });
+        },
     },
 });
