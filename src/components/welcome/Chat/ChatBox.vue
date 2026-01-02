@@ -21,8 +21,8 @@
                 <div class="user-box">
                     <ChatUsers :users="usersInChat"/>
                 </div>
-                <!-- TODO ability to fetch, more older messages -->
                 <div class="msg-box" :ref="'msg_box_' + card.groupId">
+                    <p class="more-msg" v-if="canFatchMore"><span @click="getOlderMessages">&#11044; &#11044; &#11044;</span></p>
                     <MsgRender v-for="msg in messages" :msg="msg"/>
                 </div>
             </div>
@@ -118,6 +118,8 @@
                 msgs: [],
                 audio1: null,
                 audio2: null,
+                lastMsgFetchLength: 10,
+                lastSetFetch: 1,
             }
         },
 
@@ -146,11 +148,19 @@
             messages() {
                 this.scollToMsgBox();
                 return this.card.messages;
+            },
+
+            canFatchMore() {
+                if (!this.card) return false;
+                if (!this.card.messages) return false;
+                if (this.card.messages.length < 10) return false;
+                if (this.lastMsgFetchLength < 10) return false;
+                return true;
             }
         },
 
         methods: {
-            ...mapActions(friendsStore, ['addMessageToGroup', 'toogleChatbox', 'setAsActiveBox']),
+            ...mapActions(friendsStore, ['addMessageToGroup', 'toogleChatbox', 'setAsActiveBox', 'fetchMoreMessage']),
             sendMsg() {
                 if (!this.showSendBtn) return;
                 this.playAudio1();
@@ -270,6 +280,15 @@
                     }
                 }
                 this.scollToMsgBox();
+            },
+
+            getOlderMessages() {
+                if (!this.card.groupId) return;
+                this.lastSetFetch++;
+                this.fetchMoreMessage({group_id: this.card.groupId, set: this.lastSetFetch})
+                .then(r => {
+                    this.lastMsgFetchLength = r;
+                });
             },
 
             startDrag(e) {

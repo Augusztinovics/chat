@@ -16,7 +16,7 @@ async function getMoreMessage(req, res) {
 
     try {
         let result = await ChatMessage.getMsgSet(groupId, offset);
-        res.json({messages: result.reverse()});
+        res.json({messages: result});
     } catch (error) {
         console.log(error);
         res.sendStatus(500);

@@ -260,6 +260,33 @@ export const friendsStore = defineStore('friends', {
                     resolve(0);
                     return;
                 }
+                axios.get('/api/resources/more-message',
+                    {
+                        params: {
+                            gi: payload.group_id,
+                            s: payload.set
+                        }
+                    }
+                ).then(r => {
+                    let msgs = r.data?.messages;
+                    if (msgs && Array.isArray(msgs) && msgs.length > 0) {
+                        if (!this.messages[payload.group_id]) {
+                            this.messages[payload.group_id] = [];
+                        }
+                        msgs.forEach(msg => {
+                            let existingIndex = this.messages[payload.group_id].findIndex(m => m.id == msg.id);
+                            if (existingIndex === -1) {
+                                this.messages[payload.group_id].unshift(msg);
+                            }
+                        });
+                        resolve(msgs.length);
+                    } else {
+                        resolve(0);
+                    }
+                }).catch(e => {
+                    console.log(e);
+                    resolve(0);
+                });
             });
         },
     },
