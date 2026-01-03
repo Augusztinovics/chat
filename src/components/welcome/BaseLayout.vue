@@ -3,16 +3,16 @@
         <div class="top-nav">
             <nav>
                 <div class="nav-box">
-                    <RouterLink to="/home/terms" class="mr-2 menu-item"><span class="icon"><IconTerms /></span><span class="hide-mb ml-05 text-bold">{{ lg('terms') }}</span></RouterLink>
-                    <RouterLink to="/home/privacy" class="mr-2 menu-item"><span class="icon"><IconShield /></span><span class="hide-mb ml-05 text-bold">{{ lg('privacy') }}</span></RouterLink>
+                    <RouterLink to="/home/terms" class="menu-item"><span class="icon"><IconTerms /></span><span class="hide-mb ml-05 text-bold">{{ lg('terms') }}</span></RouterLink>
+                    <RouterLink to="/home/privacy" class="menu-item"><span class="icon"><IconShield /></span><span class="hide-mb ml-05 text-bold">{{ lg('privacy') }}</span></RouterLink>
                 </div>
                 <div class="nav-box">
-                    <RouterLink to="/home" class="menu-item mr-2"><span class="icon"><IconHome /></span><span class="hide-mb ml-05 text-bold">{{ lg('home') }}</span></RouterLink>
-                    <RouterLink to="/home/profile" class="menu-item mr-2"><span class="icon"><IconIdCard /></span><span class="hide-mb ml-05 text-bold">{{ lg('profile') }}</span></RouterLink>
+                    <RouterLink to="/home" class="menu-item"><span class="icon"><IconHome /></span><span class="hide-mb ml-05 text-bold">{{ lg('home') }}</span></RouterLink>
+                    <RouterLink to="/home/profile" class="menu-item"><span class="icon"><IconIdCard /></span><span class="hide-mb ml-05 text-bold">{{ lg('profile') }}</span></RouterLink>
                 </div>
                 <div class="nav-box">
                     <LgSelector class="menu-item" />
-                    <a href="/logout" class="menu-item ml-2" ><span class="icon"><ExitIcon /></span><span class="hide-mb ml-05 text-bold">{{ lg('logout') }}</span></a>
+                    <a href="/logout" class="menu-item" ><span class="icon"><ExitIcon /></span><span class="hide-mb ml-05 text-bold">{{ lg('logout') }}</span></a>
                 </div>
             </nav>
         </div>

@@ -94,6 +94,7 @@
 
 .base-layout-body .top-nav nav .nav-box .menu-item {
     display: inline-block;
+    margin-right: 1rem;
 }
 
 .base-layout-body .top-nav nav .nav-box a .icon svg {
@@ -144,5 +145,11 @@
 @media (min-width: 900px) {
     .base-layout-body .hide-mb {
         display: inline-block;
+    }
+}
+
+@media (min-width: 450px) {
+    .base-layout-body .top-nav nav .nav-box .menu-item {
+        margin-right: 2rem;
     }
 }

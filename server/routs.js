@@ -5,6 +5,7 @@ const registerController = require('./controllers/registerController.js');
 const loginController = require('./controllers/loginController.js');
 const logoutController = require('./controllers/logoutController.js');
 const auth = require('./middlewares/auth.js');
+const adminAuth = require('./middlewares/adminAuth.js');
 const userDataController = require('./controllers/resources/userDataController.js');
 const userUpdateController = require('./controllers/resources/userUpdateController.js');
 const deleteUserController = require('./controllers/resources/userDeleteController.js');
@@ -50,11 +51,21 @@ function apiRouts(app) {
     app.post('/api/resources/create-group', auth, async (req, res) => createGroupController(req, res));
     app.post('/api/resources/update-group', auth, async (req, res) => updateGroupController(req, res));
 
+    //Admin api routs
 
-    app.get('/home', auth,  (req, res) => {
+
+    app.get('/home', auth, (req, res) => {
         res.sendFile(path.join(__dirname, '../public/index.html'));
     });
-    app.get('/home/*',auth,  (req, res) => {
+    app.get('/home/*', auth, (req, res) => {
+        res.sendFile(path.join(__dirname, '../public/index.html'));
+    });
+
+    //Admin app deo
+    app.get('/admin', adminAuth, (req, res) => {
+        res.sendFile(path.join(__dirname, '../public/index.html'));
+    });
+    app.get('/admin/*', adminAuth, (req, res) => {
         res.sendFile(path.join(__dirname, '../public/index.html'));
     });
 

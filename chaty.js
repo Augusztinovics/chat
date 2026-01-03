@@ -7,11 +7,13 @@ if (help) {
     console.log('This command is for running migrations and seeders');
     console.log('');
     console.log('Available commands:');
-    console.log('-m or --migrate  : to run migration files up function');
-    console.log('-r or --rollback : to run migration files down function (from last up run)');
-    console.log('-s or --seed     : to run the seeder file');
-    console.log('-l or --logs     : to see log entries');
-    console.log('-u or --users    : to see users entries');
+    console.log('-m or --migrate   : to run migration files up function');
+    console.log('-r or --rollback  : to run migration files down function (from last up run)');
+    console.log('-s or --seed      : to run the seeder file');
+    console.log('-l or --logs      : to see log entries');
+    console.log('-u or --users     : to see users entries');
+    console.log('-ms or --messages : to see messages entries');
+    console.log('-au or --admins   : to see admin users');
     process.exit(1);
 }
 
@@ -206,6 +208,27 @@ if (message && !groupUser && !group && !friends && !users && !logs && !roll && !
             console.log('Send Time: ' + element.send_time);
             console.log('Message: ' + element.msg);
             console.log('Reaction: ' + element.reaction);
+            console.log('Created at: ' + element.created_at);
+            console.log(' ');
+        });
+       
+    }).catch((e) => {
+        console.log(e);
+    })
+}
+
+const admin = (process.argv.indexOf('-au') > -1 || process.argv.indexOf('--admins') > -1) ? true : false;
+
+if (admin && !message && !groupUser && !group && !friends && !users && !logs && !roll && !migrations) {
+    const AdminUser = require('./models/AdminUser.js');
+    let result = AdminUser.whereRaw('id>0');
+    console.log('Admin Users:');
+
+    result.then((res) => {
+        res.forEach(element => {
+            console.log('Id: ' + element.id);
+            console.log('User Id: ' + element.user_id);
+            console.log('Role Id: ' + element.role_id);
             console.log('Created at: ' + element.created_at);
             console.log(' ');
         });
