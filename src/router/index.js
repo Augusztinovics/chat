@@ -57,6 +57,11 @@ const router = createRouter({
       name: 'admin panel',
       component: () => import('../views/admin/AdminLandingView.vue'),
     },
+    {
+      path: '/admin-confirm',
+      name: 'admin confirm',
+      component: () => import('../views/admin/ConfirmPasswordView.vue'),
+    },
   ],
 })
 

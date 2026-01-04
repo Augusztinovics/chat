@@ -1,0 +1,8 @@
+.admin-confirm-card {
+    max-width: 400px;
+    border: 2px solid var(--color-border);
+    box-shadow: var(--shadow);
+    border-radius: 8px;
+    padding: 2rem;
+    margin: 200px auto 0 auto;
+}

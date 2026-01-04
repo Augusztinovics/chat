@@ -17,6 +17,7 @@ async function adminAuth(req, res, next) {
             return res.sendStatus(401);
         } else {
             req.user.role = admin.role_id;
+            req.user.has_update_psw = admin.update_password ? true : false;
             next();
         }
     } else {

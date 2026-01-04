@@ -21,6 +21,9 @@ const getFriendsController = require('./controllers/resources/friendRequests/get
 const createGroupController = require('./controllers/resources/friendRequests/createGroupController.js');
 const updateGroupController = require('./controllers/resources/friendRequests/updateGroupController.js');
 const getMoreMessageController = require('./controllers/resources/getMoreMessageController.js');
+//Admin Controllers
+const adminUserDataController = require('./controllers/admin/adminUserDataController.js');
+const adminConfirmController = require('./controllers/admin/adminConfirmController.js');
 
 function apiRouts(app) {
     app.get('/login', async (req, res) => testController(req, res));
@@ -52,7 +55,8 @@ function apiRouts(app) {
     app.post('/api/resources/update-group', auth, async (req, res) => updateGroupController(req, res));
 
     //Admin api routs
-
+    app.post('/api/admin/admin-confirm', adminAuth, async (req, res) => adminConfirmController(req, res));
+    app.get('/api/admin/admin-user-data', adminAuth, (req, res) => adminUserDataController(req, res));
 
     app.get('/home', auth, (req, res) => {
         res.sendFile(path.join(__dirname, '../public/index.html'));
