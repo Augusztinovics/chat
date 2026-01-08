@@ -1,7 +1,7 @@
 <template>
     <div>
         <div>
-            Will be menu maybe
+            Will be menu: User Questions, Resources, Actions, Matrics, Log
         </div>
         <div><slot></slot></div>
         <LoadingOverlay v-if="loadingStore.showLoading" />
@@ -30,7 +30,7 @@
                         .then(() => {
                             this.loadingStore.finishLoading();
                             if (!this.adminUserStore.hasUpdatePassword) {
-                                // TODO send the admin to set a update password!!!
+                                this.$router.push('/admin/admin-password');
                             }
                         })
                         .catch((e) => {
@@ -47,7 +47,7 @@
 
         mounted() {
             if (!this.adminUserStore.confirmed) {
-                this.$router.push('/admin-confirm');
+                this.$router.push('/admin/admin-confirm');
                 return;
             }
             this.loadAdmin();

@@ -58,9 +58,14 @@ const router = createRouter({
       component: () => import('../views/admin/AdminLandingView.vue'),
     },
     {
-      path: '/admin-confirm',
+      path: '/admin/admin-confirm',
       name: 'admin confirm',
       component: () => import('../views/admin/ConfirmPasswordView.vue'),
+    },
+    {
+      path: '/admin/admin-password',
+      name: 'admin password',
+      component: () => import('../views/admin/CreateUpdatePasswordView.vue'),
     },
   ],
 })
