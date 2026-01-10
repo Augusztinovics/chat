@@ -229,6 +229,7 @@ if (admin && !message && !groupUser && !group && !friends && !users && !logs && 
             console.log('Id: ' + element.id);
             console.log('User Id: ' + element.user_id);
             console.log('Role Id: ' + element.role_id);
+            console.log('Update password: ' + element.update_password);
             console.log('Created at: ' + element.created_at);
             console.log(' ');
         });

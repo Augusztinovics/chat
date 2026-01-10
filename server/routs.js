@@ -24,6 +24,7 @@ const getMoreMessageController = require('./controllers/resources/getMoreMessage
 //Admin Controllers
 const adminUserDataController = require('./controllers/admin/adminUserDataController.js');
 const adminConfirmController = require('./controllers/admin/adminConfirmController.js');
+const adminChangePasswordController = require('./controllers/admin/adminChangePasswordController.js');
 
 function apiRouts(app) {
     app.get('/login', async (req, res) => testController(req, res));
@@ -56,6 +57,7 @@ function apiRouts(app) {
 
     //Admin api routs
     app.post('/api/admin/admin-confirm', adminAuth, async (req, res) => adminConfirmController(req, res));
+    app.post('/api/admin/admin-password', adminAuth, async (req, res) => adminChangePasswordController(req, res));
     app.get('/api/admin/admin-user-data', adminAuth, (req, res) => adminUserDataController(req, res));
 
     app.get('/home', auth, (req, res) => {

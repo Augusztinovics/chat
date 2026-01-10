@@ -160,7 +160,6 @@
                     submitData.confirm_password = this.confirmPassword.trim();
                 }
 
-                // TODO need this rout and controller!!!
                 axios.post('/api/admin/admin-password', submitData)
                     .then(() => {
                         this.adminUserStore.hasUpdatePassword = true;
