@@ -36,8 +36,8 @@
                 </div>
 
                 <div class="text-center mb-2 mt-2">
-                    <button v-if="isUpdate" type="button" class="btn btn-block btn-secondary" @click="goBack()" :disabled="submitting">Back</button>
                     <button type="submit" class="btn btn-block btn-primary" :disabled="submitting">Confirm</button>
+                    <button v-if="isUpdate" type="button" class="btn btn-block btn-secondary mt-1" @click="goBack()" :disabled="submitting">Back</button>
                 </div>
             </form>
         </div>

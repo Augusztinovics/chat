@@ -67,6 +67,26 @@ const router = createRouter({
       name: 'admin password',
       component: () => import('../views/admin/CreateUpdatePasswordView.vue'),
     },
+    {
+      path: '/admin/users',
+      name: 'admin users',
+      component: () => import('../views/admin/AdminUsersView.vue'),
+    },
+    {
+      path: '/admin/resources',
+      name: 'admin resources',
+      component: () => import('../views/admin/AdminResourcesView.vue'),
+    },
+    {
+      path: '/admin/actions',
+      name: 'admin actions',
+      component: () => import('../views/admin/AdminActionsView.vue'),
+    },
+    {
+      path: '/admin/metrix',
+      name: 'admin metrix',
+      component: () => import('../views/admin/AdminMetrixView.vue'),
+    },
   ],
 })
 

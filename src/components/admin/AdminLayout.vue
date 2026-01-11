@@ -1,9 +1,23 @@
 <template>
-    <div>
-        <div>
-            Will be menu: User Questions, Resources, Actions, Matrics, Log
+    <div class="admin-layout">
+        <div class="admin-nav-holder">
+            <nav>
+                <div class="center-menu">
+                    <RouterLink to="/admin">Quaetions</RouterLink>
+                    <RouterLink to="/admin/users">Users</RouterLink>
+                    <RouterLink to="/admin/resources">Resources</RouterLink>
+                    <RouterLink to="/admin/actions">Actions</RouterLink>
+                    <RouterLink to="/admin/metrix">Metrix</RouterLink>
+                </div>
+                <div class="right-menu">
+                    <button type="button" @click="dropOpen=!dropOpen"><span>{{ adminName }}</span><span v-if="dropOpen" class="icon"><IconArrowUp /></span><span v-else class="icon"><IconArrowDown /></span></button>
+                    <div v-if="dropOpen" class="admin-drop-menu">
+                        <RouterLink to="/admin/admin-password">Change Password</RouterLink>
+                    </div>
+                </div>
+            </nav>
         </div>
-        <div><slot></slot></div>
+        <div class="content"><slot></slot></div>
         <LoadingOverlay v-if="loadingStore.showLoading" />
     </div>
 </template>
@@ -13,13 +27,29 @@
     import { adminUserStore } from '@/stores/admin_user';
     import { loadingStore } from '@/stores/loadin';
     import LoadingOverlay from '@/components/LoadingOverlay.vue';
+    import { RouterLink } from 'vue-router';
+    import IconArrowUp from '@/components/icons/IconArrowUp.vue';
+    import IconArrowDown from '@/components/icons/IconArrowDown.vue';
 
     export default {
         components: {
             LoadingOverlay,
+            RouterLink,
+            IconArrowUp,
+            IconArrowDown,
         },
+
+        data() {
+            return {
+                dropOpen: false,
+            }
+        },
+
         computed: {
             ...mapStores(adminUserStore, loadingStore),
+            adminName() {
+                return this.adminUserStore.username;
+            },
         },
 
         methods: {
