@@ -1,13 +1,15 @@
 <template>
-    <AdminLayout>Wellcome in the ADMIN Resources, index, details and if admin level 2 update options, tables one by one no relationship, just id</AdminLayout>
+    <AdminLayout><BaseResurce /></AdminLayout>
 </template>
 
 <script>
 import AdminLayout from '@/components/admin/AdminLayout.vue';
+import BaseResurce from '@/components/admin/resources/BaseResurce.vue';
 
 export default {
     components: {
         AdminLayout,
+        BaseResurce,
     },
 }
 </script>
