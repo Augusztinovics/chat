@@ -96,6 +96,9 @@
     margin-bottom: 1rem;
     background-color: inherit;
 }
+.admin-layout .content .admin-resource-holder .admin-resource-side .resource-btn.active {
+    border-bottom: 1px solid var(--color-link-hover);
+}
 
 .admin-layout .content .admin-resource-holder .admin-resource-side .resource-btn:hover {
     border-bottom: 1px solid var(--color-link-hover);
@@ -109,4 +112,53 @@
     height: 100%;
     border: 1px solid var(--color-border);
     box-shadow: var(--shadow);
+}
+
+.admin-layout .content .resurce .password-container {
+    max-width: 50%;
+}
+
+.admin-layout .content .resurce table {
+    margin-top: 2rem;
+    width: 100%;
+    border: 2px solid var(--color-border);
+    border-collapse: collapse;
+    font-size: 1rem;
+    font-weight: 400;
+}
+
+.admin-layout .content .resurce th {
+    text-align: left;
+    font-weight: 600;
+    padding: 5px;
+    border: 2px solid var(--color-border);
+    border-collapse: collapse;
+}
+
+.admin-layout .content .resurce td {
+    text-align: left;
+    padding: 5px;
+    border: 2px solid var(--color-border);
+    border-collapse: collapse;
+}
+
+.admin-layout .content .resurce .resurce-control {
+    display: flex;
+    align-content: center;
+    justify-content: space-between;
+}
+
+.admin-layout .content .resurce .resurce-control select {
+    padding: 0.75rem;
+    font-size: 1rem;
+    border: 2px solid var(--color-border);
+    border-radius: 4px;
+    margin-right: 20px;
+    box-shadow: var(--shadow);
+    cursor: pointer;
+}
+
+.admin-layout .content .resurce .resurce-control button {
+    font-size: 1rem;
+    padding: 0.75rem;
 }
