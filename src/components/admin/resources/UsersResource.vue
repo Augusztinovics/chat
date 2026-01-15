@@ -33,6 +33,7 @@
                     <th>City</th>
                     <th>Description</th>
                     <th>Created At</th>
+                    <th>Actions</th>
                 </tr>
                 <tr v-for="user in users">
                     <td>{{ user.id }}</td>
@@ -43,6 +44,10 @@
                     <td>{{ user.city }}</td>
                     <td>{{ user.description }}</td>
                     <td>{{ user.created_at }}</td>
+                    <td>
+                        <span class="icon-edit-btn ml-1" @click="viewUser(user)"><IconEyeOpen /></span>
+                        <span class="icon-edit-btn ml-1" @click="viewEditUser(user)"><IconEdit /></span>
+                    </td>
                 </tr>
             </table>
             <div>
@@ -53,10 +58,14 @@
 </template>
 <script>
     import IconSearch from '@/components/icons/IconSearch.vue';
+    import IconEyeOpen from '@/components/icons/IconEyeOpen.vue';
+    import IconEdit from '@/components/icons/IconEdit.vue';
 
     export default {
         components: {
             IconSearch,
+            IconEyeOpen,
+            IconEdit,
         },
 
         data() {
@@ -80,6 +89,13 @@
 
             fetchUsers() {
 
+            },
+            viewUser(user) {
+                this.userDetail = user;
+            },
+            viewEditUser(user) {
+                this.isEdit = true;
+                this.userDetail = user;
             }
         },
     }
