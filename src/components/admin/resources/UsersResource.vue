@@ -1,7 +1,24 @@
 <template>
     <div class="resurce">
-        <div v-if="userDetail">
-
+        <div v-if="userDetail" class="detail-container">
+            <div class="details-header">
+                <h2>{{ userDetail.username }}</h2>
+                <button class="btn-sm btn-secondary" @click="closeDetail">X</button>
+            </div>
+            <div class="mt-2">
+                <img v-if="userDetail.profile_img" :src="userDetail.profile_img" alt="Profile Image" class="profile-img md">
+                <span v-else class="icon-lg"><IconUser /></span>
+            </div>
+            <div class="detail">
+                <p><b>E-mail: </b><input type="text" :readonly="!isEdit" v-model="userDetail.email"></p>
+                <p><b>Language: </b>{{ userDetail.lg }}</p>
+                <p><b>Country: </b><input type="text" :readonly="!isEdit" v-model="userDetail.country"></p>
+                <p><b>City: </b><input type="text" :readonly="!isEdit" v-model="userDetail.city"></p>
+                <p><b>Description: </b><textarea name="description" :readonly="!isEdit" v-model="userDetail.description"></textarea></p>
+                <p><b>IP: </b>{{ userDetail.ip }}</p>
+                <p><b>Device Data: </b><span>{{ userDetail.device_data }}</span></p>
+                <p><b>Created At: </b>{{ userDetail.created_at }}</p>
+            </div>
         </div>
         <div v-else>
             <h2>Users</h2>
@@ -60,12 +77,15 @@
     import IconSearch from '@/components/icons/IconSearch.vue';
     import IconEyeOpen from '@/components/icons/IconEyeOpen.vue';
     import IconEdit from '@/components/icons/IconEdit.vue';
+    import IconUser from '@/components/icons/IconUser.vue';
+    import axios from 'axios';
 
     export default {
         components: {
             IconSearch,
             IconEyeOpen,
             IconEdit,
+            IconUser,
         },
 
         data() {
@@ -88,7 +108,13 @@
             },
 
             fetchUsers() {
-
+                axios.get('/api/admin/users?s=1&l=' + parseInt(this.limit))
+                    .then((r) => {
+                        this.users = r.data.users;
+                    })
+                    .catch((e) => {
+                        console.log(e);
+                    })
             },
             viewUser(user) {
                 this.userDetail = user;
@@ -96,6 +122,10 @@
             viewEditUser(user) {
                 this.isEdit = true;
                 this.userDetail = user;
+            },
+            closeDetail() {
+                this.isEdit = false;
+                this.userDetail = null;
             }
         },
     }
