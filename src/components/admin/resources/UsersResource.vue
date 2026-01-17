@@ -2,18 +2,21 @@
     <div class="resurce">
         <div v-if="userDetail" class="detail-container">
             <div class="details-header">
-                <h2>{{ userDetail.username }}</h2>
-                <button class="btn-sm btn-secondary" @click="closeDetail">X</button>
+                <h2><span>#{{ userDetail.id }}</span> <input type="text" name="username" :readonly="!isEdit" v-model="userDetail.username"></h2>
+                <div>
+                    <button v-if="isEdit" class="btn btn-success mr-2" @click="saveUser">Save</button>
+                    <button class="btn-sm btn-secondary" @click="closeDetail">X</button>
+                </div>
             </div>
             <div class="mt-2">
                 <img v-if="userDetail.profile_img" :src="userDetail.profile_img" alt="Profile Image" class="profile-img md">
                 <span v-else class="icon-lg"><IconUser /></span>
             </div>
             <div class="detail">
-                <p><b>E-mail: </b><input type="text" :readonly="!isEdit" v-model="userDetail.email"></p>
+                <p><b>E-mail: </b><input type="text" name="email" :readonly="!isEdit" v-model="userDetail.email"></p>
                 <p><b>Language: </b>{{ userDetail.lg }}</p>
-                <p><b>Country: </b><input type="text" :readonly="!isEdit" v-model="userDetail.country"></p>
-                <p><b>City: </b><input type="text" :readonly="!isEdit" v-model="userDetail.city"></p>
+                <p><b>Country: </b><input type="text" name="country" :readonly="!isEdit" v-model="userDetail.country"></p>
+                <p><b>City: </b><input type="text" name="city" :readonly="!isEdit" v-model="userDetail.city"></p>
                 <p><b>Description: </b><textarea name="description" :readonly="!isEdit" v-model="userDetail.description"></textarea></p>
                 <p><b>IP: </b>{{ userDetail.ip }}</p>
                 <p><b>Device Data: </b><span>{{ userDetail.device_data }}</span></p>
@@ -24,8 +27,8 @@
             <h2>Users</h2>
             <div class="resurce-control">
                 <div class="password-container">
-                    <input id="search_input" type="text" v-model="searchText" :disabled="submitting" @keypress.enter="searchUsers">
-                    <button type="button" @click="searchUsers" :disabled="submitting">
+                    <input id="search_input" type="text" v-model="searchText" :disabled="submitting" @keypress.enter="fetchUsers">
+                    <button type="button" @click="fetchUsers" :disabled="submitting">
                         <span class="icon"><IconSearch /></span>
                     </button>
                 </div>
@@ -38,6 +41,7 @@
                         <option value="25">25 / page</option>
                     </select>
                     <button class="btn-sm btn-primary" @click="fetchUsers">Fetch All Users</button>
+                    <button v-if="canEdit" class="btn-sm btn-success ml-2" @click="createNewUser">Create New User</button>
                 </div>
             </div>
             <table>
@@ -63,12 +67,13 @@
                     <td>{{ user.created_at }}</td>
                     <td>
                         <span class="icon-edit-btn ml-1" @click="viewUser(user)"><IconEyeOpen /></span>
-                        <span class="icon-edit-btn ml-1" @click="viewEditUser(user)"><IconEdit /></span>
+                        <span v-if="canEdit" class="icon-edit-btn ml-1" @click="viewEditUser(user)"><IconEdit /></span>
+                        <span v-if="canEdit" class="icon-edit-btn danger ml-1" @click="deleteUser(user.id)"><IconX /></span>
                     </td>
                 </tr>
             </table>
             <div>
-                Pagination
+                Pagination {{ totalCount }}
             </div>
         </div>
     </div>
@@ -78,7 +83,11 @@
     import IconEyeOpen from '@/components/icons/IconEyeOpen.vue';
     import IconEdit from '@/components/icons/IconEdit.vue';
     import IconUser from '@/components/icons/IconUser.vue';
+    import IconX from '@/components/icons/IconX.vue';
     import axios from 'axios';
+    import { mapStores } from 'pinia';
+    import { adminUserStore } from '@/stores/admin_user';
+    import { loadingStore } from '@/stores/loadin';
 
     export default {
         components: {
@@ -86,6 +95,7 @@
             IconEyeOpen,
             IconEdit,
             IconUser,
+            IconX,
         },
 
         data() {
@@ -101,16 +111,24 @@
             }
         },
 
-        computed: {},
-        methods: {
-            searchUsers() {
-
+        computed: {
+            ...mapStores(adminUserStore, loadingStore),
+            canEdit() {
+                return this.adminUserStore.roleId > 1;
             },
-
+        },
+        methods: {
             fetchUsers() {
-                axios.get('/api/admin/users?s=1&l=' + parseInt(this.limit))
+                let params = {
+                    s: 1,
+                    l: parseInt(this.limit),
+                    st: this.searchText,
+                };
+
+                axios.get('/api/admin/users?' +  new URLSearchParams(params).toString())
                     .then((r) => {
                         this.users = r.data.users;
+                        this.totalCount = r.data.result_count;
                     })
                     .catch((e) => {
                         console.log(e);
@@ -121,11 +139,34 @@
             },
             viewEditUser(user) {
                 this.isEdit = true;
-                this.userDetail = user;
+                this.userDetail = { ...user };
             },
             closeDetail() {
                 this.isEdit = false;
                 this.userDetail = null;
+            },
+            createNewUser() {
+                this.isEdit = true;
+                this.userDetail = {
+                    id: 0,
+                    username:       null,
+                    password:       null,
+                    email:          null,
+                    lg:             null,
+                    country:        null,
+                    city:           null,
+                    description:    null,
+                    profile_img:    null,
+                    ip:             null,
+                    device_data:    null,
+                    created_at:     null,
+                }
+            },
+            deleteUser(id) {
+                //Confirmation firest, then do
+            },
+            saveUser() {
+                //Confirmation firest, then do
             }
         },
     }

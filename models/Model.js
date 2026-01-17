@@ -352,6 +352,35 @@ class Model {
         });
     }
 
+    /**
+     * count of entries, possible where querie start SELECT Count(*) FROM ${this.table}
+     *
+     * @param {string} where 
+     * @param {any[]} values
+     * @returns Integer
+     */
+    static countRaw(where = '', values=[]) {
+        return new Promise((resolve) => {
+            let query = `SELECT Count(*) AS num FROM ${this.table}`;
+            if (where) {
+                query += ' ' + where;
+            }
+            try {
+                db.get(query, values, (err, row) => {
+                    if (err) {
+                        console.log(err);
+                        resolve(0);
+                    } else {
+                        resolve(row.num);
+                    }
+                })
+            } catch (error) {
+                console.log(error);
+                resolve(0);
+            }
+        });
+    }
+
 }
 
 module.exports = Model;

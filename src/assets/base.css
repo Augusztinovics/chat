@@ -220,6 +220,14 @@ label span {
     fill: var(--color-success-hover);
 }
 
+.icon-edit-btn.danger svg {
+    fill: var(--color-danger);
+}
+
+.icon-edit-btn.danger:hover {
+    opacity: 0.8;
+}
+
 .m-1 {
     margin: 1rem;
 }

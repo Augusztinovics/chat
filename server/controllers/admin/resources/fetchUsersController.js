@@ -22,10 +22,20 @@ async function fetchUsers(req, res) {
     } else {
         limit = parseInt(limit);
     }
+    let searchString = req.query.st;
 
     try {
-        let result = await User.whereRaw('id > 0 ORDER BY id DESC LIMIT ? OFFSET ?', [limit, ((set*limit)-limit)]);
-        res.json({users: result});
+        let result = [];
+        let resultCount = 0;
+        if (searchString && searchString.length > 2) {
+            searchString = '%' + searchString + '%';
+            result = await User.whereRaw('username LIKE ? OR email LIKE ? ORDER BY id DESC LIMIT ? OFFSET ?', [searchString, searchString, limit, ((set*limit)-limit)]);
+            resultCount = await User.countRaw('WHERE username LIKE ? OR email LIKE ?', [searchString, searchString]);
+        } else {
+            result = await User.whereRaw('id > 0 ORDER BY id DESC LIMIT ? OFFSET ?', [limit, ((set*limit)-limit)]);
+            resultCount = await User.countRaw();
+        }
+        res.json({users: result, result_count: resultCount});
     } catch (error) {
         console.log('GET SENDED FRIEND REQUEST CATCH ERROR');
         console.log(error);
