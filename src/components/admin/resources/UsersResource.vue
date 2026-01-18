@@ -13,13 +13,18 @@
                 <span v-else class="icon-lg"><IconUser /></span>
             </div>
             <div class="detail">
+                <p v-if="userDetail.id == 0"><b>Password: </b><input type="text" name="pass" :readonly="!isEdit" v-model="userDetail.password"></p>
                 <p><b>E-mail: </b><input type="text" name="email" :readonly="!isEdit" v-model="userDetail.email"></p>
-                <p><b>Language: </b>{{ userDetail.lg }}</p>
+                <p><b>Language: </b> <select name="user_lg" id="user_lg" :disabled="!isEdit" v-model="userDetail.lg">
+                    <option value="HU">Magyar</option>
+                    <option value="SR">Serbian</option>
+                    <option value="EN">English</option>
+                </select></p>
                 <p><b>Country: </b><input type="text" name="country" :readonly="!isEdit" v-model="userDetail.country"></p>
                 <p><b>City: </b><input type="text" name="city" :readonly="!isEdit" v-model="userDetail.city"></p>
                 <p><b>Description: </b><textarea name="description" :readonly="!isEdit" v-model="userDetail.description"></textarea></p>
-                <p><b>IP: </b>{{ userDetail.ip }}</p>
-                <p><b>Device Data: </b><span>{{ userDetail.device_data }}</span></p>
+                <p><b>IP: </b><input type="text" name="ip" :readonly="!isEdit" v-model="userDetail.ip"></p>
+                <p><b>Device Data: </b><textarea name="device_data" :readonly="!isEdit" v-model="userDetail.device_data"></textarea></p>
                 <p><b>Created At: </b>{{ userDetail.created_at }}</p>
             </div>
         </div>
@@ -33,8 +38,8 @@
                     </button>
                 </div>
                 <div>
-                    <select name="pag_size" id="pag_size" v-model="limit">
-                        <option value="5">5 / page</option>
+                    <select name="pag_size" id="pag_size" v-model="limit" @change="fetchUsers">
+                        <option value="2">2 / page</option>
                         <option value="10">10 / page</option>
                         <option value="15">15 / page</option>
                         <option value="20">20 / page</option>
@@ -72,8 +77,10 @@
                     </td>
                 </tr>
             </table>
-            <div>
-                Pagination {{ totalCount }}
+            <div v-if="hasResult" class="text-center mt-2">
+                <button type="button" class="btn pag-btn" :disabled="offset == 1" @click="paginateLeft">&lt;</button>
+                <span class="mr-1 ml-1">Page: {{ offset }} / {{ pageCount }} All Resource: {{ totalCount }}</span>
+                <button type="button" class="btn pag-btn" @click="paginatRight" :disabled="offset >= pageCount">&gt;</button>
             </div>
         </div>
     </div>
@@ -116,11 +123,31 @@
             canEdit() {
                 return this.adminUserStore.roleId > 1;
             },
+            usersNum() {
+                return this.users.length;
+            },
+            hasResult() {
+                return this.usersNum > 0;
+            },
+            pageCount() {
+                if (this.totalCount < 1) return 0;
+                return Math.ceil(this.totalCount / this.limit);
+            },
         },
         methods: {
-            fetchUsers() {
+            paginateLeft() {
+                if (this.offset < 2) return;
+                this.offset--;
+                this.fetchUsers(null, this.offset);
+            },
+            paginatRight() {
+                if (this.offset >= this.pageCount) return;
+                this.offset++;
+                this.fetchUsers(null, this.offset);
+            },
+            fetchUsers(e,set = 1) {
                 let params = {
-                    s: 1,
+                    s: set,
                     l: parseInt(this.limit),
                     st: this.searchText,
                 };
@@ -129,6 +156,7 @@
                     .then((r) => {
                         this.users = r.data.users;
                         this.totalCount = r.data.result_count;
+                        this.offset = set;
                     })
                     .catch((e) => {
                         console.log(e);
