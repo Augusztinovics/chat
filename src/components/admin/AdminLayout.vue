@@ -3,7 +3,7 @@
         <div class="admin-nav-holder">
             <nav>
                 <div class="center-menu">
-                    <RouterLink to="/admin">Quaetions</RouterLink>
+                    <RouterLink to="/admin">Quetions</RouterLink>
                     <RouterLink to="/admin/users">Users</RouterLink>
                     <RouterLink to="/admin/resources">Resources</RouterLink>
                     <RouterLink to="/admin/actions">Actions</RouterLink>

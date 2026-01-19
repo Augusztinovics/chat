@@ -61,7 +61,7 @@
                     <th>Created At</th>
                     <th>Actions</th>
                 </tr>
-                <tr v-for="user in users">
+                <tr v-for="user in users" :key="user.id">
                     <td>{{ user.id }}</td>
                     <td>{{ user.username }}</td>
                     <td>{{ user.email }}</td>
@@ -83,6 +83,30 @@
                 <button type="button" class="btn pag-btn" @click="paginatRight" :disabled="offset >= pageCount">&gt;</button>
             </div>
         </div>
+
+        <Modal 
+            :show="showPswModal"
+            size="sm"
+            title="Confirmtion Admin Password"
+            :showCancel="true"
+            @close="cancelAction"
+            @cancel="cancelAction"
+            @ok="performAction"
+        >
+            <div>
+                <label for="password_input">Admin Update Password<span>*</span></label>
+                <div class="password-container">
+                    <input id="password_input" :type="passwordInputType" :class="{'invalid-input': missingPassword}" v-model="confirmPsw" @input="clearErrors">
+                    <button type="button" @click="toogleShowPassword">
+                        <span class="icon"><IconEyeClose v-if="showPassword" /><IconEyeOpen v-else /></span>
+                    </button>
+                </div>
+                <p v-if="missingPassword" class="invalid-text">Please Enter your Admin Update Password!</p>
+            </div>
+        </Modal>
+
+        <SuccessToast v-if="saveSuccess"/>
+        <FailToast v-if="saveError":msg="errorMsg"/>
     </div>
 </template>
 <script>
@@ -91,18 +115,26 @@
     import IconEdit from '@/components/icons/IconEdit.vue';
     import IconUser from '@/components/icons/IconUser.vue';
     import IconX from '@/components/icons/IconX.vue';
+    import IconEyeClose from '@/components/icons/IconEyeClose.vue';
     import axios from 'axios';
     import { mapStores } from 'pinia';
     import { adminUserStore } from '@/stores/admin_user';
     import { loadingStore } from '@/stores/loadin';
+    import SuccessToast from '@/components/SuccessToast.vue';
+    import FailToast from '@/components/FailToast.vue';
+    import Modal from '@/components/Modal.vue';
 
     export default {
         components: {
             IconSearch,
             IconEyeOpen,
+            IconEyeClose,
             IconEdit,
             IconUser,
             IconX,
+            SuccessToast,
+            FailToast,
+            Modal,
         },
 
         data() {
@@ -110,11 +142,20 @@
                 users: [],
                 userDetail: null,
                 isEdit: false,
+                updateId: null,
                 limit: 10,
                 offset: 1,
                 totalCount: 0,
                 searchText: '',
                 submitting: false,
+                errorMsg: '',
+                saveSuccess: false,
+                saveError: false,
+                showPswModal: false,
+                confirmPsw: '',
+                showPassword: false,
+                missingPassword: false,
+                deleteUserId: null,
             }
         },
 
@@ -133,18 +174,31 @@
                 if (this.totalCount < 1) return 0;
                 return Math.ceil(this.totalCount / this.limit);
             },
+            passwordInputType() {
+                return this.showPassword ? 'text' : 'password';
+            },
         },
         methods: {
+            clearErrors() {
+                this.missingPassword = false;
+            },
+
+            toogleShowPassword() {
+                this.showPassword = !this.showPassword;
+            },
+
             paginateLeft() {
                 if (this.offset < 2) return;
                 this.offset--;
                 this.fetchUsers(null, this.offset);
             },
+
             paginatRight() {
                 if (this.offset >= this.pageCount) return;
                 this.offset++;
                 this.fetchUsers(null, this.offset);
             },
+
             fetchUsers(e,set = 1) {
                 let params = {
                     s: set,
@@ -152,27 +206,42 @@
                     st: this.searchText,
                 };
 
+                this.loadingStore.startLoading();
                 axios.get('/api/admin/users?' +  new URLSearchParams(params).toString())
                     .then((r) => {
                         this.users = r.data.users;
                         this.totalCount = r.data.result_count;
                         this.offset = set;
+                        this.loadingStore.finishLoading();
                     })
                     .catch((e) => {
+                        this.loadingStore.finishLoading();
                         console.log(e);
+                        this.errorMsg = e.message;
+                        this.saveError = true;
+                        setTimeout(() => {
+                            this.errorMsg = '';
+                            this.saveError = false;
+                        }, 5000);
                     })
             },
+
             viewUser(user) {
                 this.userDetail = user;
             },
+
             viewEditUser(user) {
                 this.isEdit = true;
+                this.updateId = user.id;
                 this.userDetail = { ...user };
             },
+
             closeDetail() {
                 this.isEdit = false;
                 this.userDetail = null;
+                this.updateId = null;
             },
+
             createNewUser() {
                 this.isEdit = true;
                 this.userDetail = {
@@ -190,12 +259,128 @@
                     created_at:     null,
                 }
             },
-            deleteUser(id) {
-                //Confirmation firest, then do
+
+            cancelAction() {
+                this.showPswModal = false;
+                this.confirmPsw = '';
+                this.deleteUserId = null;
             },
+
+            performAction() {
+                if (this.confirmPsw.length < 1) {
+                    this.missingPassword = true;
+                    return;
+                }
+                let data = null;
+                if (this.deleteUserId) {
+                    data = {
+                        method: 'DELETE',
+                        psw: this.confirmPsw,
+                        delete_id: this.deleteUserId
+                    };
+                    this.postData(data);
+                } else if (this.isEdit && this.userDetail) {
+                    //call some action  update if userDetail.id > 0 else create action
+                    if (this.userDetail.id > 0 && this.updateId) {
+                        data = {
+                            method: 'UPDATE',
+                            psw: this.confirmPsw,
+                        };
+                        let originalUser = this.users.find(u => { return u.id == this.updateId;});
+                        if (!originalUser) {
+                            this.showPswModal = false;
+                            this.updateId = null;
+                            this.userDetail = null;
+                            this.confirmPsw = '';
+                            this.errorMsg = 'Unable to find original user!';
+                            this.saveError = true;
+                            setTimeout(() => {
+                                this.errorMsg = '';
+                                this.saveError = false;
+                            }, 5000);
+                            return;
+                        }
+                        //Let put together the update data, conphere each possible update atribute with original, just add the difference,
+                        // if no difference cancel the action, but leave user in detail view
+                        let hasUpdateData = false;
+                        // TODO ... The checks!...
+
+                        if (hasUpdateData) {
+                            this.postData(data);
+                        } else {
+                            this.errorMsg = 'Nothing to update!';
+                            this.saveError = true;
+                            setTimeout(() => {
+                                this.errorMsg = '';
+                                this.saveError = false;
+                            }, 3000);
+                            return;
+                        }
+                    } else {
+                        data = {
+                            method: 'CREATE',
+                            psw: this.confirmPsw,
+                        }
+                        //TODO Put together the data object, meantime check if every required field is present, if something missing
+                        //Cancel the action and show error message, but leave user in details view!
+                    }
+                } else {
+                    this.cancelAction();
+                }
+            },
+
+            deleteUser(id) {
+                this.deleteUserId = id;
+                this.isEdit = false;
+                this.updateId = null;
+                this.userDetail = null;
+                this.showPswModal = true;
+                this.focusOnPassword();
+            },
+
             saveUser() {
-                //Confirmation firest, then do
-            }
+                this.deleteUserId = null;
+                if (!this.isEdit) return;
+                this.showPswModal = true;
+                this.focusOnPassword();
+            },
+
+            focusOnPassword() {
+                setTimeout(() => {
+                    document.getElementById('password_input').focus();
+                }, 300);
+            },
+
+            postData(data) {
+                //TODO create the rout and controller!
+                this.loadingStore.startLoading();
+                this.showPswModal = false;
+                axios.post('/api/admin/users', data)
+                    .then(() => {
+                        this.loadingStore.finishLoading();
+                        this.deleteUserId = null;
+                        this.confirmPsw = '';
+                        this.fetchUsers(null, 1);
+                        this.saveSuccess = true;
+                        setTimeout(() => {
+                            this.saveSuccess = false;
+                        }, 3000);
+                    })
+                    .catch((e) => {
+                        this.loadingStore.finishLoading();
+                        this.deleteUserId = null;
+                        this.updateId = null;
+                        this.userDetail = null;
+                        this.confirmPsw = '';
+                        console.log(e);
+                        this.errorMsg = e.message;
+                        this.saveError = true;
+                        setTimeout(() => {
+                            this.errorMsg = '';
+                            this.saveError = false;
+                        }, 5000);
+                    });
+            },
         },
     }
 </script>

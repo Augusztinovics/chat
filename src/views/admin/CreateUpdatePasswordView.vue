@@ -3,7 +3,7 @@
         <div class="admin-confirm-card">
             <form novalidate @submit.prevent="submit">
                 <div class="mb-1">
-                    <label for="password_input">{{ isUpdate ? 'New' : ''}} Password<span>*</span></label>
+                    <label for="password_input">{{ isUpdate ? 'New' : ''}} Admin Update Password<span>*</span></label>
                     <div class="password-container">
                         <input id="password_input" :type="passwordInputType" :class="{'invalid-input': missingPassword}" v-model="password" @input="clearErrors" :disabled="submitting">
                         <button type="button" @click="toogleShowPassword">
@@ -14,7 +14,7 @@
                 </div>
 
                 <div class="mb-1">
-                    <label for="re_password_input">{{ isUpdate ? 'New' : ''}} Password again<span>*</span></label>
+                    <label for="re_password_input">{{ isUpdate ? 'New' : ''}} Admin Update Password again<span>*</span></label>
                     <div class="password-container">
                         <input id="re_password_input" :type="rePasswordInputType" :class="{'invalid-input': missingRePassword}" v-model="rePassword" @input="clearErrors" :disabled="submitting">
                         <button type="button" @click="toogleShowRePassword">
@@ -25,7 +25,7 @@
                 </div>
 
                 <div class="mb-1" v-if="isUpdate">
-                    <label for="confirm_password_input">Old Password<span>*</span></label>
+                    <label for="confirm_password_input">Old Admin Update Password<span>*</span></label>
                     <div class="password-container">
                         <input id="confirm_password_input" :type="confirmPasswordInputType" :class="{'invalid-input': missingConfirmPassword}" v-model="confirmPassword" @input="clearErrors" :disabled="submitting">
                         <button type="button" @click="toogleShowConfirmPassword">
@@ -176,6 +176,12 @@
                         document.getElementById('password_input').focus();
                     });
             },
+        },
+
+        mounted() {
+             setTimeout(() => {
+                document.getElementById('password_input').focus();
+            }, 300);
         },
     }
 </script>

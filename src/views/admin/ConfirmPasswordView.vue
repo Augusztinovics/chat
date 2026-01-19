@@ -3,7 +3,7 @@
         <div class="admin-confirm-card">
             <form novalidate @submit.prevent="submit">
                 <div>
-                    <label for="password_input">Confirm your password<span>*</span> <b>-{{ tryCounter }}</b></label>
+                    <label for="password_input">Confirm your user password<span>*</span> <b>-{{ tryCounter }}</b></label>
                     <div class="password-container">
                         <input id="password_input" :type="passwordInputType" :class="{'invalid-input': missingPassword}" v-model="password" @input="clearErrors" :disabled="submitting">
                         <button type="button" @click="toogleShowPassword">
@@ -90,6 +90,12 @@
                         document.getElementById('password_input').focus();
                     });
             },
+        },
+
+        mounted() {
+             setTimeout(() => {
+                document.getElementById('password_input').focus();
+            }, 300);
         },
     }
 </script>
