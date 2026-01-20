@@ -285,6 +285,7 @@
                         data = {
                             method: 'UPDATE',
                             psw: this.confirmPsw,
+                            user_id: userDetail.id,
                         };
                         let originalUser = this.users.find(u => { return u.id == this.updateId;});
                         if (!originalUser) {
@@ -300,10 +301,49 @@
                             }, 5000);
                             return;
                         }
-                        //Let put together the update data, conphere each possible update atribute with original, just add the difference,
-                        // if no difference cancel the action, but leave user in detail view
+
                         let hasUpdateData = false;
-                        // TODO ... The checks!...
+                        if (originalUser.username !== userDetail.username.trim()) {
+                            data.username = userDetail.username.trim();
+                            hasUpdateData = true;
+                        }
+
+                        if (userDetail.email && originalUser.email !== userDetail.email) {
+                            if (userDetail.email.trim().length > 6 && userDetail.email.includes('@')) {
+                                data.email = userDetail.email.trim();
+                                hasUpdateData = true;
+                            }
+                        }
+
+                        if (originalUser.lg !== userDetail.lg) {
+                            data.lg = userDetail.lg;
+                            hasUpdateData = true;
+                        }
+
+                        if (userDetail.country && originalUser.country !== userDetail.country.trim()) {
+                            data.country = userDetail.country.trim();
+                            hasUpdateData = true;
+                        }
+
+                        if (userDetail.city && originalUser.city !== userDetail.city.trim()) {
+                            data.city = userDetail.city.trim();
+                            hasUpdateData = true;
+                        }
+
+                        if (userDetail.description && originalUser.description !== userDetail.description.trim()) {
+                            data.description = userDetail.description.trim();
+                            hasUpdateData = true;
+                        }
+
+                        if (userDetail.ip && originalUser.ip !== userDetail.ip.trim()) {
+                            data.ip = userDetail.ip.trim();
+                            hasUpdateData = true;
+                        }
+
+                        if (userDetail.device_data && originalUser.device_data !== userDetail.device_data.trim()) {
+                            data.device_data = userDetail.device_data.trim();
+                            hasUpdateData = true;
+                        }
 
                         if (hasUpdateData) {
                             this.postData(data);
@@ -321,8 +361,68 @@
                             method: 'CREATE',
                             psw: this.confirmPsw,
                         }
-                        //TODO Put together the data object, meantime check if every required field is present, if something missing
-                        //Cancel the action and show error message, but leave user in details view!
+
+                        if (userDetail.username && userDetail.username.trim().length > 0) {
+                            data.username = userDetail.username.trim();
+                        } else {
+                            this.errorMsg = 'Username is required!';
+                            this.saveError = true;
+                            setTimeout(() => {
+                                this.errorMsg = '';
+                                this.saveError = false;
+                            }, 3000);
+                            return;
+                        }
+
+                        if (userDetail.password && userDetail.password.trim().length > 0) {
+                            data.password = userDetail.password.trim();
+                        } else {
+                            this.errorMsg = 'Password is required!';
+                            this.saveError = true;
+                            setTimeout(() => {
+                                this.errorMsg = '';
+                                this.saveError = false;
+                            }, 3000);
+                            return;
+                        }
+
+                        if (userDetail.email && userDetail.email.trim().length > 6 && userDetail.email.includes('@')) {
+                            data.email = userDetail.email.trim();
+                        }
+
+                        if (userDetail.lg) {
+                            data.lg = userDetail.lg;
+                        } else {
+                            this.errorMsg = 'Language is required!';
+                            this.saveError = true;
+                            setTimeout(() => {
+                                this.errorMsg = '';
+                                this.saveError = false;
+                            }, 3000);
+                            return;
+                        }
+
+                        if (userDetail.country && userDetail.country.trim().length > 0) {
+                            data.country = userDetail.country.trim();
+                        }
+
+                        if (userDetail.city && userDetail.city.trim().length > 0) {
+                            data.city = userDetail.city.trim();
+                        }
+
+                        if (userDetail.description && userDetail.description.trim().length > 0) {
+                            data.description = userDetail.description.trim();
+                        }
+
+                        if (userDetail.ip && userDetail.ip.trim().length > 0) {
+                            data.ip = userDetail.ip.trim();
+                        }
+
+                        if (userDetail.device_data && userDetail.device_data.trim().length > 0) {
+                            data.device_data = userDetail.device_data.trim();
+                        }
+
+                        this.postData(data);
                     }
                 } else {
                     this.cancelAction();
