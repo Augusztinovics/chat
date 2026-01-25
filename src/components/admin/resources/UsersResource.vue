@@ -285,7 +285,7 @@
                         data = {
                             method: 'UPDATE',
                             psw: this.confirmPsw,
-                            user_id: userDetail.id,
+                            user_id: this.userDetail.id,
                         };
                         let originalUser = this.users.find(u => { return u.id == this.updateId;});
                         if (!originalUser) {
@@ -303,45 +303,45 @@
                         }
 
                         let hasUpdateData = false;
-                        if (originalUser.username !== userDetail.username.trim()) {
-                            data.username = userDetail.username.trim();
+                        if (originalUser.username !== this.userDetail.username.trim()) {
+                            data.username = this.userDetail.username.trim();
                             hasUpdateData = true;
                         }
 
-                        if (userDetail.email && originalUser.email !== userDetail.email) {
-                            if (userDetail.email.trim().length > 6 && userDetail.email.includes('@')) {
-                                data.email = userDetail.email.trim();
+                        if (this.userDetail.email && originalUser.email !== this.userDetail.email) {
+                            if (this.userDetail.email.trim().length > 6 && this.userDetail.email.includes('@')) {
+                                data.email = this.userDetail.email.trim();
                                 hasUpdateData = true;
                             }
                         }
 
-                        if (originalUser.lg !== userDetail.lg) {
-                            data.lg = userDetail.lg;
+                        if (originalUser.lg !== this.userDetail.lg) {
+                            data.lg = this.userDetail.lg;
                             hasUpdateData = true;
                         }
 
-                        if (userDetail.country && originalUser.country !== userDetail.country.trim()) {
-                            data.country = userDetail.country.trim();
+                        if (this.userDetail.country && originalUser.country !== this.userDetail.country.trim()) {
+                            data.country = this.userDetail.country.trim();
                             hasUpdateData = true;
                         }
 
-                        if (userDetail.city && originalUser.city !== userDetail.city.trim()) {
-                            data.city = userDetail.city.trim();
+                        if (this.userDetail.city && originalUser.city !== this.userDetail.city.trim()) {
+                            data.city = this.userDetail.city.trim();
                             hasUpdateData = true;
                         }
 
-                        if (userDetail.description && originalUser.description !== userDetail.description.trim()) {
-                            data.description = userDetail.description.trim();
+                        if (this.userDetail.description && originalUser.description !== this.userDetail.description.trim()) {
+                            data.description = this.userDetail.description.trim();
                             hasUpdateData = true;
                         }
 
-                        if (userDetail.ip && originalUser.ip !== userDetail.ip.trim()) {
-                            data.ip = userDetail.ip.trim();
+                        if (this.userDetail.ip && originalUser.ip !== this.userDetail.ip.trim()) {
+                            data.ip = this.userDetail.ip.trim();
                             hasUpdateData = true;
                         }
 
-                        if (userDetail.device_data && originalUser.device_data !== userDetail.device_data.trim()) {
-                            data.device_data = userDetail.device_data.trim();
+                        if (this.userDetail.device_data && originalUser.device_data !== this.userDetail.device_data.trim()) {
+                            data.device_data = this.userDetail.device_data.trim();
                             hasUpdateData = true;
                         }
 
@@ -362,8 +362,8 @@
                             psw: this.confirmPsw,
                         }
 
-                        if (userDetail.username && userDetail.username.trim().length > 0) {
-                            data.username = userDetail.username.trim();
+                        if (this.userDetail.username && this.userDetail.username.trim().length > 0) {
+                            data.username = this.userDetail.username.trim();
                         } else {
                             this.errorMsg = 'Username is required!';
                             this.saveError = true;
@@ -374,10 +374,10 @@
                             return;
                         }
 
-                        if (userDetail.password && userDetail.password.trim().length > 0) {
-                            data.password = userDetail.password.trim();
+                        if (this.userDetail.password && this.userDetail.password.trim().length > 5) {
+                            data.password = this.userDetail.password.trim();
                         } else {
-                            this.errorMsg = 'Password is required!';
+                            this.errorMsg = 'Password is required! And 6 or more character';
                             this.saveError = true;
                             setTimeout(() => {
                                 this.errorMsg = '';
@@ -386,12 +386,12 @@
                             return;
                         }
 
-                        if (userDetail.email && userDetail.email.trim().length > 6 && userDetail.email.includes('@')) {
-                            data.email = userDetail.email.trim();
+                        if (this.userDetail.email && this.userDetail.email.trim().length > 6 && this.userDetail.email.includes('@')) {
+                            data.email = this.userDetail.email.trim();
                         }
 
-                        if (userDetail.lg) {
-                            data.lg = userDetail.lg;
+                        if (this.userDetail.lg) {
+                            data.lg = this.userDetail.lg;
                         } else {
                             this.errorMsg = 'Language is required!';
                             this.saveError = true;
@@ -402,24 +402,24 @@
                             return;
                         }
 
-                        if (userDetail.country && userDetail.country.trim().length > 0) {
-                            data.country = userDetail.country.trim();
+                        if (this.userDetail.country && this.userDetail.country.trim().length > 0) {
+                            data.country = this.userDetail.country.trim();
                         }
 
-                        if (userDetail.city && userDetail.city.trim().length > 0) {
-                            data.city = userDetail.city.trim();
+                        if (this.userDetail.city && this.userDetail.city.trim().length > 0) {
+                            data.city = this.userDetail.city.trim();
                         }
 
-                        if (userDetail.description && userDetail.description.trim().length > 0) {
-                            data.description = userDetail.description.trim();
+                        if (this.userDetail.description && this.userDetail.description.trim().length > 0) {
+                            data.description = this.userDetail.description.trim();
                         }
 
-                        if (userDetail.ip && userDetail.ip.trim().length > 0) {
-                            data.ip = userDetail.ip.trim();
+                        if (this.userDetail.ip && this.userDetail.ip.trim().length > 0) {
+                            data.ip = this.userDetail.ip.trim();
                         }
 
-                        if (userDetail.device_data && userDetail.device_data.trim().length > 0) {
-                            data.device_data = userDetail.device_data.trim();
+                        if (this.userDetail.device_data && this.userDetail.device_data.trim().length > 0) {
+                            data.device_data = this.userDetail.device_data.trim();
                         }
 
                         this.postData(data);
@@ -452,7 +452,6 @@
             },
 
             postData(data) {
-                //TODO create the rout and controller!
                 this.loadingStore.startLoading();
                 this.showPswModal = false;
                 axios.post('/api/admin/users', data)
