@@ -27,6 +27,8 @@ const adminConfirmController = require('./controllers/admin/adminConfirmControll
 const adminChangePasswordController = require('./controllers/admin/adminChangePasswordController.js');
 const fetchUsersController = require('./controllers/admin/resources/fetchUsersController.js');
 const updateUsersController = require('./controllers/admin/resources/updateUsersController.js');
+const fetchGroupsController = require('./controllers/admin/resources/fetchGroupsController.js');
+const updateGroupsController = require('./controllers/admin/resources/updateGroupsController.js');
 
 function apiRouts(app) {
     app.get('/login', async (req, res) => testController(req, res));
@@ -63,8 +65,12 @@ function apiRouts(app) {
     app.get('/api/admin/admin-user-data', adminAuth, (req, res) => adminUserDataController(req, res));
 
     // Admin resource routs
+    //user
     app.get('/api/admin/users', adminAuth, async (req, res) => fetchUsersController(req, res));
     app.post('/api/admin/users', adminAuth, async (req, res) => updateUsersController(req, res));
+    //groups
+    app.get('/api/admin/groups', adminAuth, async (req, res) => fetchGroupsController(req, res));
+    app.post('/api/admin/groups', adminAuth, async (req, res) => updateGroupsController(req, res));
 
     app.get('/home', auth, (req, res) => {
         res.sendFile(path.join(__dirname, '../public/index.html'));

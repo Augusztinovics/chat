@@ -1,57 +1,57 @@
 <template>
     <div class="resurce">
-        <div v-if="groupDetail" class="detail-container">
+        <div v-if="groupUserDetail" class="detail-container">
             <div class="details-header">
-                <h2><span v-if="groupDetail.id>0">#{{ groupDetail.id }}</span></h2>
+                <h2><span v-if="groupUserDetail.id>0">#{{ groupUserDetail.id }}</span></h2>
                 <div>
                     <button v-if="isEdit" class="btn btn-success mr-2" @click="saveDetail">Save</button>
                     <button class="btn-sm btn-secondary" @click="closeDetail">X</button>
                 </div>
             </div>
             <div class="detail">
-                <p><b>Main User Id: </b><input type="number" name="main_user" :readonly="!isEdit" v-model="groupDetail.main_user"></p>
-                <p><b>Group Name: </b><input type="text" name="group_name" :readonly="!isEdit" v-model="groupDetail.group_name"></p>
-                <p><b>Created At: </b>{{ groupDetail.created_at }}</p>
+                <p><b>Group Id: </b><input type="number" name="group_id" :readonly="!isEdit" v-model="groupUserDetail.group_id"></p>
+                <p><b>User Id: </b><input type="number" name="user_id" :readonly="!isEdit" v-model="groupUserDetail.user_id"></p>
+                <p><b>Created At: </b>{{ groupUserDetail.created_at }}</p>
             </div>
         </div>
         <div v-else>
-            <h2>Groups</h2>
+            <h2>Group Users</h2>
             <div class="resurce-control">
                 <div class="password-container">
-                    <input id="search_input" type="text" v-model="searchText" :disabled="submitting" @keypress.enter="fetchGroups">
-                    <button type="button" @click="fetchGroups" :disabled="submitting">
+                    <input id="search_input" type="text" v-model="searchText" :disabled="submitting" @keypress.enter="fetchGroupUsers">
+                    <button type="button" @click="fetchGroupUsers" :disabled="submitting">
                         <span class="icon"><IconSearch /></span>
                     </button>
                 </div>
                 <div>
-                    <select name="pag_size" id="pag_size" v-model="limit" @change="fetchGroups">
+                    <select name="pag_size" id="pag_size" v-model="limit" @change="fetchGroupUsers">
                         <option value="2">2 / page</option>
                         <option value="10">10 / page</option>
                         <option value="15">15 / page</option>
                         <option value="20">20 / page</option>
                         <option value="25">25 / page</option>
                     </select>
-                    <button class="btn-sm btn-primary" @click="fetchGroups">Fetch All Groups</button>
-                    <button v-if="canEdit" class="btn-sm btn-success ml-2" @click="createNewGroup">Create New Group</button>
+                    <button class="btn-sm btn-primary" @click="fetchGroupUsers">Fetch All Group Users</button>
+                    <button v-if="canEdit" class="btn-sm btn-success ml-2" @click="createNewGroupUser">Create New Group User</button>
                 </div>
             </div>
             <table>
                 <tr>
                     <th>ID</th>
-                    <th>Main User Id</th>
-                    <th>Group Name</th>
+                    <th>Group Id</th>
+                    <th>User Id</th>
                     <th>Created At</th>
                     <th>Actions</th>
                 </tr>
-                <tr v-for="group in groups" :key="group.id">
-                    <td>{{ group.id }}</td>
-                    <td>{{ group.main_user }}</td>
-                    <td>{{ group.group_name }}</td>
-                    <td>{{ group.created_at }}</td>
+                <tr v-for="groupUser in groupUsers" :key="groupUser.id">
+                    <td>{{ groupUser.id }}</td>
+                    <td>{{ groupUser.group_id }}</td>
+                    <td>{{ groupUser.user_id }}</td>
+                    <td>{{ groupUser.created_at }}</td>
                     <td>
-                        <span class="icon-edit-btn ml-1" @click="viewGroup(group)"><IconEyeOpen /></span>
-                        <span v-if="canEdit" class="icon-edit-btn ml-1" @click="viewEditGroup(group)"><IconEdit /></span>
-                        <span v-if="canEdit" class="icon-edit-btn danger ml-1" @click="deleteGroup(group.id)"><IconX /></span>
+                        <span class="icon-edit-btn ml-1" @click="viewGroupUser(groupUser)"><IconEyeOpen /></span>
+                        <span v-if="canEdit" class="icon-edit-btn ml-1" @click="viewEditGroupUser(groupUser)"><IconEdit /></span>
+                        <span v-if="canEdit" class="icon-edit-btn danger ml-1" @click="deleteGroupUser(groupUser.id)"><IconX /></span>
                     </td>
                 </tr>
             </table>
@@ -117,8 +117,8 @@
 
         data() {
             return {
-                groups: [],
-                groupDetail: null,
+                groupUsers: [],
+                groupUserDetail: null,
                 isEdit: false,
                 updateId: null,
                 limit: 10,
@@ -133,7 +133,7 @@
                 confirmPsw: '',
                 showPassword: false,
                 missingPassword: false,
-                deleteGroupId: null,
+                deleteGroupUserId: null,
             }
         },
 
@@ -142,11 +142,11 @@
             canEdit() {
                 return this.adminUserStore.roleId > 1;
             },
-            groupNum() {
-                return this.groups.length;
+            groupUserNum() {
+                return this.groupUsers.length;
             },
             hasResult() {
-                return this.groupNum > 0;
+                return this.groupUserNum > 0;
             },
             pageCount() {
                 if (this.totalCount < 1) return 0;
@@ -168,16 +168,16 @@
             paginateLeft() {
                 if (this.offset < 2) return;
                 this.offset--;
-                this.fetchGroups(null, this.offset);
+                this.fetchGroupUsers(null, this.offset);
             },
 
             paginatRight() {
                 if (this.offset >= this.pageCount) return;
                 this.offset++;
-                this.fetchGroups(null, this.offset);
+                this.fetchGroupUsers(null, this.offset);
             },
 
-            fetchGroups(e,set = 1) {
+            fetchGroupUsers(e,set = 1) {
                 let params = {
                     s: set,
                     l: parseInt(this.limit),
@@ -185,9 +185,9 @@
                 };
 
                 this.loadingStore.startLoading();
-                axios.get('/api/admin/groups?' +  new URLSearchParams(params).toString())
+                axios.get('/api/admin/group-users?' +  new URLSearchParams(params).toString())
                     .then((r) => {
-                        this.groups = r.data.groups;
+                        this.groupUsers = r.data.group_users;
                         this.totalCount = r.data.result_count;
                         this.offset = set;
                         this.loadingStore.finishLoading();
@@ -204,28 +204,28 @@
                     })
             },
 
-            viewGroup(group) {
-                this.groupDetail = group;
+            viewGroupUser(groupUser) {
+                this.groupUserDetail = groupUser;
             },
 
-            viewEditGroup(group) {
+            viewEditGroupUser(groupUser) {
                 this.isEdit = true;
-                this.updateId = group.id;
-                this.groupDetail = { ...group };
+                this.updateId = groupUser.id;
+                this.groupUserDetail = { ...groupUser };
             },
 
             closeDetail() {
                 this.isEdit = false;
-                this.groupDetail = null;
+                this.groupUserDetail = null;
                 this.updateId = null;
             },
 
-            createNewGroup() {
+            createNewGroupUser() {
                 this.isEdit = true;
-                this.groupDetail = {
+                this.groupUserDetail = {
                     id: 0,
-                    main_user:  null,
-                    group_name: null,
+                    group_id:   null,
+                    user_id:    null,
                     created_at: null,
                 }
             },
@@ -233,7 +233,7 @@
             cancelAction() {
                 this.showPswModal = false;
                 this.confirmPsw = '';
-                this.deleteGroupId = null;
+                this.deleteGroupUserId = null;
             },
 
             performAction() {
@@ -242,27 +242,27 @@
                     return;
                 }
                 let data = null;
-                if (this.deleteGroupId) {
+                if (this.deleteGroupUserId) {
                     data = {
                         method: 'DELETE',
                         psw: this.confirmPsw,
-                        delete_id: this.deleteGroupId
+                        delete_id: this.deleteGroupUserId
                     };
                     this.postData(data);
-                } else if (this.isEdit && this.groupDetail) {
-                    if (this.groupDetail.id > 0 && this.updateId) {
+                } else if (this.isEdit && this.groupUserDetail) {
+                    if (this.groupUserDetail.id > 0 && this.updateId) {
                         data = {
                             method: 'UPDATE',
                             psw: this.confirmPsw,
-                            group_id: this.groupDetail.id,
+                            group_user_id: this.groupUserDetail.id,
                         };
-                        let originalGroup = this.groups.find(g => { return g.id == this.updateId;});
-                        if (!originalGroup) {
+                        let originalGroupUser = this.groupUsers.find(gu => { return gu.id == this.updateId;});
+                        if (!originalGroupUser) {
                             this.showPswModal = false;
                             this.updateId = null;
-                            this.groupDetail = null;
+                            this.groupUserDetail = null;
                             this.confirmPsw = '';
-                            this.errorMsg = 'Unable to find original group!';
+                            this.errorMsg = 'Unable to find original group user!';
                             this.saveError = true;
                             setTimeout(() => {
                                 this.errorMsg = '';
@@ -272,13 +272,13 @@
                         }
 
                         let hasUpdateData = false;
-                        if (originalGroup.main_user !== parseInt(this.groupDetail.main_user)) {
-                            data.main_user = parseInt(this.groupDetail.main_user);
+                        if (originalGroupUser.group_id !== parseInt(this.groupUserDetail.group_id)) {
+                            data.group_id = parseInt(this.groupUserDetail.group_id);
                             hasUpdateData = true;
                         }
 
-                        if (originalGroup.group_name !== this.groupDetail.group_name.trim()) {
-                            data.group_name = this.groupDetail.group_name.trim();
+                        if (originalGroupUser.user_id !== parseInt(this.groupUserDetail.user_id)) {
+                            data.user_id = parseInt(this.groupUserDetail.user_id);
                             hasUpdateData = true;
                         }
 
@@ -299,10 +299,10 @@
                             psw: this.confirmPsw,
                         }
 
-                        if (this.groupDetail.main_user) {
-                            data.main_user = parseInt(this.groupDetail.main_user);
+                        if (this.groupUserDetail.group_id) {
+                            data.group_id = parseInt(this.groupUserDetail.group_id);
                         } else {
-                            this.errorMsg = 'Main User Id is required!';
+                            this.errorMsg = 'Group Id is required!';
                             this.saveError = true;
                             setTimeout(() => {
                                 this.errorMsg = '';
@@ -311,10 +311,10 @@
                             return;
                         }
 
-                        if (this.groupDetail.group_name && this.groupDetail.group_name.trim().length > 1) {
-                            data.group_name = this.groupDetail.group_name.trim();
+                        if (this.groupUserDetail.user_id) {
+                            data.user_id = parseInt(this.groupUserDetail.user_id);
                         } else {
-                            this.errorMsg = 'Group Name is required!';
+                            this.errorMsg = 'User Id is required!';
                             this.saveError = true;
                             setTimeout(() => {
                                 this.errorMsg = '';
@@ -330,17 +330,17 @@
                 }
             },
 
-            deleteGroup(id) {
-                this.deleteGroupId = id;
+            deleteGroupUser(id) {
+                this.deleteGroupUserId = id;
                 this.isEdit = false;
                 this.updateId = null;
-                this.groupDetail = null;
+                this.groupUserDetail = null;
                 this.showPswModal = true;
                 this.focusOnPassword();
             },
 
             saveDetail() {
-                this.deleteGroupId = null;
+                this.deleteGroupUserId = null;
                 if (!this.isEdit) return;
                 this.showPswModal = true;
                 this.focusOnPassword();
@@ -355,12 +355,12 @@
             postData(data) {
                 this.loadingStore.startLoading();
                 this.showPswModal = false;
-                axios.post('/api/admin/groups', data)
+                axios.post('/api/admin/group-users', data)
                     .then(() => {
                         this.loadingStore.finishLoading();
-                        this.deleteGroupId = null;
+                        this.deleteGroupUserId = null;
                         this.confirmPsw = '';
-                        this.fetchGroups(null, 1);
+                        this.fetchGroupUsers(null, 1);
                         this.saveSuccess = true;
                         setTimeout(() => {
                             this.saveSuccess = false;
@@ -368,9 +368,9 @@
                     })
                     .catch((e) => {
                         this.loadingStore.finishLoading();
-                        this.deleteGroupId = null;
+                        this.deleteGroupUserId = null;
                         this.updateId = null;
-                        this.groupDetail = null;
+                        this.groupUserDetail = null;
                         this.confirmPsw = '';
                         console.log(e);
                         this.errorMsg = e.message;

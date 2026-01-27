@@ -1,4 +1,4 @@
-const User = require('../../../../models/User');
+const User = require('../../../../models/User.js');
 
 async function fetchUsers(req, res) {
     if (!req.user) {
@@ -37,7 +37,7 @@ async function fetchUsers(req, res) {
         }
         res.json({users: result, result_count: resultCount});
     } catch (error) {
-        console.log('GET SENDED FRIEND REQUEST CATCH ERROR');
+        console.log('FETCH USERS CATCH ERROR');
         console.log(error);
         res.status(500).json({message: 'Server Error'});
     }
