@@ -29,6 +29,8 @@ const fetchUsersController = require('./controllers/admin/resources/fetchUsersCo
 const updateUsersController = require('./controllers/admin/resources/updateUsersController.js');
 const fetchGroupsController = require('./controllers/admin/resources/fetchGroupsController.js');
 const updateGroupsController = require('./controllers/admin/resources/updateGroupsController.js');
+const fetchGroupUsersController = require('./controllers/admin/resources/fetchGroupUsersController.js');
+const updateGroupUsersController = require('./controllers/admin/resources/updateGroupUsersController.js');
 
 function apiRouts(app) {
     app.get('/login', async (req, res) => testController(req, res));
@@ -71,6 +73,9 @@ function apiRouts(app) {
     //groups
     app.get('/api/admin/groups', adminAuth, async (req, res) => fetchGroupsController(req, res));
     app.post('/api/admin/groups', adminAuth, async (req, res) => updateGroupsController(req, res));
+    //groups
+    app.get('/api/admin/group-users', adminAuth, async (req, res) => fetchGroupUsersController(req, res));
+    app.post('/api/admin/group-users', adminAuth, async (req, res) => updateGroupUsersController(req, res));
 
     app.get('/home', auth, (req, res) => {
         res.sendFile(path.join(__dirname, '../public/index.html'));
