@@ -33,6 +33,8 @@ const fetchGroupUsersController = require('./controllers/admin/resources/fetchGr
 const updateGroupUsersController = require('./controllers/admin/resources/updateGroupUsersController.js');
 const fetchFriendsController = require('./controllers/admin/resources/fetchFriendsController.js');
 const updateFriendsController = require('./controllers/admin/resources/updateFriendsController.js');
+const fetchChatMessagesController = require('./controllers/admin/resources/fetchChatMessagesController.js');
+const updateChatMessagesController = require('./controllers/admin/resources/updateChatMessagesController.js');
 
 function apiRouts(app) {
     app.get('/login', async (req, res) => testController(req, res));
@@ -81,6 +83,9 @@ function apiRouts(app) {
     //friends
     app.get('/api/admin/friends', adminAuth, async (req, res) => fetchFriendsController(req, res));
     app.post('/api/admin/friends', adminAuth, async (req, res) => updateFriendsController(req, res));
+    //chat messages
+    app.get('/api/admin/chat-messages', adminAuth, async (req, res) => fetchChatMessagesController(req, res));
+    app.post('/api/admin/chat-messages', adminAuth, async (req, res) => updateChatMessagesController(req, res));
 
     app.get('/home', auth, (req, res) => {
         res.sendFile(path.join(__dirname, '../public/index.html'));

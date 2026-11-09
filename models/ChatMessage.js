@@ -219,7 +219,7 @@ class ChatMessage {
                     updateKeys.push(`${key}=?`);
                     updateValues.push(value);
                 });
-                query = `UPDATE messages SET ${updateKeys.join(', ')} WHERE id=${id}`;
+                let query = `UPDATE messages SET ${updateKeys.join(', ')} WHERE id=${id}`;
                 try {
                     db.run(query, updateValues, (err) => {
                         if (err) {

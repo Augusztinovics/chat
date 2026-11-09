@@ -277,7 +277,7 @@
                         data = {
                             method: 'UPDATE',
                             psw: this.confirmPsw,
-                            group_id: this.chatDetail.id,
+                            msg_id: this.chatDetail.id,
                         };
                         let originalChatMsg = this.chatMessages.find(cm => { return cm.id == this.updateId;});
                         if (!originalChatMsg) {
