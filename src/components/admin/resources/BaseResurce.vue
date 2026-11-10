@@ -6,7 +6,7 @@
             <button type="button" class="resource-btn" :class="{ 'active': resource == 'GROUP_USER' }" @click="resource = 'GROUP_USER'">Group Users</button>
             <button type="button" class="resource-btn" :class="{ 'active': resource == 'FRIEND' }" @click="resource = 'FRIEND'">Friends</button>
             <button type="button" class="resource-btn" :class="{ 'active': resource == 'CHAT_MSG' }" @click="resource = 'CHAT_MSG'">Chat Messages</button>
-            <button type="button" class="resource-btn">Logs</button>
+            <button type="button" class="resource-btn" :class="{ 'active': resource == 'LOGS' }" @click="resource = 'LOGS'">Logs</button>
             <button type="button" class="resource-btn">Admin Users</button>
         </div>
         <div class="admin-resource-content">
@@ -15,6 +15,7 @@
             <GroupUsersResource v-if="resource == 'GROUP_USER'" />
             <FriendsResource v-if="resource == 'FRIEND'" />
             <ChatMessagesResource v-if="resource == 'CHAT_MSG'" />
+            <LogsResource v-if="resource == 'LOGS'" />
         </div>
     </div>
 </template>
@@ -24,6 +25,7 @@
     import GroupUsersResource from './GroupUsersResource.vue';
     import FriendsResource from './FriendsResource.vue';
     import ChatMessagesResource from './ChatMessagesResource.vue';
+    import LogsResource from './LogsResource.vue';
 
     export default {
         components: {
@@ -32,6 +34,7 @@
             GroupUsersResource,
             FriendsResource,
             ChatMessagesResource,
+            LogsResource,
         },
 
         data() {
