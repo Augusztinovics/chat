@@ -37,6 +37,8 @@ const fetchChatMessagesController = require('./controllers/admin/resources/fetch
 const updateChatMessagesController = require('./controllers/admin/resources/updateChatMessagesController.js');
 const fetchLogsController = require('./controllers/admin/resources/fetchLogsController.js');
 const deleteLogController = require('./controllers/admin/resources/deleteLogController.js');
+const fetchAdminUsersController = require('./controllers/admin/resources/fetchAdminUsersController.js');
+const updateAdminUsersController = require('./controllers/admin/resources/updateAdminUsersController.js');
 
 function apiRouts(app) {
     app.get('/login', async (req, res) => testController(req, res));
@@ -91,6 +93,9 @@ function apiRouts(app) {
     //logs messages
     app.get('/api/admin/logs', adminAuth, async (req, res) => fetchLogsController(req, res));
     app.post('/api/admin/logs', adminAuth, async (req, res) => deleteLogController(req, res));
+    //logs admin users
+    app.get('/api/admin/admin-users', adminAuth, async (req, res) => fetchAdminUsersController(req, res));
+    app.post('/api/admin/admin-users', adminAuth, async (req, res) => updateAdminUsersController(req, res));
 
     app.get('/home', auth, (req, res) => {
         res.sendFile(path.join(__dirname, '../public/index.html'));

@@ -2,20 +2,21 @@
     <div class="admin-resource-holder">
         <div class="admin-resource-side">
             <button type="button" class="resource-btn" :class="{ 'active': resource == 'USERS' }" @click="resource = 'USERS'">Users</button>
-            <button type="button" class="resource-btn" :class="{ 'active': resource == 'GROUP' }" @click="resource = 'GROUP'">Groups</button>
-            <button type="button" class="resource-btn" :class="{ 'active': resource == 'GROUP_USER' }" @click="resource = 'GROUP_USER'">Group Users</button>
-            <button type="button" class="resource-btn" :class="{ 'active': resource == 'FRIEND' }" @click="resource = 'FRIEND'">Friends</button>
-            <button type="button" class="resource-btn" :class="{ 'active': resource == 'CHAT_MSG' }" @click="resource = 'CHAT_MSG'">Chat Messages</button>
+            <button type="button" class="resource-btn" :class="{ 'active': resource == 'GROUPS' }" @click="resource = 'GROUPS'">Groups</button>
+            <button type="button" class="resource-btn" :class="{ 'active': resource == 'GROUP_USERS' }" @click="resource = 'GROUP_USERS'">Group Users</button>
+            <button type="button" class="resource-btn" :class="{ 'active': resource == 'FRIENDS' }" @click="resource = 'FRIENDS'">Friends</button>
+            <button type="button" class="resource-btn" :class="{ 'active': resource == 'CHAT_MSGS' }" @click="resource = 'CHAT_MSGS'">Chat Messages</button>
             <button type="button" class="resource-btn" :class="{ 'active': resource == 'LOGS' }" @click="resource = 'LOGS'">Logs</button>
-            <button type="button" class="resource-btn">Admin Users</button>
+            <button type="button" class="resource-btn" :class="{ 'active': resource == 'ADMINS' }" @click="resource = 'ADMINS'">Admin Users</button>
         </div>
         <div class="admin-resource-content">
             <UsersResource v-if="resource == 'USERS'" />
-            <GroupsResurce v-if="resource == 'GROUP'" />
-            <GroupUsersResource v-if="resource == 'GROUP_USER'" />
-            <FriendsResource v-if="resource == 'FRIEND'" />
-            <ChatMessagesResource v-if="resource == 'CHAT_MSG'" />
+            <GroupsResurce v-if="resource == 'GROUPS'" />
+            <GroupUsersResource v-if="resource == 'GROUP_USERS'" />
+            <FriendsResource v-if="resource == 'FRIENDS'" />
+            <ChatMessagesResource v-if="resource == 'CHAT_MSGS'" />
             <LogsResource v-if="resource == 'LOGS'" />
+            <AdminUsersResource v-if="resource == 'ADMINS'" />
         </div>
     </div>
 </template>
@@ -26,6 +27,7 @@
     import FriendsResource from './FriendsResource.vue';
     import ChatMessagesResource from './ChatMessagesResource.vue';
     import LogsResource from './LogsResource.vue';
+    import AdminUsersResource from './AdminUsersResource.vue';
 
     export default {
         components: {
@@ -35,6 +37,7 @@
             FriendsResource,
             ChatMessagesResource,
             LogsResource,
+            AdminUsersResource,
         },
 
         data() {

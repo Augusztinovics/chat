@@ -80,11 +80,11 @@ async function updateGroupUsers(req, res) {
                     return res.status(404).json({message: 'Resource not find!' });
                 }
 
-                if (req.body.group_id && !isNaN(req.body.main_user)) {
+                if (req.body.group_id && !isNaN(req.body.group_id)) {
                     updateGU.group_id = parseInt(req.body.group_id);
                 }
 
-                if (req.body.user_id && !isNaN(req.body.group_name)) {
+                if (req.body.user_id && !isNaN(req.body.user_id)) {
                     updateGU.user_id = parseInt(req.body.user_id);
                 }
 
