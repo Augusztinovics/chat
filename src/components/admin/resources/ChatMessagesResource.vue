@@ -22,12 +22,24 @@
         <div v-else>
             <h2>Chat Messages</h2>
             <div class="resurce-control">
-                <div class="password-container">
-                    <input id="search_input" type="text" v-model="searchText" :disabled="submitting" @keypress.enter="fetchMessages">
-                    <button type="button" @click="fetchMessages" :disabled="submitting">
-                        <span class="icon"><IconSearch /></span>
-                    </button>
+                <div class="reource-search">
+                    <div class="password-container">
+                        <input id="search_input" type="text" v-model="searchText" :disabled="submitting" @keypress.enter="fetchMessages">
+                        <button type="button" @click="fetchMessages" :disabled="submitting">
+                            <span class="icon"><IconSearch /></span>
+                        </button>
+                    </div>
+                    <div>
+                        <select name="search_key" id="search_key" v-model="searchKey">
+                            <option value="id">Model Id</option>
+                            <option value="group_id">Group Id</option>
+                            <option value="from_id">From Id</option>
+                            <option value="sender">Sender Name</option>
+                            <option value="msg">Message</option>
+                        </select>
+                    </div>
                 </div>
+
                 <div>
                     <select name="pag_size" id="pag_size" v-model="limit" @change="fetchMessages">
                         <option value="2">2 / page</option>
@@ -36,7 +48,7 @@
                         <option value="20">20 / page</option>
                         <option value="25">25 / page</option>
                     </select>
-                    <button class="btn-sm btn-primary" @click="fetchMessages">Fetch All Chat Msg</button>
+                    <button class="btn-sm btn-primary" @click="fetchMessagesAll">Fetch All Chat Msg</button>
                     <button v-if="canEdit" class="btn-sm btn-success ml-2" @click="createNewChatMsg">Create New Chat Msg</button>
                 </div>
             </div>
@@ -143,6 +155,7 @@
                 offset: 1,
                 totalCount: 0,
                 searchText: '',
+                searchKey: 'group_id',
                 submitting: false,
                 errorMsg: '',
                 saveSuccess: false,
@@ -195,11 +208,17 @@
                 this.fetchMessages(null, this.offset);
             },
 
+            fetchMessagesAll() {
+                this.searchText = '';
+                this.fetchMessages(null, this.offset);
+            },
+
             fetchMessages(e,set = 1) {
                 let params = {
                     s: set,
                     l: parseInt(this.limit),
                     st: this.searchText,
+                    sk: this.searchKey,
                 };
 
                 this.loadingStore.startLoading();

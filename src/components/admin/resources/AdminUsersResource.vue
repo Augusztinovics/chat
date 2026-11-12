@@ -17,11 +17,20 @@
         <div v-else>
             <h2>Admin Users</h2>
             <div class="resurce-control">
-                <div class="password-container">
-                    <input id="search_input" type="text" v-model="searchText" :disabled="submitting" @keypress.enter="fetchAdminUsers">
-                    <button type="button" @click="fetchAdminUsers" :disabled="submitting">
-                        <span class="icon"><IconSearch /></span>
-                    </button>
+                <div class="reource-search">
+                    <div class="password-container">
+                        <input id="search_input" type="text" v-model="searchText" :disabled="submitting" @keypress.enter="fetchAdminUsers">
+                        <button type="button" @click="fetchAdminUsers" :disabled="submitting">
+                            <span class="icon"><IconSearch /></span>
+                        </button>
+                    </div>
+                    <div>
+                        <select name="search_key" id="search_key" v-model="searchKey">
+                            <option value="id">Model Id</option>
+                            <option value="role_id">Role Id</option>
+                            <option value="user_id">User Id</option>
+                        </select>
+                    </div>
                 </div>
                 <div>
                     <select name="pag_size" id="pag_size" v-model="limit" @change="fetchAdminUsers">
@@ -31,7 +40,7 @@
                         <option value="20">20 / page</option>
                         <option value="25">25 / page</option>
                     </select>
-                    <button class="btn-sm btn-primary" @click="fetchAdminUsers">Fetch All Admin Users</button>
+                    <button class="btn-sm btn-primary" @click="fetchAdminUsersAll">Fetch All Admin Users</button>
                     <button v-if="canEdit" class="btn-sm btn-success ml-2" @click="createNewAdminUser">Create New Admin User</button>
                 </div>
             </div>
@@ -123,6 +132,7 @@
                 offset: 1,
                 totalCount: 0,
                 searchText: '',
+                searchKey: 'role_id',
                 submitting: false,
                 errorMsg: '',
                 saveSuccess: false,
@@ -175,11 +185,17 @@
                 this.fetchAdminUsers(null, this.offset);
             },
 
+            fetchAdminUsersAll() {
+                this.searchText = '';
+                this.fetchAdminUsers(null, this.offset);
+            },
+
             fetchAdminUsers(e,set = 1) {
                 let params = {
                     s: set,
                     l: parseInt(this.limit),
                     st: this.searchText,
+                    sk: this.searchKey,
                 };
 
                 this.loadingStore.startLoading();

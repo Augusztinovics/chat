@@ -149,6 +149,19 @@
     justify-content: space-between;
 }
 
+@media (max-width: 1270px) {
+    .admin-layout .content .resurce .resurce-control {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
+.admin-layout .content .resurce .resurce-control .reource-search {
+    display: flex;
+    align-content: center;
+    gap: 20px;
+}
+
 .admin-layout .content .resurce .resurce-control select {
     padding: 0.75rem;
     font-size: 1rem;

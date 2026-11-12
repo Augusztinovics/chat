@@ -23,14 +23,19 @@ async function fetchAdminUsers(req, res) {
         limit = parseInt(limit);
     }
     let searchString = req.query.st;
+    let searchKey = req.query.sk;
+    const validSearckKeys = ['id', 'role_id', 'user_id'];
+    if (!validSearckKeys.includes(searchKey)) {
+        searchKey = null;
+    }
 
     try {
         let result = [];
         let resultCount = 0;
-        if (searchString && !isNaN(searchString)) {
+        if (searchString && !isNaN(searchString) && searchKey) {
             searchString = parseInt(searchString) ;
-            result = await AdminUser.whereRaw('role_id = ? ORDER BY id DESC LIMIT ? OFFSET ?', [searchString, limit, ((set*limit)-limit)]);
-            resultCount = await AdminUser.countRaw('WHERE role_id = ?', [searchString]);
+            result = await AdminUser.whereRaw(`${searchKey} = ? ORDER BY id DESC LIMIT ? OFFSET ?`, [searchString, limit, ((set*limit)-limit)]);
+            resultCount = await AdminUser.countRaw(`WHERE ${searchKey} = ?`, [searchString]);
          } else {
             result = await AdminUser.whereRaw('id > 0 ORDER BY id DESC LIMIT ? OFFSET ?', [limit, ((set*limit)-limit)]);
             resultCount = await AdminUser.countRaw();

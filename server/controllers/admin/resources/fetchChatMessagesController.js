@@ -23,14 +23,24 @@ async function fetchChatMessages(req, res) {
         limit = parseInt(limit);
     }
     let searchString = req.query.st;
+    let searchKey = req.query.sk;
+    const validSearckKeys = ['id', 'group_id', 'from_id', 'sender', 'msg'];
+    const numericKeys = ['id', 'group_id', 'from_id'];
+    if (!validSearckKeys.includes(searchKey)) {
+        searchKey = null;
+    }
 
     try {
         let result = [];
         let resultCount = 0;
-        if (searchString && !isNaN(searchString)) {
+        if (searchString && !isNaN(searchString) && searchKey && numericKeys.includes(searchKey)) {
             searchString = parseInt(searchString) ;
-            result = await ChatMessage.whereRaw('group_id = ? ORDER BY id DESC LIMIT ? OFFSET ?', [searchString, limit, ((set*limit)-limit)]);
-            resultCount = await ChatMessage.countRaw('WHERE group_id = ?', [searchString]);
+            result = await ChatMessage.whereRaw(`${searchKey} = ? ORDER BY id DESC LIMIT ? OFFSET ?`, [searchString, limit, ((set*limit)-limit)]);
+            resultCount = await ChatMessage.countRaw(`WHERE ${searchKey} = ?`, [searchString]);
+        } else if (searchString && searchString.length > 1 && searchKey) {
+            searchString = '%' + searchString + '%';
+            result = await ChatMessage.whereRaw(`${searchKey} LIKE ? ORDER BY id DESC LIMIT ? OFFSET ?`, [searchString, limit, ((set*limit)-limit)]);
+            resultCount = await ChatMessage.countRaw(`WHERE ${searchKey} LIKE ?`, [searchString]);
         } else {
             result = await ChatMessage.whereRaw('id > 0 ORDER BY id DESC LIMIT ? OFFSET ?', [limit, ((set*limit)-limit)]);
             resultCount = await ChatMessage.countRaw();

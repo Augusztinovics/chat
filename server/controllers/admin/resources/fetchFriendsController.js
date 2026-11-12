@@ -23,15 +23,25 @@ async function fetchFriends(req, res) {
         limit = parseInt(limit);
     }
     let searchString = req.query.st;
+    let searchKey = req.query.sk;
+    const validSearckKeys = ['id', 'from_user', 'to_user', 'message'];
+    const numericKeys = ['id', 'from_user', 'to_user'];
+    if (!validSearckKeys.includes(searchKey)) {
+        searchKey = null;
+    }
 
     try {
         let result = [];
         let resultCount = 0;
-        if (searchString && !isNaN(searchString)) {
+        if (searchString && !isNaN(searchString) && searchKey && numericKeys.includes(searchKey)) {
             searchString = parseInt(searchString) ;
-            result = await Friend.whereRaw('from_user = ? ORDER BY id DESC LIMIT ? OFFSET ?', [searchString, limit, ((set*limit)-limit)]);
-            resultCount = await Friend.countRaw('WHERE from_user = ?', [searchString]);
-        } else {
+            result = await Friend.whereRaw(`${searchKey} = ? ORDER BY id DESC LIMIT ? OFFSET ?`, [searchString, limit, ((set*limit)-limit)]);
+            resultCount = await Friend.countRaw(`WHERE ${searchKey} = ?`, [searchString]);
+        } else if (searchString && searchString.length > 1 && searchKey) {
+            searchString = '%' + searchString + '%';
+            result = await Friend.whereRaw(`${searchKey} LIKE ? ORDER BY id DESC LIMIT ? OFFSET ?`, [searchString, limit, ((set*limit)-limit)]);
+            resultCount = await Friend.countRaw(`WHERE ${searchKey} LIKE ?`, [searchString]);
+        }else {
             result = await Friend.whereRaw('id > 0 ORDER BY id DESC LIMIT ? OFFSET ?', [limit, ((set*limit)-limit)]);
             resultCount = await Friend.countRaw();
         }

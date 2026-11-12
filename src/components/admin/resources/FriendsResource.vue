@@ -20,11 +20,21 @@
         <div v-else>
             <h2>Friends</h2>
             <div class="resurce-control">
-                <div class="password-container">
-                    <input id="search_input" type="text" v-model="searchText" :disabled="submitting" @keypress.enter="fetchFriends">
-                    <button type="button" @click="fetchFriends" :disabled="submitting">
-                        <span class="icon"><IconSearch /></span>
-                    </button>
+                <div class="reource-search">
+                    <div class="password-container">
+                        <input id="search_input" type="text" v-model="searchText" :disabled="submitting" @keypress.enter="fetchFriends">
+                        <button type="button" @click="fetchFriends" :disabled="submitting">
+                            <span class="icon"><IconSearch /></span>
+                        </button>
+                    </div>
+                    <div>
+                        <select name="search_key" id="search_key" v-model="searchKey">
+                            <option value="id">Model Id</option>
+                            <option value="from_user">From User Id</option>
+                            <option value="to_user">To User Id</option>
+                            <option value="message">Message</option>
+                        </select>
+                    </div>
                 </div>
                 <div>
                     <select name="pag_size" id="pag_size" v-model="limit" @change="fetchFriends">
@@ -34,7 +44,7 @@
                         <option value="20">20 / page</option>
                         <option value="25">25 / page</option>
                     </select>
-                    <button class="btn-sm btn-primary" @click="fetchFriends">Fetch All Friends</button>
+                    <button class="btn-sm btn-primary" @click="fetchFriendsAll">Fetch All Friends</button>
                     <button v-if="canEdit" class="btn-sm btn-success ml-2" @click="createNewFriend">Create New Friend</button>
                 </div>
             </div>
@@ -134,6 +144,7 @@
                 offset: 1,
                 totalCount: 0,
                 searchText: '',
+                searchKey: 'from_user',
                 submitting: false,
                 errorMsg: '',
                 saveSuccess: false,
@@ -186,11 +197,17 @@
                 this.fetchFriends(null, this.offset);
             },
 
+            fetchFriendsAll() {
+                this.searchText = '';
+                this.fetchFriends(null, this.offset);
+            },
+
             fetchFriends(e,set = 1) {
                 let params = {
                     s: set,
                     l: parseInt(this.limit),
                     st: this.searchText,
+                    sk: this.searchKey,
                 };
 
                 this.loadingStore.startLoading();
