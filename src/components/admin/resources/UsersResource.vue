@@ -31,11 +31,25 @@
         <div v-else>
             <h2>Users</h2>
             <div class="resurce-control">
-                <div class="password-container">
-                    <input id="search_input" type="text" v-model="searchText" :disabled="submitting" @keypress.enter="fetchUsers">
-                    <button type="button" @click="fetchUsers" :disabled="submitting">
-                        <span class="icon"><IconSearch /></span>
-                    </button>
+                <div class="reource-search">
+                    <div class="password-container">
+                        <input id="search_input" type="text" v-model="searchText" :disabled="submitting" @keypress.enter="fetchUsers">
+                        <button type="button" @click="fetchUsers" :disabled="submitting">
+                            <span class="icon"><IconSearch /></span>
+                        </button>
+                    </div>
+                    <div>
+                        <select name="search_key" id="search_key" v-model="searchKey">
+                            <option value="id">Model Id</option>
+                            <option value="username">User Name</option>
+                            <option value="email">Email</option>
+                            <option value="lg">Language</option>
+                            <option value="country">Country</option>
+                            <option value="city">City</option>
+                            <option value="description">Description</option>
+                            <option value="ip">Ip</option>
+                        </select>
+                    </div>
                 </div>
                 <div>
                     <select name="pag_size" id="pag_size" v-model="limit" @change="fetchUsers">
@@ -45,7 +59,7 @@
                         <option value="20">20 / page</option>
                         <option value="25">25 / page</option>
                     </select>
-                    <button class="btn-sm btn-primary" @click="fetchUsers">Fetch All Users</button>
+                    <button class="btn-sm btn-primary" @click="fetchUsersAll">Fetch All Users</button>
                     <button v-if="canEdit" class="btn-sm btn-success ml-2" @click="createNewUser">Create New User</button>
                 </div>
             </div>
@@ -147,6 +161,7 @@
                 offset: 1,
                 totalCount: 0,
                 searchText: '',
+                searchKey: 'username',
                 submitting: false,
                 errorMsg: '',
                 saveSuccess: false,
@@ -199,11 +214,17 @@
                 this.fetchUsers(null, this.offset);
             },
 
+            fetchUsersAll() {
+                this.searchText = '';
+                this.fetchUsers(null, this.offset);
+            },
+
             fetchUsers(e,set = 1) {
                 let params = {
                     s: set,
                     l: parseInt(this.limit),
                     st: this.searchText,
+                    sk: this.searchKey,
                 };
 
                 this.loadingStore.startLoading();

@@ -23,18 +23,24 @@ async function fetchGroups(req, res) {
         limit = parseInt(limit);
     }
     let searchString = req.query.st;
+    let searchKey = req.query.sk;
+    const validSearckKeys = ['id', 'main_user', 'group_name'];
+    const numericKeys = ['id', 'main_user'];
+    if (!validSearckKeys.includes(searchKey)) {
+        searchKey = null;
+    }
 
     try {
         let result = [];
         let resultCount = 0;
-        if (searchString && !isNaN(searchString)) {
+        if (searchString && !isNaN(searchString) && searchKey && numericKeys.includes(searchKey)) {
             searchString = parseInt(searchString) ;
-            result = await Group.whereRaw('main_user = ? ORDER BY id DESC LIMIT ? OFFSET ?', [searchString, limit, ((set*limit)-limit)]);
-            resultCount = await Group.countRaw('WHERE main_user = ?', [searchString]);
-        } else if (searchString && searchString.length > 2) {
+            result = await Group.whereRaw(`${searchKey} = ? ORDER BY id DESC LIMIT ? OFFSET ?`, [searchString, limit, ((set*limit)-limit)]);
+            resultCount = await Group.countRaw(`WHERE ${searchKey} = ?`, [searchString]);
+        } else if (searchString && searchString.length > 1) {
             searchString = '%' + searchString + '%';
-            result = await Group.whereRaw('group_name LIKE ? ORDER BY id DESC LIMIT ? OFFSET ?', [searchString, limit, ((set*limit)-limit)]);
-            resultCount = await Group.countRaw('WHERE group_name LIKE ?', [searchString]);
+            result = await Group.whereRaw(`${searchKey} LIKE ? ORDER BY id DESC LIMIT ? OFFSET ?`, [searchString, limit, ((set*limit)-limit)]);
+            resultCount = await Group.countRaw(`WHERE ${searchKey} LIKE ?`, [searchString]);
         } else {
             result = await Group.whereRaw('id > 0 ORDER BY id DESC LIMIT ? OFFSET ?', [limit, ((set*limit)-limit)]);
             resultCount = await Group.countRaw();

@@ -17,11 +17,20 @@
         <div v-else>
             <h2>Groups</h2>
             <div class="resurce-control">
-                <div class="password-container">
-                    <input id="search_input" type="text" v-model="searchText" :disabled="submitting" @keypress.enter="fetchGroups">
-                    <button type="button" @click="fetchGroups" :disabled="submitting">
-                        <span class="icon"><IconSearch /></span>
-                    </button>
+                <div class="reource-search">
+                    <div class="password-container">
+                        <input id="search_input" type="text" v-model="searchText" :disabled="submitting" @keypress.enter="fetchGroups">
+                        <button type="button" @click="fetchGroups" :disabled="submitting">
+                            <span class="icon"><IconSearch /></span>
+                        </button>
+                    </div>
+                    <div>
+                        <select name="search_key" id="search_key" v-model="searchKey">
+                            <option value="id">Model Id</option>
+                            <option value="main_user">Main User Id</option>
+                            <option value="group_name">Group Name</option>
+                        </select>
+                    </div>
                 </div>
                 <div>
                     <select name="pag_size" id="pag_size" v-model="limit" @change="fetchGroups">
@@ -31,7 +40,7 @@
                         <option value="20">20 / page</option>
                         <option value="25">25 / page</option>
                     </select>
-                    <button class="btn-sm btn-primary" @click="fetchGroups">Fetch All Groups</button>
+                    <button class="btn-sm btn-primary" @click="fetchGroupsAll">Fetch All Groups</button>
                     <button v-if="canEdit" class="btn-sm btn-success ml-2" @click="createNewGroup">Create New Group</button>
                 </div>
             </div>
@@ -125,6 +134,7 @@
                 offset: 1,
                 totalCount: 0,
                 searchText: '',
+                searchKey: 'main_user',
                 submitting: false,
                 errorMsg: '',
                 saveSuccess: false,
@@ -177,11 +187,17 @@
                 this.fetchGroups(null, this.offset);
             },
 
+            fetchGroupsAll() {
+                this.searchText = '';
+                this.fetchGroups(null, this.offset);
+            },
+
             fetchGroups(e,set = 1) {
                 let params = {
                     s: set,
                     l: parseInt(this.limit),
                     st: this.searchText,
+                    sk: this.searchKey,
                 };
 
                 this.loadingStore.startLoading();

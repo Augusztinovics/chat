@@ -23,14 +23,19 @@ async function fetchGroupUsers(req, res) {
         limit = parseInt(limit);
     }
     let searchString = req.query.st;
+    let searchKey = req.query.sk;
+    const validSearckKeys = ['id', 'group_id', 'user_id'];
+    if (!validSearckKeys.includes(searchKey)) {
+        searchKey = null;
+    }
 
     try {
         let result = [];
         let resultCount = 0;
-        if (searchString && !isNaN(searchString)) {
+        if (searchString && !isNaN(searchString) && searchKey) {
             searchString = parseInt(searchString) ;
-            result = await GroupUser.whereRaw('group_id = ? ORDER BY id DESC LIMIT ? OFFSET ?', [searchString, limit, ((set*limit)-limit)]);
-            resultCount = await GroupUser.countRaw('WHERE group_id = ?', [searchString]);
+            result = await GroupUser.whereRaw(`${searchKey} = ? ORDER BY id DESC LIMIT ? OFFSET ?`, [searchString, limit, ((set*limit)-limit)]);
+            resultCount = await GroupUser.countRaw(`WHERE ${searchKey} = ?`, [searchString]);
          } else {
             result = await GroupUser.whereRaw('id > 0 ORDER BY id DESC LIMIT ? OFFSET ?', [limit, ((set*limit)-limit)]);
             resultCount = await GroupUser.countRaw();
