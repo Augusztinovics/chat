@@ -61,7 +61,7 @@
 
         data() {
             return {
-                selectedTab: 'GET',
+                selectedTab: 'NONE',
                 saveSuccess: false,
                 saveError: false,
                 toastMessage: '',

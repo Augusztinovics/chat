@@ -105,6 +105,22 @@
     fill: var(--color-link-hover);
 }
 
+.base-layout-body .top-nav nav .nav-box .menu-dropdown {
+    position: absolute;
+    right: 0;
+    padding: 10px;
+    margin-right: 10px;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: var(--shadow);
+    z-index: 1;
+}
+
+.base-layout-body .top-nav nav .nav-box .menu-dropdown .drop-item {
+    display: block;
+    margin: 10px 0;
+}
+
 .base-layout-body .hide-mb {
     display: none;
 }

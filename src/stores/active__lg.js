@@ -449,6 +449,11 @@ export const useLgStore = defineStore('active_lg', {
                 SR: 'te je obrisala iz grupe',
                 EN: 'deleted you from a group',
             },
+            account: {
+                HU: 'Fiók',
+                SR: 'Nalog',
+                EN: 'Account',
+            },
         },
     }),
     getters: {

@@ -8,11 +8,13 @@
                 </div>
                 <div class="nav-box">
                     <RouterLink to="/home" class="menu-item"><span class="icon"><IconHome /></span><span class="hide-mb ml-05 text-bold">{{ lg('home') }}</span></RouterLink>
-                    <RouterLink to="/home/profile" class="menu-item"><span class="icon"><IconIdCard /></span><span class="hide-mb ml-05 text-bold">{{ lg('profile') }}</span></RouterLink>
                 </div>
                 <div class="nav-box">
-                    <LgSelector class="menu-item" />
-                    <a href="/logout" class="menu-item" ><span class="icon"><ExitIcon /></span><span class="hide-mb ml-05 text-bold">{{ lg('logout') }}</span></a>
+                    <a href="" @click.prevent="openClose" ref="dropdown_menu" class="menu-item">{{ lg('account') }}</a>
+                    <div v-if="dropdownOpen" class="menu-dropdown">
+                        <RouterLink to="/home/profile" class="drop-item">{{ lg('profile') }}</RouterLink>
+                        <a href="/logout" class="drop-item" >{{ lg('logout') }}</a>
+                    </div>
                 </div>
             </nav>
         </div>
@@ -38,7 +40,6 @@ import IconIdCard from '@/components/icons/IconIdCard.vue';
 import IconTerms from '@/components/icons/IconTerms.vue';
 import IconShield from '@/components/icons/IconShield.vue';
 import IconEyeOpen from '@/components/icons/IconEyeOpen.vue';
-import LgSelector from '@/components/LgSelector.vue';
 import IconHome from '@/components/icons/IconHome.vue';
 import ExitIcon from '@/components/icons/ExitIcon.vue';
 import LoadingOverlay from '@/components/LoadingOverlay.vue';
@@ -52,7 +53,6 @@ export default {
         IconTerms,
         IconShield,
         IconEyeOpen,
-        LgSelector,
         IconHome,
         ExitIcon,
         LoadingOverlay,
@@ -62,6 +62,7 @@ export default {
     data() {
         return {
             loadingError: false,
+            dropdownOpen: false,
         }
     },
 
@@ -99,6 +100,22 @@ export default {
                             this.loadingError = true;
                         }
                     })
+        },
+
+        openClose() {
+            var _this = this
+            const closeListerner = (e) => {
+                if ( _this.catchOutsideClick(e, _this.$refs.dropdown_menu ) ) 
+                    window.removeEventListener('click', closeListerner) , _this.dropdownOpen = false
+            }
+            window.addEventListener('click', closeListerner);
+
+            this.dropdownOpen = !this.dropdownOpen;
+        },
+
+        catchOutsideClick(event, dropdown)  {
+            if( this.dropdownOpen && dropdown != event.target ) return true;
+            return false;
         },
 
     },
