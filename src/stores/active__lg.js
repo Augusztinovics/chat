@@ -454,6 +454,16 @@ export const useLgStore = defineStore('active_lg', {
                 SR: 'Nalog',
                 EN: 'Account',
             },
+            contact_us: {
+                HU: 'Kérdések',
+                SR: 'Kontaktirajte nas',
+                EN: 'Contact Us',
+            },
+            ask: {
+                HU: 'Kérdez',
+                SR: 'Pitaj',
+                EN: 'Ask',
+            },
         },
     }),
     getters: {

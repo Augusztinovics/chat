@@ -51,6 +51,11 @@ const router = createRouter({
         name: 'home profile',
         component: () => import('../views/home/ProfileView.vue'),
     },
+    {
+        path: '/home/contact-us',
+        name: 'home contact us',
+        component: () => import('../views/home/ContactUsView.vue'),
+    },
     //Admin routs:
     {
       path: '/admin',

@@ -13,6 +13,7 @@
                     <a href="" @click.prevent="openClose" ref="dropdown_menu" class="menu-item">{{ lg('account') }}</a>
                     <div v-if="dropdownOpen" class="menu-dropdown">
                         <RouterLink to="/home/profile" class="drop-item">{{ lg('profile') }}</RouterLink>
+                        <RouterLink to="/home/contact-us" class="drop-item">{{ lg('contact_us') }}</RouterLink>
                         <a href="/logout" class="drop-item" >{{ lg('logout') }}</a>
                     </div>
                 </div>
