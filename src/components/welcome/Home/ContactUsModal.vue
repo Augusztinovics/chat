@@ -6,20 +6,21 @@
             :title="lg('ask')"
             :headerClass="'text-left'"
             :showCancel="true"
+            :cancelBtnText="lg('cancel')"
+            :okBtnText="lg('ask')"
             @close="modalClose"
             @cancel="modalClose"
             @ok="submitQuestion"
         >
             <div class="request-modal-body">
-                <p>disclaimer</p>
+                <p class="disclaimer">{{ lg('contact_us_form_disclaimer') }}</p>
                 <div>
-                    <label for="title">{{ lg('group_new_name_lbl') }}</label>
+                    <label for="title">{{ lg('contact_us_question_title_lbl') }}</label>
                     <input type="text" id="title" @input="clearTitleError" v-model="title">
-                    <p v-if="titleError" class="text-danger">{{ lg('group_new_name_missing') }}</p>
-                    <hr>
-                    <label for="question">{{ lg('from_self') }}</label>
+                    <p v-if="titleError" class="text-danger">{{ lg('contact_us_question_title_missing') }}</p>
+                    <label for="question">{{ lg('contact_us_question_lbl') }}</label>
                     <textarea name="question" id="question"  @input="clearQuestionError" v-model="question"></textarea>
-                    <p v-if="questionError" class="text-danger">{{ lg('group_new_name_missing') }}</p>
+                    <p v-if="questionError" class="text-danger">{{ lg('contact_us_question_missing') }}</p>
                 </div>
             </div>
         </Modal>
@@ -31,7 +32,6 @@
     import { useLgStore } from '@/stores/active__lg';
     import { loadingStore } from '@/stores/loadin';
     import Modal from '@/components/Modal.vue';
-    import { toastsStore } from '@/stores/toasts';
 
     export default {
         components: {
@@ -50,7 +50,7 @@
         },
 
         computed: {
-            ...mapStores(loadingStore, toastsStore),
+            ...mapStores(loadingStore),
             ...mapState(useLgStore, ['lg']),
         },
 
@@ -64,8 +64,19 @@
             },
 
             submitQuestion() {
+                if (!this.validForm()) return;
+                this.loadingStore.startLoading();
+                //TODO make real submit
+                setTimeout(() => {
+                    //success rout, finish load go otherside, in error route will be here with message
+                    this.titleError = false;
+                    this.questionError = false;
+                    this.title = '';
+                    this.question = '';
+                    this.$emit('saved');
+                }, 800);
 
-                this.$emit('saved');
+               
             },
 
             clearTitleError() {
@@ -74,6 +85,33 @@
 
             clearQuestionError() {
                 this.questionError = false;
+            },
+
+            validForm() {
+                let isValid = true;
+                if (this.title.trim().length < 2) {
+                    this.titleError = true;
+                    isValid = false;
+                }
+                if (this.question.trim().length < 2) {
+                    this.questionError = true;
+                    isValid = false;
+                }
+                if (!isValid) {
+                    this.focusOnErrorField();
+                }
+                return isValid;
+            },
+
+            focusOnErrorField() {
+                if (this.titleError) {
+                    document.getElementById('title').focus();
+                    return;
+                }
+                if (this.questionError) {
+                    document.getElementById('question').focus();
+                    return;
+                }
             },
         },
     }

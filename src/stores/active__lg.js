@@ -464,6 +464,31 @@ export const useLgStore = defineStore('active_lg', {
                 SR: 'Pitaj',
                 EN: 'Ask',
             },
+            contact_us_question_title_lbl: {
+                HU: 'A Kérdés Témája',
+                SR: 'Tema pitanja',
+                EN: 'The Topic of the Question',
+            },
+            contact_us_question_title_missing: {
+                HU: 'Kérem adja meg a kérdés témáját',
+                SR: 'Unesite tema pitanja',
+                EN: 'Please enter the topic of the question',
+            },
+            contact_us_question_lbl: {
+                HU: 'A Kérdés',
+                SR: 'Pitanja',
+                EN: 'The Question',
+            },
+            contact_us_question_missing: {
+                HU: 'Kérem irja le a kérdését',
+                SR: 'Molim vas, zapišite svoje pitanje',
+                EN: 'Please write down your question',
+            },
+            contact_us_form_disclaimer: {
+                HU: 'Ha van kérdése töltse ki az alábbi formulát, amint tudunk válaszolunk.',
+                SR: 'Ako imate bilo kakvih pitanja, molimo vas da popunite obrazac u nastavku; odgovorićemo u najkraćem mogućem roku.',
+                EN: 'If you have any questions, please fill out the form below, we will respond as soon as possible.',
+            },
         },
     }),
     getters: {

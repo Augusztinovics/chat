@@ -1,5 +1,5 @@
 <template>
-    <div class="w-100 pl-2 pr-2">
+    <div class="w-100 pl-2 pr-2 contact-us">
         <div>
             <h1 class="text-center">{{ lg('contact_us') }}</h1>
         </div>
@@ -8,19 +8,22 @@
             <ContactUsModal @close="closeQuestionModal" @saved="questionAsked" :show="showQuastionModal"/>
         </div>
         <div>
-            Ask-answers cards
+            <ContactUsCard />
         </div>
     </div>
 </template>
 
 <script>
-    import { mapState } from 'pinia';
+    import { mapStores, mapState } from 'pinia';
     import { useLgStore } from '@/stores/active__lg';
+    import { loadingStore } from '@/stores/loadin';
     import ContactUsModal from './ContactUsModal.vue';
+    import ContactUsCard from './ContactUsCard.vue';
 
     export default {
         components: {
             ContactUsModal,
+            ContactUsCard,
         },
 
         data() {
@@ -32,6 +35,7 @@
         },
 
         computed: {
+            ...mapStores(loadingStore),
             ...mapState(useLgStore, ['lg']),
         },
 
@@ -42,11 +46,15 @@
 
             showQuestionModal() {
                 this.showQuastionModal = true;
+                setTimeout(() => {
+                    document.getElementById('title').focus();
+                }, 300);
             },
 
             questionAsked() {
                 //refetch questions, with new one, then close
                 this.closeQuestionModal();
+                this.loadingStore.finishLoading();
             },
         },
     }
