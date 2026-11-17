@@ -9,9 +9,10 @@
 
 .contact-us .contac-us-card {
     padding: 10px;
-    background-color: var(--color-background-soft);
+    background-color: var(--color-background-mute);
     border: 2px solid var(--color-border);
     margin-bottom: 20px;
+    box-shadow: var(--shadow);
 }
 
 .contact-us .contac-us-card .contact-us-card-title {
@@ -32,4 +33,5 @@
     border: 2px solid var(--color-border);
     background-color: var(--color-background);
     margin-bottom: 10px;
+    box-shadow: var(--shadow);
 }

@@ -489,6 +489,41 @@ export const useLgStore = defineStore('active_lg', {
                 SR: 'Ako imate bilo kakvih pitanja, molimo vas da popunite obrazac u nastavku; odgovorićemo u najkraćem mogućem roku.',
                 EN: 'If you have any questions, please fill out the form below, we will respond as soon as possible.',
             },
+            contact_us_question_asked_at: {
+                HU: 'Kérdés feltéve',
+                SR: 'Pitanje postavljeno',
+                EN: 'Question asked',
+            },
+            contact_us_question_answered_at: {
+                HU: 'Kérdés megválaszolva',
+                SR: 'Na pitanje je odgovoreno',
+                EN: 'Question answered',
+            },
+            delete: {
+                HU: 'Töröl',
+                SR: 'Izbriši',
+                EN: 'Delete',
+            },
+            contact_us_question_delete_title: {
+                HU: 'Kérdés törlése',
+                SR: 'Izbriši pitanje',
+                EN: 'Delete question',
+            },
+            contact_us_question_delete_confirm: {
+                HU: 'Bisztosan szeretnéd törölni ezt a kérdést?',
+                SR: 'Da li ste sigurni da želite da obrišete ovo pitanje?',
+                EN: 'Are you sure you want to delete this question?',
+            },
+            contact_us_not_answered_yet: {
+                HU: 'Erre a kérdésre még nem érkezett válasz.',
+                SR: 'Za ovo pitanje još uvek nije stigao odgovor.',
+                EN: 'No answer has been received for this question yet.',
+            },
+            no_contact_us_yet: {
+                HU: 'Még nem próbáltál kapcsolatba lépni velünk, ha van kérdése tegye fel a "Kérdez" gombra kattintva.',
+                SR: 'Još nam se niste obratili, ukoliko imate pitanje, molimo vas da ga postavite klikom na dugme "Pitaj".',
+                EN: 'You haven\'t reached out to us yet, if you have a question, please ask it by clicking the "Ask" button.',
+            },
         },
     }),
     getters: {

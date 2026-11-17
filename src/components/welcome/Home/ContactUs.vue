@@ -7,8 +7,11 @@
             <button type="button" class="btn btn-primary pl-2 pr-2" @click="showQuestionModal">{{ lg('ask') }}</button>
             <ContactUsModal @close="closeQuestionModal" @saved="questionAsked" :show="showQuastionModal"/>
         </div>
-        <div>
-            <ContactUsCard />
+        <div v-if="hasRequest">
+            <ContactUsCard v-for="question in contact_us_requests" :key="'contact_us_card_' + question.id" :question="question" @saved="questionAsked"/>
+        </div>
+        <div v-else>
+            <p>{{ lg('no_contact_us_yet') }}</p>
         </div>
     </div>
 </template>
@@ -28,8 +31,7 @@
 
         data() {
             return {
-                paginationIndex: 0,
-                conatct_requests: [],
+                contact_us_requests: [],
                 showQuastionModal: false,
             }
         },
@@ -37,6 +39,9 @@
         computed: {
             ...mapStores(loadingStore),
             ...mapState(useLgStore, ['lg']),
+            hasRequest() {
+                return this.contact_us_requests.length > 0;
+            },
         },
 
         methods: {
