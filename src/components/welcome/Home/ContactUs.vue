@@ -22,6 +22,7 @@
     import { loadingStore } from '@/stores/loadin';
     import ContactUsModal from './ContactUsModal.vue';
     import ContactUsCard from './ContactUsCard.vue';
+    import axios from 'axios';
 
     export default {
         components: {
@@ -57,10 +58,37 @@
             },
 
             questionAsked() {
-                //refetch questions, with new one, then close
-                this.closeQuestionModal();
-                this.loadingStore.finishLoading();
+                this.loadQustions().then(() => {
+                    this.closeQuestionModal();
+                    this.loadingStore.finishLoading();
+                }).catch((e) => {
+                    console.error(e);
+                    if (e.response?.status == 401) {
+                        this.loadingStore.finishLoading();
+                         this.$router.push('/login');
+                    } else {
+                        this.closeQuestionModal();
+                        this.loadingStore.finishLoading();
+                    }
+                });
             },
+
+            loadQustions() {
+                return new Promise((resolve,reject) => {
+                    axios.get('/api/resources/questions')
+                        .then((res) => {
+                            this.contact_us_requests = res.data?.contact_us_requests ?? [];
+                            resolve(true);
+                        })
+                        .catch((e) => {
+                            reject(e);
+                        });
+                });
+            },
+        },
+
+        mounted() {
+            this.loadQustions();
         },
     }
 </script>

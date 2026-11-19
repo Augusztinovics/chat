@@ -21,6 +21,9 @@ const getFriendsController = require('./controllers/resources/friendRequests/get
 const createGroupController = require('./controllers/resources/friendRequests/createGroupController.js');
 const updateGroupController = require('./controllers/resources/friendRequests/updateGroupController.js');
 const getMoreMessageController = require('./controllers/resources/getMoreMessageController.js');
+const getQuestionsController = require('./controllers/resources/getQuestionsController.js');
+const createQuestionController = require('./controllers/resources/createQuestionController.js');
+const deleteQuestionController = require('./controllers/resources/deleteQuestionController.js');
 //Admin Controllers
 const adminUserDataController = require('./controllers/admin/adminUserDataController.js');
 const adminConfirmController = require('./controllers/admin/adminConfirmController.js');
@@ -54,6 +57,9 @@ function apiRouts(app) {
     app.post('/api/resources/user-delete', auth, async (req, res) => deleteUserController(req, res));
     app.get('/api/resources/search-user', auth, async (req, res) => userSearchController(req, res));
     app.get('/api/resources/more-message', auth, async (req, res) => getMoreMessageController(req, res));
+    app.get('/api/resources/questions', auth, async (req, res) => getQuestionsController(req, res));
+    app.post('/api/resources/questions-create', auth, async (req, res) => createQuestionController(req, res));
+    app.post('/api/resources/questions-delete', auth, async (req, res) => deleteQuestionController(req, res));
 
     //Friend requests
     app.get('/api/resources/sended-friend-requests', auth, async (req, res) => getSendedFriendRequestsController(req, res));

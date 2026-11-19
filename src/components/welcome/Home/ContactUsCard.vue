@@ -30,6 +30,8 @@
                 <p>{{ lg('contact_us_question_delete_confirm') }}</p>
             </div>
         </Modal>
+
+        <FailToast v-if="saveError":msg="lg('general_error')"/>
     </div>
 </template>
 
@@ -39,11 +41,14 @@
     import { loadingStore } from '@/stores/loadin';
     import IconX from '@/components/icons/IconX.vue';
     import Modal from '@/components/Modal.vue';
+    import axios from 'axios';
+    import FailToast from '@/components/FailToast.vue';
 
     export default {
         components: {
             IconX,
             Modal,
+            FailToast,
         },
         props: {
             question: {
@@ -51,11 +56,11 @@
                 default(rawProps) {
                     return { 
                         id:         null,
-                        title:      'Dummy title',
-                        question:   'Whats Up',
-                        answer:     'Nothing special',
-                        anwered_at: '2026-11-16',
-                        created_at: '2021-11-12',
+                        title:      null,
+                        question:   null,
+                        answer:     null,
+                        anwered_at: null,
+                        created_at: null,
                     };
                 }
             }
@@ -64,6 +69,7 @@
         data() {
             return {
                 showDeleteModal:false,
+                saveError: false,
             }
         },
 
@@ -83,12 +89,21 @@
 
             deleteQuestion() {
                 this.loadingStore.startLoading();
-                //TODO make real submit
-                setTimeout(() => {
-                    //success rout, finish load go otherside, in error route will be here with message
-                    this.modalClose();
-                    this.$emit('saved');
-                }, 800);
+                this.saveError = false;
+
+                axios.post('/api/resources/questions-delete', {delete_id : this.question.id})
+                    .then(() => {
+                        this.modalClose();
+                        this.$emit('saved');
+                    })
+                    .catch((e) => {
+                        this.loadingStore.finishLoading();
+                        this.modalClose();
+                        this.saveError = true;
+                        setTimeout(() => {
+                            this.saveError = false;
+                        }, 3000);
+                    });
             }
         },
     }

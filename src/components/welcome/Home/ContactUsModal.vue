@@ -22,6 +22,9 @@
                     <textarea name="question" id="question"  @input="clearQuestionError" v-model="question"></textarea>
                     <p v-if="questionError" class="text-danger">{{ lg('contact_us_question_missing') }}</p>
                 </div>
+                <div v-if="submitError">
+                    <p class="text-danger">{{ lg('general_error') }}</p>
+                </div>
             </div>
         </Modal>
     </div>
@@ -32,6 +35,7 @@
     import { useLgStore } from '@/stores/active__lg';
     import { loadingStore } from '@/stores/loadin';
     import Modal from '@/components/Modal.vue';
+    import axios from 'axios';
 
     export default {
         components: {
@@ -46,6 +50,7 @@
                 titleError: false,
                 question: '',
                 questionError: false,
+                submitError: false,
             }
         },
 
@@ -66,25 +71,37 @@
             submitQuestion() {
                 if (!this.validForm()) return;
                 this.loadingStore.startLoading();
-                //TODO make real submit
-                setTimeout(() => {
-                    //success rout, finish load go otherside, in error route will be here with message
-                    this.titleError = false;
-                    this.questionError = false;
-                    this.title = '';
-                    this.question = '';
-                    this.$emit('saved');
-                }, 800);
 
-               
+                let data = {
+                    title: this.title.trim(),
+                    question: this.question.trim()
+                };
+
+                this.submitError = false;
+
+                axios.post('/api/resources/questions-create', data)
+                    .then(() => {
+                        this.titleError = false;
+                        this.questionError = false;
+                        this.title = '';
+                        this.question = '';
+                        this.$emit('saved');
+                    })
+                    .catch((e) => {
+                        this.loadingStore.finishLoading();
+                        console.log(e);
+                        this.submitError = true;
+                    });
             },
 
             clearTitleError() {
                 this.titleError = false;
+                this.submitError = false;
             },
 
             clearQuestionError() {
                 this.questionError = false;
+                this.submitError = false;
             },
 
             validForm() {
